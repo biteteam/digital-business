@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class AdminPanel extends CI_Controller {
+class AdminPanel extends CI_Controller
+{
 	public function index()
 	{
 		if (!empty($this->session->userdata('userName'))) {
@@ -9,8 +10,9 @@ class AdminPanel extends CI_Controller {
 		}
 		$this->load->view('admin/login');
 	}
-	
-	public function dashboard() {
+
+	public function dashboard()
+	{
 		if (empty($this->session->userdata('userName'))) {
 			return redirect('adminpanel/login');
 		}
@@ -20,7 +22,8 @@ class AdminPanel extends CI_Controller {
 		$this->load->view('admin/layout/footer');
 	}
 
-	public function login() {
+	public function login()
+	{
 		if ($this->input->method() !== "post") {
 			return redirect('adminpanel');
 		}
@@ -42,7 +45,8 @@ class AdminPanel extends CI_Controller {
 		return redirect('adminpanel');
 	}
 
-	public function logout() {
+	public function logout()
+	{
 		$this->session->sess_destroy();
 		return redirect('adminpanel');
 	}
