@@ -41,4 +41,9 @@ class AdminPanel extends CI_Controller {
 
 		return redirect('adminpanel');
 	}
+
+	public function logout() {
+		$this->session->sess_destroy();
+		return redirect('adminpanel');
+	}
 }
