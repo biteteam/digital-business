@@ -32,6 +32,7 @@ class MAdmin extends CI_Model
     {
         $this->db->where($pk, $id);
         $this->db->update($tabel, $data);
+        return $this->db->affected_rows();
     }
 
     public function delete($tabel, $id, $val)
