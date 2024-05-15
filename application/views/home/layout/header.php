@@ -129,6 +129,7 @@
                                 <a href="detail.html" class="nav-item nav-link">Transaksi</a>
                             </div>
                             <div class="navbar-nav ml-auto py-0">
+                                <a href="<?= site_url('profile/edit') ?>" class="nav-item nav-link">Edit Profil</a>
                                 <a href="<?= site_url('auth/logout') ?>" class="nav-item nav-link">Logout</a>
                             </div>
                         <?php endif; ?>

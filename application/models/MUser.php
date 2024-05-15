@@ -40,13 +40,14 @@ class MUser extends CI_Model
 
     public function get_by_id($tabel, $id)
     {
-        return $this->db->get_where($tabel, $id);
+        return $this->db->get_where($tabel, ['idKonsumen' => $id]);
     }
 
     public function update($tabel, $data, $pk, $id)
     {
         $this->db->where($pk, $id);
         $this->db->update($tabel, $data);
+        return $this->db->affected_rows();
     }
 
     public function delete($tabel, $id, $val)
