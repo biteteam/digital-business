@@ -3,11 +3,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Kategori extends CI_Controller
 {
+    public $addOrSaveRules = [
+        [
+            'field'  => 'namaKat',
+            'label'  => 'Nama Kategori',
+            'rules'  => 'required|min_length[3]',
+            'errors' => [
+                'required' => "%s tidak boleh kosong.",
+                'min_length' => "Panjang %s minimal 3 karakter."
+            ]
+        ]
+    ];
+
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('MAdmin');
         if (empty($this->session->userdata('userName'))) return redirect('adminpanel');
+        $this->load->model('MAdmin');
+        $this->load->helper(['form', 'url']);
     }
 
     public function index()
@@ -29,9 +42,19 @@ class Kategori extends CI_Controller
 
     public function save()
     {
+        // Validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules($this->addOrSaveRules);
+        if (!$this->form_validation->run()) return $this->add();
+
         $namaKat = $this->input->post('namaKat');
         $data = ['namaKat' => $namaKat];
-        $this->MAdmin->insert('tbl_kategori', $data);
+        $added = $this->MAdmin->insert('tbl_kategori', $data);
+        if (!$added) {
+            $this->session->set_flashdata('error', "Gagal menambahkan kategori $namaKat");
+            return $this->add();
+        }
+
         return redirect('kategori');
     }
 
@@ -47,12 +70,26 @@ class Kategori extends CI_Controller
 
     public function edit()
     {
-        $id = $this->input->post('namaKat');
+        // Serialize Form Data
+        $id = $this->input->post('idKat');
         $namaKategori = $this->input->post('namaKat');
         $data = ['namaKat' => $namaKategori];
 
-        $this->MAdmin->update('tbl_kategori', $data, 'idKat', $id);
-        redirect('kategori');
+        // Validation
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules($this->addOrSaveRules);
+        if (!$this->form_validation->run()) return $this->get_by_id($id);
+
+        // Updating
+        $updated = $this->MAdmin->update('tbl_kategori', $data, 'idKat', $id);
+        if (!$updated) {
+            // !updated  ->  redirect/return back & give err msg
+            $this->session->set_flashdata('error', "Gagal mengedit kategori $namaKategori");
+            return $this->get_by_id($id);
+        }
+
+        // Redirect to home category page if success
+        return redirect('kategori');
     }
 
     public function delete($id)

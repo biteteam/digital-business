@@ -21,6 +21,7 @@ class MAdmin extends CI_Model
     public function insert($tabel, $data)
     {
         $this->db->insert($tabel, $data);
+        return $this->db->affected_rows();
     }
 
     public function get_by_id($tabel, $id)

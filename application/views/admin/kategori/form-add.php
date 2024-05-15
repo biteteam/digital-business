@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?= site_url('kategori') ?>">Kategori</a></li>
                         <li class="breadcrumb-item active">Tambah Kategori</li>
                         </o1>
                 </div>
@@ -26,22 +26,27 @@
                         <div class="card-header">
                             <h3 class="card-title">Data Kategori</h3>
                         </div>
-                        <!-- form start -->
-                        <form class="form-horizontal" method="post" action="<?= site_url('kategori/save'); ?>">
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-3 col-form-label">Nama Kategori</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="namaKat" class="form-control" id="inputEmail3" placeholder="Nama Kategori" />
-                                    </div>
+                        <!-- FORM START -->
+                        <!-- <form class="form-horizontal" method="post" action="<?= site_url('kategori/save'); ?>"> -->
+                        <?= form_open('kategori/save') ?>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="inputEmail3" class="col-sm-3 col-form-label">Nama Kategori</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="namaKat" class="form-control" id="namaKategori" value="<?= set_value('namaKat'); ?>" placeholder="Nama Kategori" />
                                 </div>
-                                <!-- /.card-body -->
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-info float-right">Simpan</button>
-                                </div>
-                                <!-- /.card-footer -->
                             </div>
-                        </form>
+                            <!-- /.card-body -->
+
+                            <span class="text-danger"><?= $this->session->flashdata('error') ? $this->session->flashdata('error') : form_error('namaKat')  ?></span>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-info float-right">Simpan</button>
+                            </div>
+                            <!-- /.card-footer -->
+                        </div>
+                        <!-- </form> -->
+                        <?= form_close() ?>
+                        <!-- FORM END -->
                     </div>
                 </div>
                 <!-- /.row -->
