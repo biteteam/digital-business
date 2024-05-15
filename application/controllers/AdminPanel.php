@@ -3,6 +3,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class AdminPanel extends CI_Controller
 {
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->helper(['form', 'url']);
+		$this->load->model("MAdmin", 'adminModel');
+	}
+
 	public function index()
 	{
 		if (empty($this->session->userdata('userName'))) {
@@ -16,8 +23,6 @@ class AdminPanel extends CI_Controller
 
 	public function login()
 	{
-		$this->load->helper(['form', 'url']);
-
 		if ($this->input->method() == "post") {
 			/** Validation */
 			$this->load->library('form_validation');
@@ -34,11 +39,10 @@ class AdminPanel extends CI_Controller
 			);
 			if (!$this->form_validation->run()) return $this->load->view('admin/login');
 
-			$this->load->model('MAdmin');
 			$uname = $this->input->post('username');
 			$pass  = $this->input->post('password');
 
-			$adminAuthData = $this->MAdmin->cek_login($uname, $pass);
+			$adminAuthData = $this->adminModel->cek_login($uname, $pass);
 			if ($adminAuthData !== null && count($adminAuthData)) {
 				$session = $adminAuthData;
 				$this->session->set_userdata($session);
@@ -50,6 +54,47 @@ class AdminPanel extends CI_Controller
 		}
 
 		return $this->load->view('admin/login');
+	}
+
+	public function ganti_password()
+	{
+		if (empty($this->session->userdata('userName'))) return redirect('adminpanel/login');
+
+		if ($this->input->method() == "post") {
+			$this->load->library('form_validation');
+			$this->form_validation->set_rules('password', 'password', 'required', ['required' => '%s harus di isi.']);
+			$this->form_validation->set_rules('new_password', 'Password Baru', 'required', ['required' => '%s harus di isi.']);
+			$this->form_validation->set_rules('retype_new_password', 'Ulangi Password Baru', 'required|matches[new_password]', [
+				'required' => '%s harus di isi.',
+				'matches' => "'%s' harus sama dengan 'Password Baru'."
+			]);
+			if (!$this->form_validation->run()) return $this->load->view('admin/ganti-password');
+
+			$currentPassword = $this->input->post('password');
+			$newPassword = $this->input->post('new_password');
+			$reNewPassword = $this->input->post('retype_new_password');
+
+			// dd([$newPassword, $reNewPassword, $currentPassword]);
+			$adminData = $this->adminModel->get_admin_by_username($this->session->userdata('userName'));
+			$currentPasswordValid = password_verify($currentPassword, $adminData->password);
+			if ($currentPasswordValid) {
+				$passhash = password_hash($newPassword, PASSWORD_DEFAULT);
+				$updatedPassword = $this->adminModel->update('tbl_admin', [
+					'password' => $passhash,
+				], 'idAdmin', $adminData->idAdmin);
+
+				if ($updatedPassword) {
+					$this->session->set_flashdata('success', "Berhasil mengganti password");
+					return redirect('adminpanel');
+				}
+
+				$this->session->set_flashdata('error', "Gagal mengganti password!");
+			} else {
+				$this->session->set_flashdata('error', "Password yang anda masukan tidak sama dengan password akun anda saat ini!");
+			}
+		}
+
+		return $this->load->view('admin/ganti-password');
 	}
 
 	public function logout()

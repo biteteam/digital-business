@@ -4,17 +4,23 @@ class MAdmin extends CI_Model
 {
     public function cek_login($uname, $pass)
     {
-        $adminData = $this->db->get_where('tbl_admin', [
-            'userName' => $uname
-        ])->row_object();
-
+        $adminData = $this->get_admin_by_username($uname);
         if (!$adminData || !password_verify($pass, $adminData->password))
             return null;
 
-        return [
+        $sessionData = [
             'userName' => $adminData->userName,
-            'adminData' => $adminData->password,
+            'password' => $adminData->password,
         ];
+
+        return $sessionData;
+    }
+
+    public function get_admin_by_username($username)
+    {
+        return $this->db->get_where('tbl_admin', [
+            'userName' => $username
+        ])->row_object();
     }
 
     public function get_all_data($tabel)

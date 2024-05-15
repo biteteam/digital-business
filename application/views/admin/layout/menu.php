@@ -14,7 +14,7 @@
 				<img src="<?= base_url('assets/admin/dist/img/user2-160x160.jpg') ?>" class="img-circle elevation-2" alt="User Image" />
 			</div>
 			<div class="info">
-				<a href="#" class="d-block">Alexander Pierce</a>
+				<a href="#" class="d-block"><?= $this->session->userdata('userName') ?></a>
 			</div>
 		</div>
 
@@ -60,6 +60,14 @@
 							Member
 							<!-- <span class="right badge badge-danger">New</span> -->
 						</p>
+					</a>
+				</li>
+
+				<li class="nav-header mt-3">Settings</li>
+				<li class="nav-item">
+					<a href="<?= site_url('adminpanel/ganti-password') ?>" class="nav-link">
+						<i class="nav-icon far fa-circle text-danger"></i>
+						<p class="text">Ganti Password</p>
 					</a>
 				</li>
 				<li class="nav-item">
