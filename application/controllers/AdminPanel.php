@@ -32,21 +32,15 @@ class AdminPanel extends CI_Controller
 					'max_length' => 'Panjang %s maksimal 16 karakter.'
 				]
 			);
-
-			if ($this->form_validation->run() == FALSE) {
-				return $this->load->view('admin/login');
-			}
+			if (!$this->form_validation->run()) return $this->load->view('admin/login');
 
 			$this->load->model('MAdmin');
 			$uname = $this->input->post('username');
 			$pass  = $this->input->post('password');
 
-			$cek = $this->MAdmin->cek_login($uname, $pass)->num_rows();
-			if ($cek == 1) {
-				$session = [
-					'userName' => $uname,
-					'password' => $pass
-				];
+			$adminAuthData = $this->MAdmin->cek_login($uname, $pass);
+			if ($adminAuthData !== null && count($adminAuthData)) {
+				$session = $adminAuthData;
 				$this->session->set_userdata($session);
 				$this->session->set_flashdata('success', "Selamat datang kembali $uname!");
 				return redirect('adminpanel');

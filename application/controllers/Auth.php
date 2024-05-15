@@ -38,17 +38,10 @@ class Auth extends CI_Controller
         $uname = $this->input->post('username');
         $pass  = $this->input->post('password');
 
-        $loginQuery = $this->userModel->cek_login($uname, $pass);
-        $member = $loginQuery->row_object();
-        $exists = $loginQuery->num_rows();
-        if (!boolval($exists) || $member->statusAktif != "Y") return redirect('auth/login');
+        $memberAuthData = $this->userModel->cek_login($uname, $pass);
+        if (!$memberAuthData || !count($memberAuthData)) return redirect('auth/login');
 
-
-        $session = [
-            'idKonsumen' => $member->idKonsumen,
-            'member' => $member->username,
-            'status' => 'login'
-        ];
+        $session = $memberAuthData;
         $this->session->set_userdata($session);
         return redirect('/');
     }
@@ -58,6 +51,7 @@ class Auth extends CI_Controller
         if ($this->input->method() !== 'post') return $this->register();
         $data = $this->input->post();
         $data['statusAktif'] = "Y";
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
         if (empty($data) || empty($data['username'])) return redirect('auth/register');
 
@@ -65,6 +59,12 @@ class Auth extends CI_Controller
         if (!empty($exists)) return redirect('auth/register');
 
         $this->userModel->insert('tbl_member', $data);
+        return redirect('auth/login');
+    }
+
+    public function logout()
+    {
+        $this->session->sess_destroy();
         return redirect('auth/login');
     }
 }

@@ -11,12 +11,20 @@ class MUser extends CI_Model
 
     public function cek_login($uname, $pass)
     {
-        $result = $this->db->get_where('tbl_member', [
+        $member = $this->db->get_where('tbl_member', [
             'username' => $uname,
-            'password' => $pass
-        ]);
+        ])->row_object();
 
-        return $result;
+        $validPass = !$member ? false :  password_verify($pass, $member->password);
+        if (!$member || !$validPass  || $member->statusAktif != "Y") return null;
+
+        $sessionAuthData  = [
+            'idKonsumen' => $member->idKonsumen,
+            'member' => $member->username,
+            'status' => 'login'
+        ];
+
+        return $sessionAuthData;
     }
 
     public function get_all_data($tabel)
