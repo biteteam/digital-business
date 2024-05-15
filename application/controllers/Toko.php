@@ -9,10 +9,35 @@ class Toko extends CI_Controller
         'overwrite'     => true
     ];
 
+    private $addOrSaveRules = [
+        [
+            'field'  => 'namaToko',
+            'label'  => 'Nama Toko',
+            'rules'  => 'required|min_length[5]|max_length[32]',
+            'errors' => [
+                'required' => "%s tidak boleh kosong.",
+                'min_length' => "Panjang %s minimal 5 karakter.",
+                'max_length' => "Panjang %s maksimal 32 karakter."
+            ]
+        ],
+        [
+            'field'  => 'deskripsi',
+            'label'  => 'Deskripsi',
+            'rules'  => 'required|min_length[6]|max_length[200]',
+            'errors' => [
+                'required' => "%s tidak boleh kosong.",
+                'min_length' => "Panjang %s minimal 6 karakter.",
+                'max_length' => "Panjang %s maksimal 200 karakter."
+            ]
+        ]
+    ];
+
     public function __construct()
     {
         parent::__construct();
         $this->load->model('MAdmin', 'adminModel');
+        $this->load->helper(['form', 'url']);
+        $this->load->library('form_validation');
     }
 
     public function index()
@@ -32,6 +57,12 @@ class Toko extends CI_Controller
 
     public function save()
     {
+
+
+        // Validation
+        $this->form_validation->set_rules($this->addOrSaveRules);
+        if (!$this->form_validation->run()) return $this->add();
+
         $id = $this->session->userdata("idKonsumen");
         $nama_toko = $this->input->post('namaToko');
         $deskripsi = $this->input->post('deskripsi');
@@ -48,10 +79,12 @@ class Toko extends CI_Controller
             ];
 
             $this->adminModel->insert('tbl_toko', $data_insert);
+            $this->session->set_flashdata('success', "Berhasil menambahkan toko");
             return redirect('toko');
         }
 
-        return redirect('toko/add');
+        $this->session->set_flashdata('error', "Gagal menambahkan toko");
+        return $this->add();
     }
 
 
@@ -59,7 +92,11 @@ class Toko extends CI_Controller
     {
         $where = ['idToko' => $id];
         $data['toko'] = $this->adminModel->get_by_id('tbl_toko', $where)->row_object();
-        if (empty($data['toko'])) return redirect('toko');
+        if (empty($data['toko'])) {
+            $this->session->set_flashdata('error', "Toko tidak ditemukan");
+            return redirect('toko');
+        }
+
         $this->load->view('home/layout/header');
         $this->load->view('home/toko/form-edit', $data);
         $this->load->view('home/layout/footer');
@@ -67,10 +104,18 @@ class Toko extends CI_Controller
 
     public function edit()
     {
+        // Validation
+        $this->form_validation->set_rules($this->addOrSaveRules);
+        if (!$this->form_validation->run()) return $this->add();
+
         $idToko = $this->input->post('idToko');
         $idKonsumen = $this->session->userdata("idKonsumen");
         $toko = $this->adminModel->get_by_id('tbl_toko', ['idToko' => $idToko, 'idKonsumen' => $idKonsumen])->row_array();
-        if (!$toko) return redirect('toko/get-by-id/' . $idToko);
+
+        if (!$toko) {
+            $this->session->set_flashdata('error', "Gagal mengedit toko, Toko tidak ditemukan");
+            return redirect('toko/get-by-id/' . $idToko);
+        }
 
         $toko['namaToko'] = $this->input->post('namaToko');
         $toko['deskripsi'] = $this->input->post('deskripsi');
@@ -83,8 +128,12 @@ class Toko extends CI_Controller
         }
 
         $updated = $this->adminModel->update('tbl_toko', $toko, 'idToko', $idToko);
-        if (!$updated) return redirect('toko/get-by-id/' . $idToko);
+        if (!$updated) {
+            $this->session->set_flashdata('error', "Gagal mengedit toko {$toko['namaToko']}");
+            return redirect('toko/get-by-id/' . $idToko);
+        }
 
+        $this->session->set_flashdata('success', "Berhasil mengedit toko {$toko['namaToko']}");
         return redirect('toko');
     }
 

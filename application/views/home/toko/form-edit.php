@@ -7,25 +7,26 @@
         <div class="col-lg-7 mb-5">
             <div class="contact-form">
                 <div id="success"></div>
-                <form name="sentMessage" method="post" action="<?= base_url('toko/edit') ?>" enctype="multipart/form-data">
-                    <input type="hidden" name="idToko" value="<?= $toko->idToko ?>" />
-                    <input type="hidden" name="logo_filename" value="<?= $toko->logo ?>" />
-                    <div class="control-group">
-                        <input type="text" class="form-control" value="<?= $toko->namaToko ?>" id="name" name="namaToko" placeholder="Nama Toko" required="required" data-validation-required-message="Please enter your toko name" />
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div class="control-group">
-                        <input type="file" accept=".png,.png,.jpeg" class="form-control" value="<?= $toko->logo ?>" id="logo" name="logo" placeholder="Logo" data-validation-required-message="Please enter your toko logo" />
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div class="control-group">
-                        <textarea class="form-control" rows="3" id="message" name="deskripsi" placeholder="Deskripsi" data-validation-required-message="Please enter your toko deskripsi"><?= $toko->deskripsi ?></textarea>
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div>
-                        <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Simpan</button>
-                    </div>
-                </form>
+                <?= form_open_multipart('toko/edit') ?>
+                <input type="hidden" name="idToko" value="<?= $toko->idToko ?>" />
+                <input type="hidden" name="logo_filename" value="<?= $toko->logo ?>" />
+                <div class="control-group mb-3">
+                    <input type="text" class="form-control" value="<?= set_value('namaToko', $toko->namaToko) ?>" id="name" name="namaToko" placeholder="Nama Toko" />
+                    <span class="text-danger"><small><?= form_error('namaToko') ?></small></span>
+                </div>
+                <div class="control-group mb-3">
+                    <input type="file" accept=".png,.png,.jpeg" class="form-control" value="<?= set_value('logo', $toko->logo) ?>" id="logo" name="logo" placeholder="Logo" />
+                    <span class="text-danger"><small><?= form_error('logo') ?></small></span>
+                </div>
+                <div class="control-group mb-3">
+                    <textarea class="form-control" rows="3" id="message" name="deskripsi" placeholder="Deskripsi"><?= set_value('deskripsi', $toko->deskripsi) ?></textarea>
+                    <span class="text-danger"><small><?= form_error('deskripsi') ?></small></span>
+                </div>
+                <div>
+                    <p class="text-danger"><?= $this->session->flashdata('error') ?></p>
+                    <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Simpan Perubahan</button>
+                </div>
+                <?= form_close() ?>
             </div>
         </div>
     </div>

@@ -7,23 +7,24 @@
         <div class="col-lg-7 mb-5">
             <div class="contact-form">
                 <div id="success"></div>
-                <form name="sentMessage" method="post" action="<?= base_url('toko/save') ?>" enctype="multipart/form-data">
-                    <div class="control-group">
-                        <input type="text" class="form-control" id="name" name="namaToko" placeholder="Nama Toko" required="required" data-validation-required-message="Please enter your toko name" />
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div class="control-group">
-                        <input type="file" accept=".png,.png,.jpeg" class="form-control" id="logo" name="logo" placeholder="Logo" data-validation-required-message="Please enter your toko logo" />
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div class="control-group">
-                        <textarea class="form-control" rows="3" id="message" name="deskripsi" placeholder="Deskripsi" data-validation-required-message="Please enter your toko deskripsi"></textarea>
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div>
-                        <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Simpan</button>
-                    </div>
-                </form>
+                <?= form_open_multipart('toko/save') ?>
+                <div class="control-group mb-3">
+                    <input type="text" class="form-control" id="name" name="namaToko" value="<?= set_value('namaToko') ?>" placeholder="Nama Toko" />
+                    <span class="text-danger"><small><?= form_error('namaToko') ?></small></span>
+                </div>
+                <div class="control-group mb-3">
+                    <input type="file" accept=".png,.png,.jpeg" class="form-control" id="logo" name="logo" value="<?= set_value('logo') ?>" />
+                    <span class="text-danger"><small><?= form_error('logo') ?></small></span>
+                </div>
+                <div class="control-group mb-3">
+                    <textarea class="form-control" rows="3" id="message" name="deskripsi" placeholder="Deskripsi"><?= set_value('deskripsi') ?></textarea>
+                    <span class="text-danger"><small><?= form_error('deskripsi') ?></small></span>
+                </div>
+                <div>
+                    <p class="text-danger"><?= $this->session->flashdata('error') ?></p>
+                    <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Simpan</button>
+                </div>
+                <?= form_close() ?>
             </div>
         </div>
     </div>
