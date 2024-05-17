@@ -1,0 +1,15 @@
+UJIAN TENGAH SEMESTER
+Digital Business
+
+- Nama  : Fiki Pratama
+- Nim   : 22.12.2551
+- Kelas : SI 05
+
+
+1. Validasi dari sisi server (codeigniter) pada Form Login Admin.
+2. Validasi dari sisi server (codeigniter) pada modul kelola kategori.
+3. Enkripsi password pada modul login admin dan member.
+4. Fitur ganti password admin.
+5. Validasi dari sisi server (codeigniter) pada modul kelola toko.
+6. Fitur edit profil member.
+7. Tambahkan alert ketika sukses menambah data, menghapus data, atau mengedit data.
