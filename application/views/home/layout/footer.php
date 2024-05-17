@@ -83,7 +83,36 @@
 <script src="<?= base_url('assets/home/mail/contact.js') ?>"></script>
 
 <!-- Template Javascript -->
-<script src="<?= base_url('assets/home/js/main.js') ?>"></script>
+<script src="<?= base_url('assets/admin/js/main.js') ?>"></script>
+
+<!-- Alert -->
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+    <?php if ($this->session->flashdata('success')) : ?>
+        Toast.fire({
+            icon: "success",
+            title: "<?= $this->session->flashdata('success') ?>"
+        });
+    <?php elseif ($this->session->flashdata('error')) : ?>
+        Toast.fire({
+            icon: "error",
+            title: "<?= $this->session->flashdata('error') ?>"
+        });
+    <?php endif; ?>
+</script>
+
+
 </body>
 
 </html>

@@ -57,8 +57,6 @@ class Toko extends CI_Controller
 
     public function save()
     {
-
-
         // Validation
         $this->form_validation->set_rules($this->addOrSaveRules);
         if (!$this->form_validation->run()) return $this->add();
@@ -140,6 +138,7 @@ class Toko extends CI_Controller
     public function delete($id)
     {
         $this->adminModel->delete('tbl_toko', 'idToko', $id);
+        $this->session->set_flashdata('success', "Berhasil menghapus data!");
         return redirect('toko');
     }
 }

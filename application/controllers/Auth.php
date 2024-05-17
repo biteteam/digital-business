@@ -39,10 +39,15 @@ class Auth extends CI_Controller
         $pass  = $this->input->post('password');
 
         $memberAuthData = $this->userModel->cek_login($uname, $pass);
-        if (!$memberAuthData || !count($memberAuthData)) return redirect('auth/login');
+        if (!$memberAuthData || !count($memberAuthData)) {
+            $this->session->set_flashdata('error', "Username atau Password salah!");
+            return redirect('auth/login');
+        }
+
 
         $session = $memberAuthData;
         $this->session->set_userdata($session);
+        $this->session->set_flashdata('success', "Hallo $uname!");
         return redirect('/');
     }
 
@@ -59,6 +64,7 @@ class Auth extends CI_Controller
         if (!empty($exists)) return redirect('auth/register');
 
         $this->userModel->insert('tbl_member', $data);
+        $this->session->set_flashdata('success', "Berhasil register, Silahkan login!");
         return redirect('auth/login');
     }
 

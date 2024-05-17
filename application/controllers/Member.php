@@ -29,6 +29,7 @@ class Member extends CI_Controller
             : ['statusAktif' => 'Y'];
 
         $this->MAdmin->update('tbl_member', $dataUpdate, 'idKonsumen', $id);
+        $this->session->set_flashdata('success', "Berhasil mengubah status {$result->username}!");
         return redirect('member');
     }
 

@@ -48,3 +48,31 @@
 <!-- <script src="<?= base_url('assets/admin/dist/js/demo.js') ?>"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="<?= base_url('assets/admin/dist/js/pages/dashboard.js') ?>"></script>
+
+
+<!-- Alert -->
+<script>
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 6000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
+
+  <?php if ($this->session->flashdata('success')) : ?>
+    Toast.fire({
+      icon: "success",
+      title: "<?= $this->session->flashdata('success') ?>"
+    });
+  <?php elseif ($this->session->flashdata('error')) : ?>
+    Toast.fire({
+      icon: "error",
+      title: "<?= $this->session->flashdata('error') ?>"
+    });
+  <?php endif; ?>
+</script>

@@ -72,9 +72,7 @@ class AdminPanel extends CI_Controller
 
 			$currentPassword = $this->input->post('password');
 			$newPassword = $this->input->post('new_password');
-			$reNewPassword = $this->input->post('retype_new_password');
 
-			// dd([$newPassword, $reNewPassword, $currentPassword]);
 			$adminData = $this->adminModel->get_admin_by_username($this->session->userdata('userName'));
 			$currentPasswordValid = password_verify($currentPassword, $adminData->password);
 			if ($currentPasswordValid) {

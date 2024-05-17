@@ -23,6 +23,10 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="<?= site_url('assets/home/css/style.css') ?>" rel="stylesheet">
+
+    <!-- Sweatalert -->
+    <link href="<?= site_url('assets/admin/plugins/sweetalert2/sweetalert2.min.css') ?>" rel="stylesheet">
+    <script src="<?= base_url('assets/admin/plugins/sweetalert2/sweetalert2.min.js') ?>"></script>
 </head>
 
 <body>

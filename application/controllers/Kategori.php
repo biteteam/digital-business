@@ -55,6 +55,8 @@ class Kategori extends CI_Controller
             return $this->add();
         }
 
+
+        $this->session->set_flashdata('success', "Berhasil menambahkan kategori $namaKat!");
         return redirect('kategori');
     }
 
@@ -62,6 +64,11 @@ class Kategori extends CI_Controller
     {
         $data = ['idKat' => $id];
         $data['kategori'] = $this->MAdmin->get_by_id('tbl_kategori', $data)->row_object();
+        if (empty($data['kategori'])) {
+            $this->session->set_flashdata('error', "Tidak ditemukan kategori dengan id $id!");
+            return redirect("kategori");
+        }
+
         $this->load->view('admin/layout/header');
         $this->load->view('admin/layout/menu');
         $this->load->view('admin/kategori/form-edit', $data);
@@ -89,12 +96,15 @@ class Kategori extends CI_Controller
         }
 
         // Redirect to home category page if success
+
+        $this->session->set_flashdata('success', "Berhasil mengedit kategori $namaKategori!");
         return redirect('kategori');
     }
 
     public function delete($id)
     {
         $this->MAdmin->delete('tbl_kategori', 'idKat', $id);
+        $this->session->set_flashdata('success', "Berhasil menghapus data!");
         return redirect('kategori');
     }
 }
