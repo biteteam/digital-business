@@ -9,7 +9,7 @@
                 <?= form_open('profile/edit') ?>
                 <div class="control-group mb-3">
                     <input type="text" class="form-control" id="name" name="namaKonsumen" placeholder="Nama Lengkap" value="<?= set_value('namaKonsumen', $member->namaKonsumen) ?>" />
-                    <small class="text-danger"><?= form_error('name') ?></small>
+                    <small class="text-danger"><?= form_error('namaKonsumen') ?></small>
                 </div>
                 <div class="control-group mb-3">
                     <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?= set_value('username', $member->username) ?>" />
