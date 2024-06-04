@@ -27,6 +27,7 @@
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a href="<?= site_url('toko/get-by-id/' . $tk->idToko) ?>" class="btn btn-secondary">Edit</a>
+                                    <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn btn-secondary">Kelola Toko</a>
                                     <a href="<?= site_url('toko/delete/' . $tk->idToko) ?>" onclick="return confirm('Yakin akan hapus data ini?')" class="btn btn-secondary">Hapus</a>
                             </td>
                         </tr>

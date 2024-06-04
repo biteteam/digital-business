@@ -55,3 +55,5 @@ $route['translate_uri_dashes'] = TRUE;
 
 $route['login'] = 'auth/login';
 $route['register'] = 'auth/register';
+$route['produk/(:num)'] = 'produk/index/$1';
+$route['produk/(:num)/edit/(:num)'] = 'produk/edit/$1/$2';
