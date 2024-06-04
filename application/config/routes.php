@@ -57,3 +57,4 @@ $route['login'] = 'auth/login';
 $route['register'] = 'auth/register';
 $route['produk/(:num)'] = 'produk/index/$1';
 $route['produk/(:num)/edit/(:num)'] = 'produk/edit/$1/$2';
+$route['produk-by-kategori/(:num)'] = 'main/produk-by-kategori/$1';
