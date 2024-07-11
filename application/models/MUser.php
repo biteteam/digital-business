@@ -2,6 +2,7 @@
 
 class MUser extends CI_Model
 {
+    public static $table = "tbl_member";
 
     public function cek_user($username)
     {

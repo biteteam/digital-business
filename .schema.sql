@@ -61,6 +61,22 @@ CREATE TABLE tbl_produk (
 );
 
 
+DROP TABLE IF EXISTS tbl_cart;
+CREATE TABLE tbl_cart (
+    id INT(5) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idProduk INT(5) NOT NULL,
+    idKonsumen INT(5) NOT NULL,
+    qty INT NOT NULL,
+    -- price INT(10) NOT NULL,
+    -- name VARCHAR(200), 
+    -- image VARCHAR(100),
+    CONSTRAINT FK_Cart_User
+        FOREIGN KEY (idKonsumen) REFERENCES tbl_member(idKonsumen),
+    CONSTRAINT FK_Cart_Produk
+        FOREIGN KEY (idProduk) REFERENCES tbl_produk(idProduk)
+);
+
+
 CREATE TABLE tbl_order (
     idOrder INT(5) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idKonsumen INT(5),

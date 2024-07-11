@@ -51,8 +51,13 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                            <a href="<?= site_url('detail-produk/' . $pd->idProduk) ?>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                            <form action="<?= site_url('cart/add') ?>" method="post">
+                                <input type="hidden" name="id-produk" value="<?= $pd->idProduk ?>">
+                                <button type="submit" class="btn btn-sm text-dark p-">
+                                    <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -86,7 +91,7 @@
 
 
 <!-- Products Start -->
-<div class="container-fluid pt-5">
+<!-- <div class="container-fluid pt-5">
     <div class="text-center mb-4">
         <h2 class="section-title px-5"><span class="px-2">Just Arrived</span></h2>
     </div>
@@ -236,7 +241,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- Products End -->
 
 

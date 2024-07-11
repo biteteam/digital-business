@@ -19,4 +19,15 @@ class Main extends CI_Controller
         $this->load->view('home/home');
         $this->load->view('home/layout/footer');
     }
+
+    public function detail_produk(int | null $idProduk = null)
+    {
+        if (empty($idProduk)) return redirect("/");
+
+        $kategori = $this->adminModel->get_all_data('tbl_kategori')->result();
+        $produk = $this->adminModel->get_by_id('tbl_produk', ['idProduk' => $idProduk])->row_object();
+        $this->load->view('home/layout/header', ['kategori' => $kategori]);
+        $this->load->view('home/detail-produk', ['produk' => $produk]);
+        $this->load->view('home/layout/footer');
+    }
 }
