@@ -62,5 +62,13 @@ $route['produk/(:num)/edit/(:num)'] = 'produk/edit/$1/$2';
 $route['detail-produk/(:num)'] = 'main/detail-produk/$1';
 $route['produk-by-kategori/(:num)'] = 'main/produk-by-kategori/$1';
 
+$route['api/province/(:num)'] = 'main/province/$1';
+$route['api/province'] = 'main/province';
+
+$route['api/city/(:num)/(:num)'] = 'main/city/$1/$2';
+$route['api/city/(:num)'] = 'main/city/$1';
+$route['api/city'] = 'main/city';
+
+
 // $route['cart/add'] = 'main/add-to-cart';
 // $route['cart'] = 'main/cart';

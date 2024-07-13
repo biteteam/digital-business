@@ -140,17 +140,29 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3 pt-1">
                         <h6 class="font-weight-medium">Subtotal</h6>
-                        <h6 class="font-weight-medium"><?= rp(sub_total($cart)) ?></h6>
+                        <h6 class="font-weight-medium"><?= rp($sub_total) ?></h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Dikirim dari</h6>
+                        <h6 class="font-weight-medium text-xs"><?= $kota_asal ?></h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Dikirim ke</h6>
+                        <h6 class="font-weight-medium text-xs"><?= $kota_tujuan ?></h6>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Shipping</h6>
-                        <h6 class="font-weight-medium">Rp. 1.000</h6>
+                        <h6 class="font-weight-medium">Kurir</h6>
+                        <h6 class="font-weight-medium"><?= $courier_description ?></h6>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium">Ongkir</h6>
+                        <h6 class="font-weight-medium"><?= $courier_value ?></h6>
                     </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">
                     <div class="d-flex justify-content-between mt-2">
                         <h5 class="font-weight-bold">Total</h5>
-                        <h5 class="font-weight-bold"><?= rp(sub_total($cart) + 1000) ?></h5>
+                        <h5 class="font-weight-bold"><?= rp($total) ?></h5>
                     </div>
                     <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                 </div>

@@ -42,10 +42,18 @@
                         <input type="tel" class="form-control" id="telepon" name="tlpn" placeholder="Telepon" data-validation-required-message="Please enter your telepon number" />
                         <p class="help-block text-danger"></p>
                     </div>
-                    <!-- <div class="control-group">
-                        <input type="number" class="form-control" id="idKota" name="idKota" placeholder="Id Kota" data-validation-required-message="Please enter your id kota" />
+                    <div class="control-group">
+                        <select id="province" class="form-control" placeholder="Provinsi">
+                            <option disabled selected>Pilih Provinsi</option>
+                        </select>
                         <p class="help-block text-danger"></p>
-                    </div> -->
+                    </div>
+                    <div class="control-group">
+                        <select name="idKota" id="city" class="form-control" placeholder="Kota">
+                            <option disabled selected>Pilih Kota</option>
+                        </select>
+                        <p class="help-block text-danger"></p>
+                    </div>
                     <div class="control-group">
                         <textarea class="form-control" rows="6" id="alamat" name="alamat" placeholder="Alamat" data-validation-required-message="Please enter your alamat"></textarea>
                         <p class="help-block text-danger"></p>
@@ -75,3 +83,8 @@
     </div>
 </div>
 <!-- Contact End -->
+
+
+
+<!-- Scripting -->
+<script src="<?= base_url('assets/home/js/register.js') ?>"></script>

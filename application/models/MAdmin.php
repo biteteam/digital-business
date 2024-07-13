@@ -16,6 +16,26 @@ class MAdmin extends CI_Model
         return $sessionData;
     }
 
+    public function get_produk()
+    {
+        $this->db->select("*");
+        $this->db->from("tbl_produk");
+        $this->db->join("tbl_toko", "tbl_toko.idToko = tbl_produk.idToko");
+        $this->db->join("tbl_member", "tbl_member.idKonsumen = tbl_toko.idKonsumen");
+        $query = $this->db->get();
+        return $query;
+    }
+
+    public function get_kota_penjual($idToko)
+    {
+        $this->db->select("*");
+        $this->db->from("tbl_toko");
+        $this->db->join("tbl_member", "tbl_member.idKonsumen = tbl_toko.idKonsumen");
+        $this->db->where("tbl_toko.idToko", $idToko);
+        $query = $this->db->get();
+        return $query;
+    }
+
     public function get_admin_by_username($username)
     {
         return $this->db->get_where('tbl_admin', [

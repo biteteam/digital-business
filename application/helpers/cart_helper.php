@@ -14,3 +14,13 @@ function sub_total($cart)
 
     return $subTotal;
 }
+
+function sum_weight($cart)
+{
+    $weight = 0;
+    foreach ($cart as $cartItem) {
+        $weight += intval($cartItem->berat);
+    }
+
+    return $weight;
+}

@@ -21,6 +21,7 @@ class MUser extends CI_Model
 
         $sessionAuthData  = [
             'idKonsumen' => $member->idKonsumen,
+            'idKotaTujuan' => $member->idKota,
             'member' => $member->username,
             'status' => 'login'
         ];

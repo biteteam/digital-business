@@ -25,6 +25,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 $config['base_url'] = 'http://fiki.ai';
 
+$config['raja_ongkir_apikey'] = getenv('RAJA_ONGKIR_APIKEY');
+$config['midtrans_apikey'] = getenv('MIDTRANS_APIKEY');
+
 /*
 |--------------------------------------------------------------------------
 | Index File

@@ -21,6 +21,7 @@ class MCart extends CI_Model
         $this->db->select("$produkT.namaProduk");
         $this->db->select("$produkT.foto");
         $this->db->select("$produkT.harga");
+        $this->db->select("$produkT.berat");
 
         $this->db->from($cartT);
         $this->db->join($produkT, "$produkT.idProduk = $cartT.idProduk", "right");

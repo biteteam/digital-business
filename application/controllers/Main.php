@@ -11,8 +11,8 @@ class Main extends CI_Controller
 
     public function index()
     {
+        $data['produk'] = $this->adminModel->get_produk()->result();
         $data['kategori'] = $this->adminModel->get_all_data('tbl_kategori')->result();
-        $data['produk'] = $this->adminModel->get_all_data('tbl_produk')->result();
 
         $this->load->view('home/layout/header', $data);
         $this->load->view('home/layanan');
@@ -29,5 +29,22 @@ class Main extends CI_Controller
         $this->load->view('home/layout/header', ['kategori' => $kategori]);
         $this->load->view('home/detail-produk', ['produk' => $produk]);
         $this->load->view('home/layout/footer');
+    }
+
+
+    public function province($idProvince = null)
+    {
+        $province = getProvince($idProvince);
+
+        header('Content-type: application/json');
+        echo json_encode($province);
+    }
+
+    public function city($idProvince = null, $idCity = null)
+    {
+        $city = getCity($idCity, $idProvince);
+
+        header('Content-type: application/json');
+        echo json_encode($city);
     }
 }

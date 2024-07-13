@@ -42,12 +42,21 @@
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3"><?= $pd->namaProduk ?></h6>
                             <div class="d-flex justify-content-center">
-                                <h6>Rp. <?= $pd->harga ?></h6>
+                                <h6><?= rp($pd->harga) ?></h6>
                             </div>
-                            <div class="d-flex justify-content-center">
-                                <h6><?= $pd->berat ?> <span class="ml-1">Gram</span></h6>
-                                <span class="text-muted ml-3 mr-3">|</span>
-                                <h6><?= $pd->berat ?> <span class="ml-1">Gram</span></h6>
+                            <div class="border-top mt-3">
+                                <div class="px-4 mt-2 d-flex align-items-center">
+                                    <div style="width: 20%;" class="position-relative overflow-hidden bg-transparent border p-0 rounded-circle">
+                                        <img class="img-fluid h-100 w-100" src="<?= site_url('assets/foto_produk/' . $pd->logo) ?>" alt="<?= $pd->namaProduk ?>">
+                                    </div>
+                                    <div class="mt-4 ml-2 p-0">
+                                        <h4 class="p-0 m-0"><?= $pd->namaToko ?></h4>
+                                        <p class="p-0 text-xs"><?php
+                                                                $city = getCity($pd->idKota);
+                                                                if ($city) echo $city->city_name . ", " . $city->province
+                                                                ?></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
