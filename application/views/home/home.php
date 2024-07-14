@@ -1,5 +1,5 @@
 <!-- Offer Start -->
-<div class="container-fluid offer pt-5">
+<!-- <div class="container-fluid offer pt-5">
     <div class="row px-xl-5">
         <div class="col-md-6 pb-4">
             <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- Offer End -->
 
 
@@ -37,36 +37,37 @@
                 <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                     <div class="card product-item border-0 mb-4">
                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" src="<?= site_url('assets/foto_produk/' . $pd->foto) ?>" alt="<?= $pd->namaProduk ?>">
+                            <img class="img-fluid w-100" src="<?= site_url('assets/foto_produk/' . $pd->fotoProduk) ?>" alt="<?= $pd->namaProduk ?>">
                         </div>
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3"><?= $pd->namaProduk ?></h6>
                             <div class="d-flex justify-content-center">
-                                <h6><?= rp($pd->harga) ?></h6>
+                                <h6><?= rp($pd->hargaProduk) ?></h6>
                             </div>
                             <div class="border-top mt-3">
                                 <div class="px-4 mt-2 d-flex align-items-center">
                                     <div style="width: 20%;" class="position-relative overflow-hidden bg-transparent border p-0 rounded-circle">
-                                        <img class="img-fluid h-100 w-100" src="<?= site_url('assets/foto_produk/' . $pd->logo) ?>" alt="<?= $pd->namaProduk ?>">
+                                        <img class="img-fluid h-100 w-100" src="<?= site_url('assets/logo_toko/' . $pd->logoToko) ?>" alt="<?= $pd->namaToko ?>">
                                     </div>
                                     <div class="mt-4 ml-2 p-0">
-                                        <h4 class="p-0 m-0"><?= $pd->namaToko ?></h4>
-                                        <p class="p-0 text-xs"><?php
-                                                                $city = getCity($pd->idKota);
-                                                                if ($city) echo $city->city_name . ", " . $city->province
-                                                                ?></p>
+                                        <h5 class="p-0 m-0"><?= $pd->namaToko ?></h5>
+                                        <p class="p-0 text-xs"><?= $pd->alamatToko ?></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a href="<?= site_url('detail-produk/' . $pd->idProduk) ?>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <form action="<?= site_url('cart/add') ?>" method="post">
-                                <input type="hidden" name="id-produk" value="<?= $pd->idProduk ?>">
-                                <button type="submit" class="btn btn-sm text-dark p-">
-                                    <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
-                                </button>
-                            </form>
+                            <a href="<?= site_url('/detail-produk/' . $pd->idProduk) ?>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                            <?php if (intval($pd->idSeller) == intval($this->session->userdata("idKonsumen"))) : ?>
+                                <a href="<?= site_url('produk/' . $pd->idToko . "/edit/" . $pd->idProduk) ?>" class="btn btn-sm text-dark p-0"><i class="fas fa-edit text-primary mr-1"></i>Edit Produk</a>
+                            <?php else : ?>
+                                <form action="<?= site_url('cart/add') ?>" method="post">
+                                    <input type="hidden" name="id-produk" value="<?= $pd->idProduk ?>">
+                                    <button type="submit" class="btn btn-sm text-dark p-0">
+                                        <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                                    </button>
+                                </form>
+                            <?php endif ?>
                         </div>
                     </div>
                 </div>

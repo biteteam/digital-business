@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Main extends CI_Controller
+class Main extends BaseController
 {
     public function __construct()
     {
@@ -12,7 +12,6 @@ class Main extends CI_Controller
     public function index()
     {
         $data['produk'] = $this->adminModel->get_produk()->result();
-        $data['kategori'] = $this->adminModel->get_all_data('tbl_kategori')->result();
 
         $this->load->view('home/layout/header', $data);
         $this->load->view('home/layanan');

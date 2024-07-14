@@ -4,7 +4,7 @@
     </div>
     <div class="row px-xl-5">
         <div class="col-lg-12 mb-5">
-            <a href="<?= site_url('toko/add'); ?>" class="btn btn-sm btn-info float-left">Tambah Toko</a>
+            <a href="<?= site_url('toko/add'); ?>" class="btn btn-sm btn-info float-left">Buat Toko</a>
             <table class="table table-bordered">
 
                 <thead>
@@ -25,10 +25,13 @@
                             <td><img src="<?= base_url('assets/logo_toko/' . $tk->logo); ?>" width="150" height="110"></td>
                             <td><?= $tk->deskripsi; ?></td>
                             <td>
-                                <div class="btn-group" role="group" aria-label="Basic example">
+                                <?php if ($tk->idKonsumen == $this->session->userdata("idKonsumen")) : ?>
                                     <a href="<?= site_url('toko/get-by-id/' . $tk->idToko) ?>" class="btn btn-secondary">Edit</a>
                                     <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn btn-secondary">Kelola Toko</a>
                                     <a href="<?= site_url('toko/delete/' . $tk->idToko) ?>" onclick="return confirm('Yakin akan hapus data ini?')" class="btn btn-secondary">Hapus</a>
+                                <?php else : ?>
+                                    <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn btn-secondary">Detail</a>
+                                <?php endif ?>
                             </td>
                         </tr>
                         <?php $no++; ?>

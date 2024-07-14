@@ -26,7 +26,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $config['base_url'] = 'http://fiki.ai';
 
 $config['raja_ongkir_apikey'] = getenv('RAJA_ONGKIR_APIKEY');
-$config['midtrans_apikey'] = getenv('MIDTRANS_APIKEY');
+$config['midtrans_client_apikey'] = getenv('MIDTRANS_CLIENT_APIKEY');
+$config['midtrans_server_apikey'] = getenv('MIDTRANS_SERVER_APIKEY');
 
 /*
 |--------------------------------------------------------------------------
@@ -120,7 +121,7 @@ $config['enable_hooks'] = FALSE;
 | https://codeigniter.com/userguide3/general/creating_libraries.html
 |
 */
-$config['subclass_prefix'] = 'MY_';
+$config['subclass_prefix'] = 'Base';
 
 /*
 |--------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Toko extends CI_Controller
+class Toko extends BaseController
 {
     private $uploadConfig = [
         'upload_path'   => './assets/logo_toko/',
@@ -43,6 +43,11 @@ class Toko extends CI_Controller
     public function index()
     {
         $data['toko'] = $this->adminModel->get_all_data('tbl_toko')->result();
+        // $data['toko'] = $this->adminModel->get_all_by(
+        //     'tbl_toko',
+        //     "idKonsumen",
+        //     $this->session->userdata("idKonsumen")
+        // )->result();
         $this->load->view('home/layout/header');
         $this->load->view('home/toko/index', $data);
         $this->load->view('home/layout/footer');

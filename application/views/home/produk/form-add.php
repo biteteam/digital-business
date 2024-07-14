@@ -21,15 +21,15 @@
                     <span class="text-danger"><small><?= form_error('nama') ?></small></span>
                 </div>
                 <div class="control-group mb-3">
-                    <input type="file" accept=".png,.png,.jpeg" class="form-control" id="foto" name="foto" value="<?= set_value('foto') ?>" />
+                    <input type="file" accept=".png,.png,.jpeg,.jpg" class="form-control" id="foto" name="foto" value="<?= set_value('foto') ?>" />
                     <span class="text-danger"><small><?= form_error('foto') ?></small></span>
                 </div>
                 <div class="control-group mb-3">
-                    <input type="number" min="1000" step="1000" class="form-control" id="harga" name="harga" value="<?= set_value('harga') ?>" placeholder="Harga" />
+                    <input type="number" min="1000" step="any" class="form-control" id="harga" name="harga" value="<?= set_value('harga') ?>" placeholder="Harga" />
                     <span class="text-danger"><small><?= form_error('harga') ?></small></span>
                 </div>
                 <div class="control-group mb-3">
-                    <input type="number" min="0" step="5" class="form-control" id="jumlah" name="stok" value="<?= set_value('stok') ?>" placeholder="Jumlah Produk" />
+                    <input type="number" min="0" step="any" class="form-control" id="jumlah" name="stok" value="<?= set_value('stok') ?>" placeholder="Jumlah Produk" />
                     <span class="text-danger"><small><?= form_error('stok') ?></small></span>
                 </div>
                 <div class="control-group mb-3">

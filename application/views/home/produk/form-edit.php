@@ -1,6 +1,6 @@
 <div class="container-fluid pt-5">
     <div class="text-center mb-4">
-        <h2 class="section-title px-5"><span class="px-2">Form Tambah Produk</span></h2>
+        <h2 class="section-title px-5"><span class="px-2">Form Edit Produk</span></h2>
     </div>
     <div class="row px-xl-5" style="display: flex; justify-content: center;">
         <div class="col-lg-7 mb-5">
@@ -22,15 +22,15 @@
                     <span class="text-danger"><small><?= form_error('nama') ?></small></span>
                 </div>
                 <div class="control-group mb-3">
-                    <input type="file" accept=".png,.png,.jpeg" class="form-control" id="foto" name="foto" value="<?= set_value('foto', $produk->foto) ?>" />
+                    <input type="file" accept=".png,.png,.jpeg,.jpg" class="form-control" id="foto" name="foto" value="<?= set_value('foto', $produk->foto) ?>" />
                     <span class="text-danger"><small><?= form_error('foto') ?></small></span>
                 </div>
                 <div class="control-group mb-3">
-                    <input type="number" min="1000" step="1000" class="form-control" id="harga" name="harga" value="<?= set_value('harga', $produk->harga) ?>" placeholder="Harga" />
+                    <input type="number" min="1000" step="any" class="form-control" id="harga" name="harga" value="<?= set_value('harga', $produk->harga) ?>" placeholder="Harga" />
                     <span class="text-danger"><small><?= form_error('harga') ?></small></span>
                 </div>
                 <div class="control-group mb-3">
-                    <input type="number" min="0" step="5" class="form-control" id="jumlah" name="stok" value="<?= set_value('stok', $produk->stok) ?>" placeholder="Jumlah Produk" />
+                    <input type="number" min="0" step="any" class="form-control" id="jumlah" name="stok" value="<?= set_value('stok', $produk->stok) ?>" placeholder="Jumlah Produk" />
                     <span class="text-danger"><small><?= form_error('stok') ?></small></span>
                 </div>
                 <div class="control-group mb-3">

@@ -85,10 +85,12 @@
                     <i class="fas fa-heart text-primary"></i>
                     <span class="badge">0</span>
                 </a>
-                <a href="/cart" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
+                <?php if ($this->isAuthenticated) : ?>
+                    <a href="/cart" class="btn border">
+                        <i class="fas fa-shopping-cart text-primary"></i>
+                        <span class="badge"><?= $this->header['cartCount'] ?? "0" ?></span>
+                    </a>
+                <?php endif ?>
             </div>
         </div>
     </div>

@@ -103,3 +103,28 @@ CREATE TABLE tbl_detail_order (
     CONSTRAINT FK_DetailOrder_Produk
         FOREIGN KEY (idProduk) REFERENCES tbl_produk(idProduk)
 );
+
+
+-- INSERTION DATA
+
+-- Pass: default
+INSERT INTO tbl_member 
+    (idKonsumen, username, password, namaKonsumen, alamat, idKota, email, tlpn, statusAktif) 
+VALUES
+ (1, "fiki", "$2y$10$y/AdP5MYKr1.CQr4u4cUC.1K.uNqDMWuXUfrQxT2HtNPfPZn0jJDe", "Fiki Pratama", "Kab. Sleman, DI Yogyakarta, Indonesia (55513)", 419, "fikipratama@students.amikom.ac.id", 22122551, "Y"),
+ (2, "member2", "$2y$10$0I5HC8i9R47.3w8taCYTie3uWLUjOTg7gdloHe9rVVrYKjq/7oFdK", "Member 2", "Bandung, Jawa Barat, Indonesia (40311)", 22, "member2@gmail.com", 22122551, "Y"),
+ (3, "member3", "$2y$10$KlZXUemH/0mmWBxZgMc85.GI1nbGQEriFIn6wFl43BMH6Ky5F35Ke", "Member 3", "Kab. Pekalongan, Jawa Tengah, Indonesia (51161)", 348, "member3@gmail.com", 22122551, "Y"),
+ (4, "member4", "$2y$10$WcUUacoLa4WcimAWt5mSvuZLYQlPYjmJaNn40xlvPeds3J9WmxcDS", "Member 4", "Kab. Way Kanan, Lampung, Indonesia (34711)", 496, "member4@gmail.com", 22122551, "Y"),
+ (5, "member5", "$2y$10$xqRKIMwmC5nTWHwPWFr4vOLPqtuWs/HVH58jYA7GlGkTGKjeDBEWq", "Member 5", "Jakarta Timur, DKI Jakarta, Indonesia (13330)", 154, "member5@gmail.com", 22122551, "Y"),
+ (6, "member6", "$2y$10$q/4a5dYhxPaeo0vQ/mRz.OZt7SbgsNp.gqLypdVTWnc7i.OSHfsee", "Member 6", "Kab. Tangerang, Banten, Indonesia (15914)", 455, "member6@gmail.com", 22122551, "Y");
+
+
+INSERT INTO tbl_toko
+    (idToko, idKonsumen, namaToko, logo, deskripsi, statusAktif)
+VALUES
+    (1, 5, "Philips Home Appliances", "igoods.png", "Philips, inovasi dan teknologi yang membantu Anda hidup lebih sehat, bahagia dan bermakna. Jam Operational: Senin - Jumat (9-17)", "Y"),
+    (2, 6, "Digimap Official Shop", "digimap.jpg", "One of the fastest growing Apple Authorized Resellers in Indonesia", "Y");
+
+
+
+INSERT ito

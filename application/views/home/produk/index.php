@@ -24,10 +24,14 @@
                         <tr>
                             <td scope="row"><?= $num ?></td>
                             <td><?= $pd->namaProduk ?></td>
-                            <td><img src="<?= base_url('assets/foto_produk/' . $pd->foto) ?>" width="100" height="auto" /></td>
-                            <td><?= $pd->harga ?></td>
-                            <td><?= $pd->berat ?></td>
+                            <td>
+                                <a href="<?= base_url("/detail-produk/{$pd->idProduk}") ?>">
+                                    <img src="<?= base_url('assets/foto_produk/' . $pd->foto) ?>" width="100" height="auto" />
+                                </a>
+                            </td>
+                            <td class="text-truncate"><?= rp($pd->harga) ?></td>
                             <td><?= $pd->stok ?></td>
+                            <td><?= $pd->berat ?></td>
                             <td><?= $pd->deskripsiProduk ?></td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">

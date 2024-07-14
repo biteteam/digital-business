@@ -18,7 +18,28 @@ class MAdmin extends CI_Model
 
     public function get_produk()
     {
-        $this->db->select("*");
+        $this->db->select("
+        tbl_produk.idKat,
+        tbl_produk.idProduk,
+        tbl_produk.idToko,
+        tbl_produk.namaProduk,
+        tbl_produk.berat AS beratProduk,
+        tbl_produk.foto AS fotoProduk,
+        tbl_produk.harga AS hargaProduk,
+        tbl_produk.deskripsiProduk,
+        
+        tbl_toko.idKonsumen AS idSeller,
+        tbl_toko.namaToko,
+        tbl_toko.logo as logoToko,
+        tbl_toko.deskripsi AS deskripsiToko,
+        tbl_toko.statusAktif AS statusToko,
+        
+        tbl_member.idKonsumen AS idSeller,
+        tbl_member.username as usernameSeller,
+        tbl_member.namaKonsumen AS namaSeller,
+        tbl_member.alamat AS alamatToko,
+        tbl_member.idKota AS idKotaToko,
+        ");
         $this->db->from("tbl_produk");
         $this->db->join("tbl_toko", "tbl_toko.idToko = tbl_produk.idToko");
         $this->db->join("tbl_member", "tbl_member.idKonsumen = tbl_toko.idKonsumen");
@@ -47,6 +68,12 @@ class MAdmin extends CI_Model
     {
         $q = $this->db->get($tabel);
         return $q;
+    }
+
+    public function get_all_by($table, $whereKey, $whereVal)
+    {
+        $this->db->where($whereKey, $whereVal);
+        return $this->db->get($table);
     }
 
     public function insert($tabel, $data)

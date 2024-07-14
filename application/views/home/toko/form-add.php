@@ -13,7 +13,7 @@
                     <span class="text-danger"><small><?= form_error('namaToko') ?></small></span>
                 </div>
                 <div class="control-group mb-3">
-                    <input type="file" accept=".png,.png,.jpeg" class="form-control" id="logo" name="logo" value="<?= set_value('logo') ?>" />
+                    <input type="file" accept=".png,.png,.jpeg,.jpg" class="form-control" id="logo" name="logo" value="<?= set_value('logo') ?>" />
                     <span class="text-danger"><small><?= form_error('logo') ?></small></span>
                 </div>
                 <div class="control-group mb-3">

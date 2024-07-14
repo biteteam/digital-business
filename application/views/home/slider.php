@@ -1,34 +1,37 @@
-<div id="header-carousel" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active" style="height: 410px;">
-            <img class="img-fluid" src="<?= site_url('assets/home/img/carousel-1.jpg') ?>" alt="Image">
-            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                <div class="p-3" style="max-width: 700px;">
-                    <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
-                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3>
-                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                </div>
+<?php
+$sliders = [
+    ["src" => "assets/home/img/carousel/samsung.webp"],
+    ["src" => "assets/home/img/carousel/tanggal-tua.webp"],
+    ["src" => "assets/home/img/carousel/gratis-ongkir.webp"],
+    ["src" => "assets/home/img/carousel/flash-sale.webp"],
+    ["src" => "assets/home/img/carousel/samsung-buds.webp"],
+    ["src" => "assets/home/img/carousel/jaminan-harga-terbaik.webp"],
+    ["src" => "assets/home/img/carousel/beli-lokal.webp"],
+    ["src" => "assets/home/img/carousel/flash-sale-sekolah.webp"],
+    ["src" => "assets/home/img/carousel/cashback.webp"],
+    ["src" => "assets/home/img/carousel/exclusive-bundle.webp"]
+]
+?>
+
+
+<div id="header-carousel" class="carousel slide" data-ride="carousel" style="height: 410px;">
+    <div class="carousel-inner" style="border-radius: 15px;">
+        <?php foreach ($sliders as $idx => $slider) : ?>
+            <div class="carousel-item <?= $idx == 0 ? "active" : "" ?>" style="height: auto;">
+                <a href="#">
+                    <img class="img-fluid" src="<?= site_url($slider['src']) ?>" alt="Image" style="width: 100%;">
+                </a>
             </div>
-        </div>
-        <div class="carousel-item" style="height: 410px;">
-            <img class="img-fluid" src="<?= site_url('assets/home/img/carousel-2.jpg') ?>" alt="Image">
-            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                <div class="p-3" style="max-width: 700px;">
-                    <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
-                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
-                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                </div>
+        <?php endforeach ?>
+        <button class="carousel-control-prev" style="border:none;background: transparent;" href="#header-carousel" data-slide="prev">
+            <div class="btn btn-dark" style="width: 45px; height: 45px; opacity: 0.2; border-radius: 10px;" onmouseout="this.style.opacity=0.2" onmouseover="this.style.opacity=0.7">
+                <span class="carousel-control-prev-icon mb-n2"></span>
             </div>
-        </div>
+        </button>
+        <button class="carousel-control-next" style="border:none;background: transparent;" href="#header-carousel" data-slide="next">
+            <div class="btn btn-dark" style="width: 45px; height: 45px; opacity: 0.2; border-radius: 10px;" onmouseout="this.style.opacity=0.2" onmouseover="this.style.opacity=0.7">
+                <span class="carousel-control-next-icon mb-n2"></span>
+            </div>
+        </button>
     </div>
-    <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
-        <div class="btn btn-dark" style="width: 45px; height: 45px;">
-            <span class="carousel-control-prev-icon mb-n2"></span>
-        </div>
-    </a>
-    <a class="carousel-control-next" href="#header-carousel" data-slide="next">
-        <div class="btn btn-dark" style="width: 45px; height: 45px;">
-            <span class="carousel-control-next-icon mb-n2"></span>
-        </div>
-    </a>
 </div>
