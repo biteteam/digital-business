@@ -126,12 +126,12 @@
                         <h6 class="font-weight-medium"><?= convertWeight($carts['total_berat'])  ?></h6>
                     </div>
                     <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 class="font-weight-medium">Subtotal</h6>
-                        <h6 class="font-weight-medium"><?= rp($carts['sub_total']) ?></h6>
-                    </div>
-                    <div class="d-flex justify-content-between">
                         <h6 class="font-weight-medium">Total Ongkir</h6>
                         <h6 class="font-weight-medium"><?= rp($carts['total_ongkir']) ?></h6>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium">Subtotal</h6>
+                        <h6 class="font-weight-medium"><?= rp($carts['sub_total']) ?></h6>
                     </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">
@@ -139,7 +139,10 @@
                         <h5 class="font-weight-bold">Total</h5>
                         <h5 class="font-weight-bold"><?= rp($carts['total']) ?></h5>
                     </div>
-                    <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                    <input type="hidden" id="checkOutData" value="<?= base64_encode(json_encode($carts)) ?>">
+                    <!-- <form action="<?= base_url("/order/pay") ?>" method="post">
+                    </form> -->
+                    <button id="pay" type="button" class="btn btn-block btn-primary my-3 py-3">Checkout</button>
                 </div>
             </div>
             <form class="mb-5" action="">
@@ -154,3 +157,9 @@
     </div>
 </div>
 <!-- Cart End -->
+
+
+<!-- Scripting -->
+
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<?= config("midtrans_client_apikey") ?>"></script>
+<script src="<?= base_url('assets/home/js/order.js') ?>"></script>

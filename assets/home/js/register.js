@@ -18,7 +18,7 @@ async function getProvince() {
     const resultProvinces = await fetch("/api/province", {
         method: "GET",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(res => res.json())
     provinces = resultProvinces

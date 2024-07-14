@@ -80,24 +80,22 @@ CREATE TABLE tbl_cart (
 CREATE TABLE tbl_order (
     idOrder INT(5) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idKonsumen INT(5),
-    idToko INT(10) NOT NULL,
-    tglOrder DATE,
     statusOrder ENUM('Belum Bayar', 'Dikemas', 'Dikirim', 'Diterima'),
     kurir VARCHAR(50) NOT NULL,
     ongkir INT(10) NOT NULL,
+    amount INT(10) NOT NULL,
+    tglOrder DATE,
     CONSTRAINT FK_Order_Konsumen
-        FOREIGN KEY (idKonsumen) REFERENCES tbl_member(idKonsumen),
-    CONSTRAINT FK_Order_Toko
-        FOREIGN KEY (idToko) REFERENCES tbl_toko(idToko)
+        FOREIGN KEY (idKonsumen) REFERENCES tbl_member(idKonsumen)
 );
 
 
 CREATE TABLE tbl_detail_order (
-    idKat INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    idOrder INT(5),
-    idProduk INT(5),
-    jumlah INT(5),
-    harga INT(10),
+    idDetailOrder INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idOrder INT(5) NOT NULL,
+    idProduk INT(5) NOT NULL,
+    jumlah INT(5) NOT NULL,
+    harga INT(10) NOT NULL,
     CONSTRAINT FK_DetailOrder_Order
         FOREIGN KEY (idOrder) REFERENCES tbl_order(idOrder),
     CONSTRAINT FK_DetailOrder_Produk
@@ -127,4 +125,5 @@ VALUES
 
 
 
-INSERT ito
+TRUNCATE TABLE tbl_detail_order;
+TRUNCATE TABLE tbl_order;

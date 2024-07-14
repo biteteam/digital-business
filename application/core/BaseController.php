@@ -10,6 +10,9 @@ class BaseController extends CI_Controller
         parent::__construct();
         $this->load->model('MAdmin', "adminModel");
         $this->header['kategori'] = $this->adminModel->get_all_data('tbl_kategori')->result();
+
+        $this->load->library('session');
+        $this->load->library('user_agent');
         $this->load->driver('cache', [
             'adapter' => 'apc',
             'backup' => 'file'
@@ -27,5 +30,31 @@ class BaseController extends CI_Controller
     {
         $data = array_merge($data, $this->header);
         $this->load->view($view, $data);
+    }
+
+    public function redirectError($message, $path = null)
+    {
+        $this->session->set_flashdata("error", $message);
+        return redirect($path ?? $this->agent->referrer());
+    }
+
+    public function redirectSuccess($message, $path = null)
+    {
+        $this->session->set_flashdata("success", $message);
+        return redirect($path ?? $this->agent->referrer());
+    }
+
+    public function isAuthenticated()
+    {
+        return !empty($this->session->userdata("idKonsumen"));
+    }
+
+    public function getUserAuth()
+    {
+        $userId = $this->session->userdata("idKonsumen");
+        if (empty($userId)) return null;
+
+        $user = $this->adminModel->get_by_id("tbl_member", ["idKonsumen" => $userId]);
+        return $user->result()[0];
     }
 }

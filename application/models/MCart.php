@@ -56,6 +56,10 @@ class MCart extends CI_Model
         return $query->result();
     }
 
+    public function itemsById()
+    {
+    }
+
     public function cartCount()
     {
         if (!$this->session->userdata("idKonsumen")) return 0;
