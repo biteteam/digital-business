@@ -2,25 +2,20 @@
 
 const checkOutDataEl = document.querySelector("#checkOutData")
 const payButtonEl = document.querySelector("#pay");
+const paymentResultEl = document.querySelector("#payment-result");
 let snapToken = null
+
+const handlingSnapResult = (result) => {
+    paymentResultEl.value = JSON.stringify(result)
+    payButtonEl.setAttribute('type', 'submit');
+    payButtonEl.click();
+}
 
 const handlingSnapToken = async () => {
     snap.pay(snapToken, {
-        // Optional
-        onSuccess: function (result) {
-            /* You may add your own js here, this is just example */
-            document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-        },
-        // Optional
-        onPending: function (result) {
-            /* You may add your own js here, this is just example */
-            document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-        },
-        // Optional
-        onError: function (result) {
-            /* You may add your own js here, this is just example */
-            document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-        }
+        onSuccess: (result) => handlingSnapResult(result),
+        onPending: (result) => handlingSnapResult(result),
+        onError: (result) => handlingSnapResult(result),
     });
 }
 

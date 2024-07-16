@@ -77,29 +77,45 @@ CREATE TABLE tbl_cart (
 );
 
 
+-- DROP TABLE tbl_order_items;
+-- DROP TABLE tbl_order_detail;
+-- DROP TABLE tbl_order;
 CREATE TABLE tbl_order (
     idOrder INT(5) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idKonsumen INT(5),
-    statusOrder ENUM('Belum Bayar', 'Dikemas', 'Dikirim', 'Diterima'),
-    kurir VARCHAR(50) NOT NULL,
-    ongkir INT(10) NOT NULL,
-    amount INT(10) NOT NULL,
-    tglOrder DATE,
+    statusOrder ENUM('Belum Dibayar', 'Dikemas', 'Dikirim', 'Diterima', 'Dibatalkan'),
+    tanggalDibuat DATETIME,
+    tanggalDiubah DATETIME,
     CONSTRAINT FK_Order_Konsumen
         FOREIGN KEY (idKonsumen) REFERENCES tbl_member(idKonsumen)
 );
 
-
-CREATE TABLE tbl_detail_order (
-    idDetailOrder INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE tbl_order_detail (
+    idOrderDetail INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idOrder INT(5) NOT NULL,
+    idToko INT(5) NOT NULL,
+    resi VARCHAR(64),
+    kurir VARCHAR(50) NOT NULL,
+    ongkir INT(10) NOT NULL,
+    etd VARCHAR(50) NOT NULL,
+    fromIdKota INT(5),
+    toIdKota INT(5),
+    fromAddress VARCHAR(100),
+    toAddress VARCHAR(100),
+    CONSTRAINT FK_OrderDetail_Order
+        FOREIGN KEY (idOrder) REFERENCES tbl_order(idOrder),
+    CONSTRAINT FK_OrderDetail_Toko
+        FOREIGN KEY (idToko) REFERENCES tbl_toko(idToko)
+); 
+
+CREATE TABLE tbl_order_items (
+    idOrderItem INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idOrderDetail INT(5) NOT NULL,
     idProduk INT(5) NOT NULL,
     jumlah INT(5) NOT NULL,
     harga INT(10) NOT NULL,
-    CONSTRAINT FK_DetailOrder_Order
-        FOREIGN KEY (idOrder) REFERENCES tbl_order(idOrder),
-    CONSTRAINT FK_DetailOrder_Produk
-        FOREIGN KEY (idProduk) REFERENCES tbl_produk(idProduk)
+    CONSTRAINT FK_OrderItem_OrderDetail
+        FOREIGN KEY (idOrderDetail) REFERENCES tbl_order_detail(idOrderDetail)
 );
 
 
@@ -125,5 +141,5 @@ VALUES
 
 
 
-TRUNCATE TABLE tbl_detail_order;
-TRUNCATE TABLE tbl_order;
+DROP TABLE tbl_detail_order;
+DROP TABLE tbl_order;

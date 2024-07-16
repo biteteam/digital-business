@@ -18,8 +18,8 @@
          <div class="col-lg-5 pb-5">
              <div id="product-carousel" class="carousel slide" data-ride="carousel">
                  <div class="carousel-inner border">
-                     <div class="carousel-item active">
-                         <img class="w-100 h-100" src="<?= site_url('assets/foto_produk/' . $produk->foto) ?>" alt="Image">
+                     <div class="carousel-item active rounded-lg">
+                         <img class="w-100 h-100 rounded-lg" src="<?= site_url('assets/foto_produk/' . $produk->foto) ?>" alt="Image">
                      </div>
                      <!-- <div class="carousel-item">
                          <img class="w-100 h-100" src="img/product-2.jpg" alt="Image">
@@ -46,11 +46,11 @@
                  </div>
                  <small class="pt-1">(50 Reviews)</small>
              </div>
-             <h3 class="font-weight-semi-bold mb-4"><span class="text-muted">Rp. </span><?= $produk->harga ?></h3>
+             <h3 class="font-weight-semi-bold mb-4"><span class="text-muted">Rp. </span><?= rp($produk->harga, true) ?></h3>
              <p class="mb-4"><?= $produk->deskripsiProduk ?></p>
              <div class="d-flex mb-3">
                  <p class="text-dark font-weight-medium mb-0 mr-3">Berat:</p>
-                 <p><?= $produk->berat ?> <span class="text-muted text-xs">gram</span></p>
+                 <p><?= convertWeight($produk->berat) ?></span></p>
                  <!-- <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
                  <form>
                      <div class="custom-control custom-radio custom-control-inline">

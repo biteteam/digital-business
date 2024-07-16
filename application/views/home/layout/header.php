@@ -113,8 +113,8 @@
                         <?php if (empty($this->session->userdata('member'))) : ?>
                             <div class="navbar-nav mr-auto py-0">
                                 <a href="<?= site_url('/') ?>" class="nav-item nav-link active">Home</a>
-                                <a href="shop.html" class="nav-item nav-link">Shop</a>
-                                <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                                <a href="<?= site_url('/#product') ?>" class="nav-item nav-link">Shop</a>
+                                <a href="<?= site_url('/#product') ?>" class="nav-item nav-link">Shop Detail</a>
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                                     <div class="dropdown-menu rounded-0 m-0">
@@ -131,8 +131,8 @@
                         <?php else : ?>
                             <div class="navbar-nav mr-auto py-0">
                                 <a href="<?= site_url('/') ?>" class="nav-item nav-link active">Beranda</a>
-                                <a href="<?= site_url('toko') ?>" class="nav-item nav-link">Toko</a>
-                                <a href="detail.html" class="nav-item nav-link">Transaksi</a>
+                                <a href="<?= site_url('/toko') ?>" class="nav-item nav-link">Toko</a>
+                                <a href="<?= site_url('/order') ?>" class="nav-item nav-link">Transaksi</a>
                             </div>
                             <div class="navbar-nav ml-auto py-0">
                                 <a href="<?= site_url('profile/edit') ?>" class="nav-item nav-link">Edit Profil</a>

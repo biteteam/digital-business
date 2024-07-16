@@ -1,10 +1,20 @@
 <div class="container-fluid pt-5">
-    <div class="text-center mb-4">
-        <h2 class="section-title px-5"><span class="px-2">Data Produk</span></h2>
+    <div class="text-center d-flex flex-column justify-content-center align-items-center mb-4">
+        <h2 class="section-title px-5"><span class="px-2">
+                <?php if ($toko->idKonsumen == $this->session->userdata("idKonsumen")) : ?>
+                    Data Produk
+                <?php else : ?>
+                    Produk <?= $toko->namaToko ?>
+                <?php endif ?>
+            </span></h2>
+        <img class="img-fluid" style="width: 10%;" src="<?= base_url("/assets/logo_toko/{$toko->logo}") ?>" alt="<?= $toko->namaToko ?>">
     </div>
     <div class="row px-xl-5">
         <div class="col-lg-12 mb-5">
-            <a href="<?= site_url('produk/add/' . $idToko) ?>" class="btn btn-sm btn-info float-left">Tambah Produk</a>
+
+            <?php if ($toko->idKonsumen == $this->session->userdata("idKonsumen")) : ?>
+                <a href="<?= site_url('produk/add/' . $idToko) ?>" class="btn btn-sm btn-info float-left">Tambah Produk</a>
+            <?php endif ?>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -15,7 +25,9 @@
                         <th scope="col">Stok</th>
                         <th scope="col">Berat</th>
                         <th scope="col">Deskripsi</th>
-                        <th scope="col">Aksi</th>
+                        <?php if ($toko->idKonsumen == $this->session->userdata("idKonsumen")) : ?>
+                            <th scope="col">Aksi</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,13 +45,15 @@
                             <td><?= $pd->stok ?></td>
                             <td><?= $pd->berat ?></td>
                             <td><?= $pd->deskripsiProduk ?></td>
-                            <td>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a type="button" class="btn btn-secondary" href="<?= site_url("produk/{$pd->idToko}/edit/{$pd->idProduk}"); ?>">Edit</a>
-                                    <a href="<?= site_url('produk/delete/' . $pd->idProduk . "/" . $pd->idToko); ?>" onclick="return confirm('Yakin Akan Hapus Data Ini?')">
-                                        <button type="button" class="btn btn-secondary">Hapus</button>
-                                    </a>
-                            </td>
+                            <?php if ($toko->idKonsumen == $this->session->userdata("idKonsumen")) : ?>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a type="button" class="btn btn-secondary" href="<?= site_url("produk/{$pd->idToko}/edit/{$pd->idProduk}"); ?>">Edit</a>
+                                        <a href="<?= site_url('produk/delete/' . $pd->idProduk . "/" . $pd->idToko); ?>" onclick="return confirm('Yakin Akan Hapus Data Ini?')">
+                                            <button type="button" class="btn btn-secondary">Hapus</button>
+                                        </a>
+                                </td>
+                            <?php endif ?>
                             <?php $num++ ?>
                         </tr>
                     <?php endforeach ?>

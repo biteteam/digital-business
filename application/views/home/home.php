@@ -28,7 +28,7 @@
 
 <!-- Products Start -->
 <?php if (!empty($produk)) : ?>
-    <div class="container-fluid pt-5">
+    <div class="container-fluid pt-5" id="product">
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
         </div>
@@ -36,8 +36,10 @@
             <?php foreach ($produk as $pd) : ?>
                 <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                     <div class="card product-item border-0 mb-4">
-                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" src="<?= site_url('assets/foto_produk/' . $pd->fotoProduk) ?>" alt="<?= $pd->namaProduk ?>">
+                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0" style="border-top-right-radius: 12px; border-top-left-radius: 12px;">
+                            <a href="<?= site_url('/detail-produk/' . $pd->idProduk) ?>">
+                                <img class="img-fluid w-100" src="<?= site_url('assets/foto_produk/' . $pd->fotoProduk) ?>" alt="<?= $pd->namaProduk ?>">
+                            </a>
                         </div>
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3"><?= $pd->namaProduk ?></h6>
@@ -46,12 +48,12 @@
                             </div>
                             <div class="border-top mt-3">
                                 <div class="px-4 mt-2 d-flex align-items-center">
-                                    <div style="width: 20%;" class="position-relative overflow-hidden bg-transparent border p-0 rounded-circle">
+                                    <a href="<?= base_url("/produk/{$pd->idToko}") ?>" style="width: 20%;" class="position-relative overflow-hidden bg-transparent border p-0 rounded-circle">
                                         <img class="img-fluid h-100 w-100" src="<?= site_url('assets/logo_toko/' . $pd->logoToko) ?>" alt="<?= $pd->namaToko ?>">
-                                    </div>
+                                    </a>
                                     <div class="mt-4 ml-2 p-0">
-                                        <h5 class="p-0 m-0"><?= $pd->namaToko ?></h5>
-                                        <p class="p-0 text-xs"><?= $pd->alamatToko ?></p>
+                                        <h5 class="p-0 m-0" style="font-size: medium;"><?= $pd->namaToko ?></h5>
+                                        <p class="p-0" style="font-size: small"><?= $pd->alamatToko ?></p>
                                     </div>
                                 </div>
                             </div>

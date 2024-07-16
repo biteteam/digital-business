@@ -7,8 +7,9 @@ if (!function_exists('rp')) {
      * @param float|int $amount
      * @return string
      */
-    function rp($amount)
+    function rp($amount, $isAmountOnly = false)
     {
+        if ($isAmountOnly) return number_format($amount, 0, ',', '.');
         return 'Rp ' . number_format($amount, 0, ',', '.');
     }
 }

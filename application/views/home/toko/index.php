@@ -22,7 +22,11 @@
                         <tr>
                             <th scope="row"><?= $no; ?></th>
                             <td><?= $tk->namaToko; ?></td>
-                            <td><img src="<?= base_url('assets/logo_toko/' . $tk->logo); ?>" width="150" height="110"></td>
+                            <td>
+                                <a href="<?= base_url("/produk/{$tk->idToko}") ?>">
+                                    <img src="<?= base_url('assets/logo_toko/' . $tk->logo); ?>" width="150" height="110">
+                                </a>
+                            </td>
                             <td><?= $tk->deskripsi; ?></td>
                             <td>
                                 <?php if ($tk->idKonsumen == $this->session->userdata("idKonsumen")) : ?>

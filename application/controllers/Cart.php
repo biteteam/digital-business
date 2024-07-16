@@ -21,9 +21,8 @@ class Cart extends BaseController
 
     public function index()
     {
-        $data['carts'] = $this->calculateCart(
-            $this->cartModel->items()
-        );
+        $cartItem =  $this->cartModel->items();
+        $data['carts'] = !empty($cartItem) ? $this->calculateCart($cartItem) : [];
 
         $this->load->view('home/layout/header');
         $this->load->view('home/cart', $data);
@@ -126,8 +125,8 @@ class Cart extends BaseController
             $idKotaPenerima = intval($this->session->userdata('idKotaTujuan'));
 
             $ongkir = getOngkir($idKotaPengirim, $idKotaPenerima, $cart['total_berat']);
-            $cart['kota_asal'] = "{$ongkir['kota_asal']['province']}, {$ongkir['kota_asal']['province']}";
-            $cart['kota_tujuan'] = "{$ongkir['kota_tujuan']['province']}, {$ongkir['kota_tujuan']['province']}";
+            $cart['kota_asal'] = "{$ongkir['kota_asal']['city_name']}, {$ongkir['kota_asal']['province']}";
+            $cart['kota_tujuan'] = "{$ongkir['kota_tujuan']['city_name']}, {$ongkir['kota_tujuan']['province']}";
             $cart['ongkir'] = [
                 'selected_code' => $ongkir['result'][0]['code'],
                 'selected_service' => $ongkir['result'][0]['costs'][0]['service'],
