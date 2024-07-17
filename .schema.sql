@@ -83,7 +83,8 @@ CREATE TABLE tbl_cart (
 CREATE TABLE tbl_order (
     idOrder INT(5) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idKonsumen INT(5),
-    statusOrder ENUM('Belum Dibayar', 'Dikemas', 'Dikirim', 'Diterima', 'Dibatalkan'),
+    statusTransaksi ENUM('Belum Dibayar', 'Dibayar', 'Dibatalkan'),
+    transaksi JSON,
     tanggalDibuat DATETIME,
     tanggalDiubah DATETIME,
     CONSTRAINT FK_Order_Konsumen
@@ -94,6 +95,7 @@ CREATE TABLE tbl_order_detail (
     idOrderDetail INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idOrder INT(5) NOT NULL,
     idToko INT(5) NOT NULL,
+    statusOrder ENUM('Belum Dibayar', 'Dikemas', 'Dikirim', 'Diterima', 'Dibatalkan'),
     resi VARCHAR(64),
     kurir VARCHAR(50) NOT NULL,
     ongkir INT(10) NOT NULL,
@@ -102,6 +104,8 @@ CREATE TABLE tbl_order_detail (
     toIdKota INT(5),
     fromAddress VARCHAR(100),
     toAddress VARCHAR(100),
+    tanggalDibuat DATETIME,
+    tanggalDiubah DATETIME,
     CONSTRAINT FK_OrderDetail_Order
         FOREIGN KEY (idOrder) REFERENCES tbl_order(idOrder),
     CONSTRAINT FK_OrderDetail_Toko

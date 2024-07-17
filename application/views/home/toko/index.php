@@ -4,7 +4,15 @@
     </div>
     <div class="row px-xl-5">
         <div class="col-lg-12 mb-5">
-            <a href="<?= site_url('toko/add'); ?>" class="btn btn-sm btn-info float-left">Buat Toko</a>
+            <div class="pb-1 d-flex flex-row justify-content-between">
+                <a href="<?= site_url('toko/add'); ?>" class="btn btn-sm btn-info float-left rounded">Buat Toko</a>
+                <?php foreach ($toko as $tk) : ?>
+                    <?php if ($tk->idKonsumen == $this->session->userdata('idKonsumen')) : ?>
+                        <a href="<?= site_url('toko/order'); ?>" class="btn btn-sm btn-info float-left rounded">Orderan Toko</a>
+                        <?php break;     ?>
+                    <?php endif ?>
+                <?php endforeach ?>
+            </div>
             <table class="table table-bordered">
 
                 <thead>
@@ -30,11 +38,11 @@
                             <td><?= $tk->deskripsi; ?></td>
                             <td>
                                 <?php if ($tk->idKonsumen == $this->session->userdata("idKonsumen")) : ?>
-                                    <a href="<?= site_url('toko/get-by-id/' . $tk->idToko) ?>" class="btn btn-secondary">Edit</a>
-                                    <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn btn-secondary">Kelola Toko</a>
-                                    <a href="<?= site_url('toko/delete/' . $tk->idToko) ?>" onclick="return confirm('Yakin akan hapus data ini?')" class="btn btn-secondary">Hapus</a>
+                                    <a href="<?= site_url('toko/get-by-id/' . $tk->idToko) ?>" class="btn rounded btn-secondary" style="margin: 3px 0 3px 0;">Edit</a>
+                                    <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn rounded btn-secondary" style="margin: 3px 0 3px 0;">Kelola</a>
+                                    <a href="<?= site_url('toko/delete/' . $tk->idToko) ?>" onclick="return confirm('Yakin akan hapus data ini?')" class="btn rounded btn-danger" style="margin: 3px 0 3px 0;">Hapus</a>
                                 <?php else : ?>
-                                    <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn btn-secondary">Detail</a>
+                                    <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn rounded btn-secondary">Detail</a>
                                 <?php endif ?>
                             </td>
                         </tr>

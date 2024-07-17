@@ -124,15 +124,20 @@ class Cart extends BaseController
             $idKotaPengirim = intval($cart['toko']['idKota']);
             $idKotaPenerima = intval($this->session->userdata('idKotaTujuan'));
 
-            $ongkir = getOngkir($idKotaPengirim, $idKotaPenerima, $cart['total_berat']);
+            $ongkir = getOngkir($idKotaPengirim, $idKotaPenerima, $cart['total_berat'], 'random');
             $cart['kota_asal'] = "{$ongkir['kota_asal']['city_name']}, {$ongkir['kota_asal']['province']}";
             $cart['kota_tujuan'] = "{$ongkir['kota_tujuan']['city_name']}, {$ongkir['kota_tujuan']['province']}";
+
+            $ongkirResult = $ongkir['result'][rand(0, count($ongkir['result']) - 1)];
+            $ongkirResultCosts = $ongkirResult['costs'][rand(0, count($ongkirResult['costs']) - 1)];
+            $ongkirResultCost = $ongkirResultCosts['cost'][rand(0, count($ongkirResultCosts['cost']) - 1)];
             $cart['ongkir'] = [
-                'selected_code' => $ongkir['result'][0]['code'],
-                'selected_service' => $ongkir['result'][0]['costs'][0]['service'],
-                'selected_etd' => $ongkir['result'][0]['costs'][0]['cost'][0]['etd'],
+                'selected_code' => $ongkirResult['code'],
+                'selected_service' => $ongkirResultCosts['service'],
+                'selected_etd' => $ongkirResultCost['etd'],
                 'options' => $ongkir['result'],
             ];
+
             $cart['ongkir'] = array_merge($cart['ongkir'], [
                 "selected" => getOngkirValueBySelected($cart['ongkir'])
             ]);
@@ -146,6 +151,8 @@ class Cart extends BaseController
             $mappedCarts['items'][$index] = $cart;
         }
 
+
+        // dd($mappedCarts);
         return $mappedCarts;
     }
 

@@ -25,19 +25,11 @@ class Order extends BaseController
     {
         $userNow = $this->getUserAuth();
         $orders = $this->orderModel->summary($userNow->idKonsumen);
-
         $data['orders'] = empty($orders) ? $orders : $this->mapOrders($orders);
-
-
-        // dd($data['orders']);
 
         $this->load->view('home/layout/header');
         $this->load->view('home/order/index', $data);
         $this->load->view('home/layout/footer');
-    }
-
-    public function orderDetail()
-    {
     }
 
     public function rating()
@@ -178,22 +170,15 @@ class Order extends BaseController
 
     public function payment_state()
     {
-        $result = json_decode($this->input->post('payment-result'));
+        $paymentRawResult = $this->input->post('payment-result');
+        $result = json_decode($paymentRawResult);
         log_message('info', $this->input->post('payment-result'));
 
         $idOrder = $result->order_id;
         log_message('info', $idOrder);
 
-        if ($result->transaction_status == 'settlement') {
-            $this->orderModel->change_state($idOrder, "Dikemas");
-            // TODO: remove some cart by checkouted items
-        } else if ($result->transaction_status == 'deny') {
-            $this->orderModel->change_state($idOrder, "Pembayaran Gagal");
-        } else if ($result->transaction_status == 'expire') {
-            $this->orderModel->change_state($idOrder, "Pembayaran Kadaluarsa");
-        } else if ($result->transaction_status == 'cancel') {
-            $this->orderModel->change_state($idOrder, "Pembayaran Dibatalkan");
-        }
+        $status = $result->transaction_status == 'settlement' ? "Dibayar" : "Dibatalkan";
+        $this->orderModel->changeTransactionState($idOrder, $status, ['transaksi' => $paymentRawResult]);
 
         return redirect('/order');
     }

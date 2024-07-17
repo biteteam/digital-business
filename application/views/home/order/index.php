@@ -56,7 +56,8 @@
                                  <div class="flex-grow-1 d-flex flex-column pt-3 pb-2 rounded-lg shadow-sm" style="background-color: aliceblue;">
                                      <div class="d-flex flex-row justify-content-between px-3">
                                          <h6 class="font-weight-medium">Status</h6>
-                                         <h6 class="font-weight-medium px-3 rounded" style="padding: 3px 4px 3px 4px; background-color: greenyellow;"><?= $detail['status'] ?></h6>
+                                         <?php $statusColor = ['Belum Dibayar' => 'gray', 'Dikemas' => 'chocolate', 'Dikirim' => 'cadetblue', 'Diterima' => 'cornflowerblue', 'Dibatalkan' => 'crimson']; ?>
+                                         <h6 class="font-weight-medium px-3 rounded text-light" style="padding: 4px; background-color: <?= $statusColor[$detail['status']] ?>;"><?= $detail['status'] ?></h6>
                                      </div>
                                      <div class="d-flex flex-row justify-content-between px-3">
                                          <h6 class="font-weight-medium">Kurir</h6>
@@ -100,7 +101,7 @@
                              <h6 class="font-weight-medium"><?= rp($order['subTotal']) ?></h6>
                          </div>
                      </div>
-                     <span class="btn btn-secondary px-4 rounded font-weight-bold text-xl" style="background-color:skyblue;"><?= rp($order['total']) ?></span>
+                     <span class="py-2 rounded text-center font-weight-bold text-xl" style="background-color: skyblue; color:darkblue;"><?= rp($order['total']) ?></span>
                  </div>
              </div>
          </div>

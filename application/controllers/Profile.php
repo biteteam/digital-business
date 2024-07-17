@@ -47,7 +47,6 @@ class Profile extends BaseController
         $this->load->helper('form');
         $data['member'] = $member;
         $this->load->view('home/layout/header');
-        $this->load->view('home/layanan');
         $this->load->view('home/profile/edit', $data);
         $this->load->view('home/layout/footer');
     }

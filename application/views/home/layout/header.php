@@ -16,7 +16,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ded8f6b2bd.js" crossorigin="anonymous"></script>
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"> -->
 
     <!-- Libraries Stylesheet -->
     <link href="<?= site_url('assets/home/lib/owlcarousel/assets/owl.carousel.min.css') ?>" rel="stylesheet">
@@ -81,16 +82,16 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-                <?php if ($this->isAuthenticated) : ?>
-                    <a href="/cart" class="btn border">
-                        <i class="fas fa-shopping-cart text-primary"></i>
-                        <span class="badge"><?= $this->header['cartCount'] ?? "0" ?></span>
+                <?php if ($this->isAuthenticated && $this->header['shopOrderActionCount'] >= 1) : ?>
+                    <a href="/toko/order" class="btn border">
+                        <i class="fas fa-solid fa-shop text-primary"></i>
+                        <span class="badge"><?= $this->header['shopOrderActionCount'] ?></span>
                     </a>
                 <?php endif ?>
+                <a href="/cart" class="btn border">
+                    <i class="fas fa-shopping-cart text-primary"></i>
+                    <span class="badge"><?= $this->header['cartCount'] ?? "0" ?></span>
+                </a>
             </div>
         </div>
     </div>
@@ -130,9 +131,29 @@
                             </div>
                         <?php else : ?>
                             <div class="navbar-nav mr-auto py-0">
-                                <a href="<?= site_url('/') ?>" class="nav-item nav-link active">Beranda</a>
-                                <a href="<?= site_url('/toko') ?>" class="nav-item nav-link">Toko</a>
-                                <a href="<?= site_url('/order') ?>" class="nav-item nav-link">Transaksi</a>
+                                <?php $navs = [
+                                    '/' => [
+                                        'label' => 'Beranda',
+                                        'activeOn' => ['/', '/home']
+                                    ],
+                                    '/shop' => [
+                                        'label' => 'Belanja',
+                                        'activeOn' => ['/shop', '/shop/category']
+                                    ],
+                                    '/toko' => [
+                                        'label' => 'Toko',
+                                        'activeOn' => ['/toko', '/toko/*']
+                                    ],
+                                    '/order' => [
+                                        'label' => 'Transaksi',
+                                        'activeOn' => [
+                                            '/order', '/order/*'
+                                        ]
+                                    ],
+                                ]; ?>
+                                <?php foreach ($navs as $path => $nav) : ?>
+                                    <a href="<?= site_url($path) ?>" class="nav-item nav-link <?= is_active($nav['activeOn']) ? "active" : "" ?>"><?= $nav['label'] ?></a>
+                                <?php endforeach ?>
                             </div>
                             <div class="navbar-nav ml-auto py-0">
                                 <a href="<?= site_url('profile/edit') ?>" class="nav-item nav-link">Edit Profil</a>

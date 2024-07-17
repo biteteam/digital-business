@@ -60,10 +60,9 @@ class MCart extends CI_Model
     {
     }
 
-    public function cartCount()
+    public function cartCount($userId)
     {
-        if (!$this->session->userdata("idKonsumen")) return 0;
-        $this->db->where('idKonsumen', $this->session->userdata("idKonsumen"));
+        $this->db->where('idKonsumen', $userId);
         $query = $this->db->get(MCart::$table);
         $count = $query->num_rows();
 

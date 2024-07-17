@@ -1,12 +1,14 @@
 <?php
 
+use LDAP\Result;
+
 function request($method = "GET", $path = "", $query = [], $data = null)
 {
     $uri = "https://api.rajaongkir.com/starter/$path" . '?' . http_build_query($query);
     $rajaOngkirApikey = config('raja_ongkir_apikey');
 
     $CI = &get_instance();
-    $cache_key = md5($uri);
+    $cache_key = md5(base64_encode($uri) . base64_encode(json_encode($data ?? [])));
 
     $cached_data = $CI->cache->get($cache_key);
     if ($cached_data) return $cached_data;
@@ -37,7 +39,6 @@ function request($method = "GET", $path = "", $query = [], $data = null)
     }
 
     $response = curl_exec($curl);
-
     $err = curl_error($curl);
 
     curl_close($curl);
@@ -69,11 +70,12 @@ function getCity($city = null, $province = null)
 
 function getOngkir($origin, $dest, $weight, $courier = "jne")
 {
+    $couriers = ['jne', 'pos', 'tiki'];
     $response = request("POST", 'cost', [], [
         'origin' => $origin,
         'destination' => $dest,
         'weight' => $weight,
-        'courier' => $courier
+        'courier' => $courier == 'random' ? $couriers[rand(0, count($couriers) - 1)] : $courier
     ]);
 
     return [
@@ -90,14 +92,13 @@ function getOngkirValueBySelected($ongkir)
         if ($ongkirOpt['code'] == $ongkir['selected_code']) return $ongkirOpt;
     })[0];
 
-    $selectedService = array_filter($selected['costs'], function ($costs) use ($ongkir) {
+    $selectedService = array_values(array_filter($selected['costs'], function ($costs) use ($ongkir) {
         if ($costs['service'] == $ongkir['selected_service']) return $costs;
-    })[0];
+    }))[0];
 
     $selectedEtd = array_filter($selectedService['cost'], function ($cost) use ($ongkir) {
         if ($cost['etd'] == $ongkir['selected_etd']) return $cost;
     })[0];
-
 
     $ongkir = [
         'name' => $selected['name'],

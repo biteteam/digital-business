@@ -17,13 +17,12 @@ class MOrder extends CI_Model
         $produkT = "tbl_produk";
 
         $this->db->select("$orderT.idOrder AS idOrder");
-        $this->db->select("$orderT.statusOrder AS statusOrder");
+        $this->db->select("$orderT.statusTransaksi AS statusTransaksi");
         $this->db->select("$orderT.idKonsumen AS idKonsumen");
-        $this->db->select("$orderT.tanggalDibuat AS tanggalOrder");
-        $this->db->select("$orderT.tanggalDiubah AS tanggalDiubah");
         // Detail Order
         $this->db->select("$detailT.idOrderDetail AS idOrderDetail");
         $this->db->select("$detailT.idToko AS idToko");
+        $this->db->select("$detailT.statusOrder AS statusOrder");
         $this->db->select("$detailT.resi AS resi");
         $this->db->select("$detailT.kurir AS kurir");
         $this->db->select("$detailT.ongkir AS ongkir");
@@ -32,6 +31,8 @@ class MOrder extends CI_Model
         $this->db->select("$detailT.toIdKota AS toIdKota");
         $this->db->select("$detailT.fromAddress AS fromAddress");
         $this->db->select("$detailT.toAddress AS toAddress");
+        $this->db->select("$orderT.tanggalDibuat AS tanggalOrder");
+        $this->db->select("$detailT.tanggalDiubah AS tanggalDiubah");
         // Produk
         $this->db->select("$produkT.idKat AS idKategori");
         $this->db->select("$produkT.idProduk");
@@ -74,7 +75,7 @@ class MOrder extends CI_Model
             "idKonsumen" => $customer->idKonsumen,
             "tanggalDibuat" => $orderTimeCreated->format('Y-m-d H:i:s'),
             "tanggalDiubah" => $orderTimeCreated->format('Y-m-d H:i:s'),
-            "statusOrder" => "Belum Dibayar",
+            "statusTransaksi" => "Belum Dibayar",
         ]);
 
         foreach ($cartOrder->items as $detail) {
@@ -89,6 +90,8 @@ class MOrder extends CI_Model
                 "toIdKota" => $customer->idKota,
                 "fromAddress" => $detail->kota_asal,
                 "toAddress" => $detail->kota_tujuan,
+                "tanggalDibuat" => $orderTimeCreated->format('Y-m-d H:i:s'),
+                "statusOrder" => "Belum Dibayar",
             ]);
             $orderDetailId = $this->db->insert_id();
 
@@ -115,18 +118,96 @@ class MOrder extends CI_Model
         ];
     }
 
-    public function change_state($orderId, $state)
+    public function changeTransactionState($orderId, $state, $additionalOrderData = [])
     {
         $orderTimeUpdated = new DateTime('now', new DateTimeZone('+0700'));
-        $this->db->where('idOrder', $orderId);
-        $this->db->update(MOrder::$table, [
-            'statusOrder' => $state,
-            'tanggalDiubah' => $orderTimeUpdated
-        ]);
+        $this->db->update(MOrder::$table, array_merge($additionalOrderData, [
+            'statusTransaksi' => $state,
+            'tanggalDiubah' => $orderTimeUpdated->format('Y-m-d H:i:s')
+        ]), ['idOrder' => $orderId]);
+
+        $this->db->update(MOrder::$detailTable, [
+            'statusOrder' => $state == "Dibayar" ? "Dikemas" : $state,
+            'tanggalDiubah' => $orderTimeUpdated->format('Y-m-d H:i:s')
+        ], ['idOrder' => $orderId]);
 
         log_message('info', "Order ID: $orderId, State: $state, Affected Rows: " . $this->db->affected_rows());
         return $this->db->affected_rows();
     }
+
+    public function change_resi($orderDetailId, $resi)
+    {
+        $orderTimeUpdated = new DateTime('now', new DateTimeZone('+0700'));
+
+        $this->db->trans_start();
+        $detailOrder = $this->db
+            ->from(MOrder::$detailTable)
+            ->where('idOrderDetail', $orderDetailId)
+            ->get()
+            ->row_object();
+
+        $this->db->update(MOrder::$detailTable, [
+            "resi" => $resi,
+            "statusOrder" => "Dikirim",
+            'tanggalDiubah' => $orderTimeUpdated->format('Y-m-d H:i:s')
+        ], ['idOrderDetail' => $detailOrder->idOrderDetail]);
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return false;
+        }
+
+        $this->db->trans_commit();
+        return true;
+    }
+
+
+    public function shopOrderActionCount($sellerId)
+    {
+        $detailT = MOrder::$detailTable;
+        $itemT = MOrder::$itemsTable;
+        $tokoT = 'tbl_toko';
+
+        $this->db->select('COUNT(order_detail.idOrderDetail) AS order_count');
+        $this->db->from(MOrder::$table . ' AS order');
+        $this->db->join("$detailT AS order_detail", "order_detail.idOrder = order.idOrder", "right");
+        $this->db->join("$tokoT AS toko", "toko.idToko = order_detail.idToko", "right");
+
+        $this->db->where("toko.idKonsumen", $sellerId);
+        $this->db->where("order_detail.resi", null);
+
+        $query = $this->db->get();
+        $result = $query->row();
+
+        return $result->order_count;
+    }
+
+
+    public function shopOrder($sellerId)
+    {
+        $detailT = MOrder::$detailTable;
+        $itemT = MOrder::$itemsTable;
+        $tokoT = 'tbl_toko';
+        $produkT = 'tbl_produk';
+
+        $this->db->select("*");
+        $this->db->select("order.tanggalDibuat AS tanggalOrderDibuat");
+        $this->db->select("order.tanggalDiubah AS tanggalOrderDiubah");
+        $this->db->select("order_detail.tanggalDibuat AS tanggalDipesan");
+        $this->db->select("order_detail.tanggalDiubah AS tanggalDiperbarui");
+        $this->db->from(MOrder::$table . ' AS order');
+        $this->db->join("$detailT AS order_detail", "order_detail.idOrder = order.idOrder", "right");
+        $this->db->join("$itemT AS order_item", "order_item.idOrderDetail = order_detail.idOrderDetail", "right");
+        $this->db->join("$produkT AS produk", "produk.idProduk = order_item.idProduk", "right");
+        $this->db->join("$tokoT AS toko", "toko.idToko = order_detail.idToko", "right");
+
+        $this->db->where("toko.idKonsumen", $sellerId);
+        $this->db->order_by("order_detail.tanggalDiubah", "DESC");
+
+        $query = $this->db->get(MOrder::$table);
+        return $query->result();
+    }
+
 
     public function get_orders()
     {

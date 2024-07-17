@@ -18,10 +18,16 @@ class BaseController extends CI_Controller
             'backup' => 'file'
         ]);
 
+
         if ($this->session->userdata("idKonsumen")) {
+            $userId = $this->session->userdata("idKonsumen");
             $this->isAuthenticated = true;
+
             $this->load->model('MCart', "cartModel");
-            $this->header['cartCount'] = $this->cartModel->cartCount();
+            $this->header['cartCount'] = $this->cartModel->cartCount($userId);
+
+            $this->load->model('MOrder', "orderModel");
+            $this->header['shopOrderActionCount'] = $this->orderModel->shopOrderActionCount($userId);
         }
     }
 

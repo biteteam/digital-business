@@ -22,7 +22,6 @@ class Produk extends BaseController
         $data['toko'] = $this->adminModel->get_by_id('tbl_toko', ['idToko' => $data['idToko']])->result()[0];
         $data['produk'] = $this->adminModel->get_by_id('tbl_produk', ['idToko' => $data['idToko']])->result();
 
-
         $this->load->view('home/layout/header');
         $this->load->view('home/produk/index', $data);
         $this->load->view('home/layout/footer');
@@ -112,7 +111,7 @@ class Produk extends BaseController
         $data['produk'] = $produk;
 
         $this->load->view('home/layout/header');
-        $this->load->view('home/produk/form-edit');
+        $this->load->view('home/produk/form-edit', $data);
         $this->load->view('home/layout/footer');
     }
 

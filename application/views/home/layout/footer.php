@@ -52,16 +52,14 @@
         </div>
     </div>
     <div class="row border-top border-light mx-xl-5 py-4">
-        <div class="col-md-6 px-xl-0">
+        <div class="col-md-6 px-xl-0 justify-content-center d-flex flex-column">
             <p class="mb-md-0 text-center text-md-left text-dark">
-                &copy; <a class="text-dark font-weight-semi-bold" href="#">Your Site Name</a>. All Rights Reserved. Designed
-                by
-                <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a><br>
-                Distributed By <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                &copy; <a class="text-dark font-weight-semi-bold" href="https://github.com/orgs/bitecore">Bitecore</a> <a class="text-dark font-weight-medium" href="https://github.com/biteteam">Team</a>. All Rights Reserved.<br />
+                Build with <i class="fas fa-heart" style="color: red; font-size: 14px;"></i> By <a href="https://github.com/nsmle" class="font-weight-medium" style="color:cornflowerblue;" target="_blank">nsmle</a>
             </p>
         </div>
         <div class="col-md-6 px-xl-0 text-center text-md-right">
-            <img class="img-fluid" src="img/payments.png" alt="">
+            <img class="img-fluid" src="assets/home/img/payments.png" alt="">
         </div>
     </div>
 </div>

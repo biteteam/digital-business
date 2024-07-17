@@ -1,11 +1,12 @@
-UJIAN TENGAH SEMESTER
-Digital Business
+DIGITAL BUSINESS
+Semester 4
 
 - Nama  : Fiki Pratama
 - Nim   : 22.12.2551
 - Kelas : SI 05
 
 
+UTS:
 1. Validasi dari sisi server (codeigniter) pada Form Login Admin.
 2. Validasi dari sisi server (codeigniter) pada modul kelola kategori.
 3. Enkripsi password pada modul login admin dan member.
@@ -13,3 +14,12 @@ Digital Business
 5. Validasi dari sisi server (codeigniter) pada modul kelola toko.
 6. Fitur edit profil member.
 7. Tambahkan alert ketika sukses menambah data, menghapus data, atau mengedit data.
+
+UAS:
+1. Aplikasi web ecommerce harus memiliki fitur pendaftaran user, dimana user bisa membuat toko dan menjual produk
+2. Aplikasi web ecommerce harus memiliki fitur perhitungan ongkos kirim yang terintegrasi dengan API Raja Ongkir
+3. Aplikasi web ecommerce harus memiliki fitur payment yang terintegrasi dengan payment gateway
+4. Aplikasi web ecommerce harus memiliki fitur history transaksi dimana user bisa melihat history pembelian yang telah dia lakukan.
+5. Aplikasi web ecommerce harus memiliki fitur pemberian rating bagi suatu produk yang sudah di beli.
+6. Aplikasi web ecommerce harus memiliki fitur order history dimana user bisa melihat history barang yang sudah terjual.
+7. Aplikasi web ecommerce harus memiliki fitur order tracking dimana user bisa memasukkan nomor resi penjualan pada produknya yang telah terjual

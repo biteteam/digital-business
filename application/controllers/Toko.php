@@ -42,12 +42,9 @@ class Toko extends BaseController
 
     public function index()
     {
-        $data['toko'] = $this->adminModel->get_all_data('tbl_toko')->result();
-        // $data['toko'] = $this->adminModel->get_all_by(
-        //     'tbl_toko',
-        //     "idKonsumen",
-        //     $this->session->userdata("idKonsumen")
-        // )->result();
+        $toko = $this->adminModel->get_all_data('tbl_toko')->result();
+        $data['toko'] = $toko;
+
         $this->load->view('home/layout/header');
         $this->load->view('home/toko/index', $data);
         $this->load->view('home/layout/footer');
@@ -62,7 +59,6 @@ class Toko extends BaseController
 
     public function save()
     {
-        // Validation
         $this->form_validation->set_rules($this->addOrSaveRules);
         if (!$this->form_validation->run()) return $this->add();
 
@@ -90,7 +86,6 @@ class Toko extends BaseController
         return $this->add();
     }
 
-
     public function get_by_id($id)
     {
         $where = ['idToko' => $id];
@@ -107,7 +102,6 @@ class Toko extends BaseController
 
     public function edit()
     {
-        // Validation
         $this->form_validation->set_rules($this->addOrSaveRules);
         if (!$this->form_validation->run()) return $this->add();
 
@@ -145,5 +139,73 @@ class Toko extends BaseController
         $this->adminModel->delete('tbl_toko', 'idToko', $id);
         $this->session->set_flashdata('success', "Berhasil menghapus data!");
         return redirect('toko');
+    }
+
+    public function order()
+    {
+        $userNow = $this->getUserAuth();
+        $this->load->model('MOrder', 'orderModel');
+
+        if ($this->input->method(true) == "POST" && $this->input->post('action') == "update-resi") {
+            $this->update_resi($this->input->post('orderDetailId'), $this->input->post('resi'), true);
+        }
+
+        $orders = $this->orderModel->shopOrder($userNow->idKonsumen);
+        $data['orders'] = $this->mapOrderToko($orders);
+        // dd($data['orders']);
+
+        $this->load->view('home/layout/header');
+        $this->load->view('home/toko/order', $data);
+        $this->load->view('home/layout/footer');
+    }
+
+    public function update_resi($orderDetailId, $resi, $isInternalCalled = false)
+    {
+        if (empty($resi) || $resi == "") return;
+        if (!$isInternalCalled) $this->load->model('MOrder', 'orderModel');
+
+        $isUpdated = $this->orderModel->change_resi($orderDetailId, $resi);
+        $this->session->set_flashdata(($isUpdated) ? 'success' : "error", "Resi " . $isUpdated ? "berhasil" : "gagal" . " di update!");
+    }
+
+    public function mapOrderToko($raw_orders)
+    {
+        $orders = [];
+        foreach (to_array($raw_orders) as $raw) {
+            if (empty($orders[$raw['idOrder']])) $orders[$raw['idOrder']] = [];
+            if (empty($orders[$raw['idOrder']]['items'])) $orders[$raw['idOrder']]['items'] = [];
+
+            $itemProp = ['idProduk' => 'id', 'namaProduk' => 'nama', 'foto' => 'foto', 'harga' => 'harga', 'berat' => 'berat', 'jumlah' => 'qty'];
+            foreach ($itemProp as $dbProp => $editedKeyProp) {
+                $orders[$raw['idOrder']]['items'][$raw['idProduk']][$editedKeyProp] = $raw[$dbProp];
+            }
+
+            $storeProp = ['idToko' => 'id', 'namaToko' => 'nama', 'logo' => 'logo', 'deskripsi' => 'deskripsi'];
+            foreach ($storeProp as $dbProp => $editedKeyProp) {
+                $orders[$raw['idOrder']]['toko'][$editedKeyProp] = $raw[$dbProp];
+            }
+
+            $shippingProp = ['resi' => 'resi', 'ongkir' => 'ongkir', 'kurir' => 'kurir', 'etd' => 'etd', 'fromIdKota' => 'fromIdKota', 'toIdKota' => 'toIdKota', 'fromAddress' => 'fromAddress', 'toAddress' => 'toAddress'];
+            foreach ($shippingProp as $dbProp => $editedKeyProp) {
+                $orders[$raw['idOrder']]['shipping'][$editedKeyProp] = $raw[$dbProp];
+            }
+
+            $detailProp = ['tanggalDipesan' => 'tanggalDipesan', 'tanggalDiperbarui' => 'tanggalDiperbarui', 'statusOrder' => 'status'];
+            foreach ($detailProp as $dbProp => $editedKeyProp) {
+                $orders[$raw['idOrder']][$editedKeyProp] = $raw[$dbProp];
+            }
+
+            $orders[$raw['idOrder']]['orderId'] = $raw['idOrder'];
+            $orders[$raw['idOrder']]['orderDetailId'] = $raw['idOrderDetail'];
+        }
+
+
+        $orders = array_values(array_map(function ($order) {
+            $order['items'] = array_values($order['items']);
+            $order['total'] = array_sum(array_map(fn ($item) => ($item['harga'] * $item['qty']), $order['items']));
+            return $order;
+        }, $orders));
+
+        return to_object($orders);
     }
 }
