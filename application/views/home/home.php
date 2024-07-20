@@ -263,28 +263,28 @@
         <div class="col">
             <div class="owl-carousel vendor-carousel">
                 <div class="vendor-item border p-4">
-                    <img src="<?= site_url('assets/home/img/vendor-1.jpg') ?>" alt="">
+                    <img src="<?= site_url('assets/home/img/company-1.jpg') ?>" alt="">
                 </div>
                 <div class="vendor-item border p-4">
-                    <img src="<?= site_url('assets/home/img/vendor-2.jpg') ?>" alt="">
+                    <img src="<?= site_url('assets/home/img/company-2.jpg') ?>" alt="">
                 </div>
                 <div class="vendor-item border p-4">
-                    <img src="<?= site_url('assets/home/img/vendor-3.jpg') ?>" alt="">
+                    <img src="<?= site_url('assets/home/img/company-3.jpg') ?>" alt="">
                 </div>
                 <div class="vendor-item border p-4">
-                    <img src="<?= site_url('assets/home/img/vendor-4.jpg') ?>" alt="">
+                    <img src="<?= site_url('assets/home/img/company-4.jpg') ?>" alt="">
                 </div>
                 <div class="vendor-item border p-4">
-                    <img src="<?= site_url('assets/home/img/vendor-5.jpg') ?>" alt="">
+                    <img src="<?= site_url('assets/home/img/company-5.jpg') ?>" alt="">
                 </div>
                 <div class="vendor-item border p-4">
-                    <img src="<?= site_url('assets/home/img/vendor-6.jpg') ?>" alt="">
+                    <img src="<?= site_url('assets/home/img/company-6.jpg') ?>" alt="">
                 </div>
                 <div class="vendor-item border p-4">
-                    <img src="<?= site_url('assets/home/img/vendor-7.jpg') ?>" alt="">
+                    <img src="<?= site_url('assets/home/img/company-7.jpg') ?>" alt="">
                 </div>
                 <div class="vendor-item border p-4">
-                    <img src="<?= site_url('assets/home/img/vendor-8.jpg') ?>" alt="">
+                    <img src="<?= site_url('assets/home/img/company-8.jpg') ?>" alt="">
                 </div>
             </div>
         </div>
