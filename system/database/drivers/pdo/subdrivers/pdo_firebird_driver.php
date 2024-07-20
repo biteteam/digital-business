@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -36,7 +37,7 @@
  * @since	Version 3.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * PDO Firebird Database Adapter Class
@@ -51,7 +52,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		EllisLab Dev Team
  * @link		https://codeigniter.com/userguide3/database/
  */
-class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
+class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver
+{
 
 	/**
 	 * Sub-driver
@@ -83,25 +85,19 @@ class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
 	{
 		parent::__construct($params);
 
-		if (empty($this->dsn))
-		{
+		if (empty($this->dsn)) {
 			$this->dsn = 'firebird:';
 
-			if ( ! empty($this->database))
-			{
-				$this->dsn .= 'dbname='.$this->database;
-			}
-			elseif ( ! empty($this->hostname))
-			{
-				$this->dsn .= 'dbname='.$this->hostname;
+			if (!empty($this->database)) {
+				$this->dsn .= 'dbname=' . $this->database;
+			} elseif (!empty($this->hostname)) {
+				$this->dsn .= 'dbname=' . $this->hostname;
 			}
 
-			empty($this->char_set) OR $this->dsn .= ';charset='.$this->char_set;
-			empty($this->role) OR $this->dsn .= ';role='.$this->role;
-		}
-		elseif ( ! empty($this->char_set) && strpos($this->dsn, 'charset=', 9) === FALSE)
-		{
-			$this->dsn .= ';charset='.$this->char_set;
+			empty($this->char_set) or $this->dsn .= ';charset=' . $this->char_set;
+			empty($this->role) or $this->dsn .= ';role=' . $this->role;
+		} elseif (!empty($this->char_set) && strpos($this->dsn, 'charset=', 9) === false) {
+			$this->dsn .= ';charset=' . $this->char_set;
 		}
 	}
 
@@ -115,14 +111,13 @@ class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
 	 * @param	bool	$prefix_limit
 	 * @return	string
 	 */
-	protected function _list_tables($prefix_limit = FALSE)
+	protected function _list_tables($prefix_limit = false)
 	{
 		$sql = 'SELECT "RDB$RELATION_NAME" FROM "RDB$RELATIONS" WHERE "RDB$RELATION_NAME" NOT LIKE \'RDB$%\' AND "RDB$RELATION_NAME" NOT LIKE \'MON$%\'';
 
-		if ($prefix_limit === TRUE && $this->dbprefix !== '')
-		{
-			return $sql.' AND "RDB$RELATION_NAME" LIKE \''.$this->escape_like_str($this->dbprefix)."%' "
-				.sprintf($this->_like_escape_str, $this->_like_escape_chr);
+		if ($prefix_limit === true && $this->dbprefix !== '') {
+			return $sql . ' AND "RDB$RELATION_NAME" LIKE \'' . $this->escape_like_str($this->dbprefix) . "%' "
+				. sprintf($this->_like_escape_str, $this->_like_escape_chr);
 		}
 
 		return $sql;
@@ -140,7 +135,7 @@ class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
 	 */
 	protected function _list_columns($table = '')
 	{
-		return 'SELECT "RDB$FIELD_NAME" FROM "RDB$RELATION_FIELDS" WHERE "RDB$RELATION_NAME" = '.$this->escape($table);
+		return 'SELECT "RDB$FIELD_NAME" FROM "RDB$RELATION_FIELDS" WHERE "RDB$RELATION_NAME" = ' . $this->escape($table);
 	}
 
 	// --------------------------------------------------------------------
@@ -175,12 +170,12 @@ class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
 				"rfields"."RDB$DEFAULT_VALUE" AS "default"
 			FROM "RDB$RELATION_FIELDS" "rfields"
 				JOIN "RDB$FIELDS" "fields" ON "rfields"."RDB$FIELD_SOURCE" = "fields"."RDB$FIELD_NAME"
-			WHERE "rfields"."RDB$RELATION_NAME" = '.$this->escape($table).'
+			WHERE "rfields"."RDB$RELATION_NAME" = ' . $this->escape($table) . '
 			ORDER BY "rfields"."RDB$FIELD_POSITION"';
 
-		return (($query = $this->query($sql)) !== FALSE)
+		return (($query = $this->query($sql)) !== false)
 			? $query->result_object()
-			: FALSE;
+			: false;
 	}
 
 	// --------------------------------------------------------------------
@@ -196,7 +191,7 @@ class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
 	 */
 	protected function _update($table, $values)
 	{
-		$this->qb_limit = FALSE;
+		$this->qb_limit = false;
 		return parent::_update($table, $values);
 	}
 
@@ -215,7 +210,7 @@ class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
 	 */
 	protected function _truncate($table)
 	{
-		return 'DELETE FROM '.$table;
+		return 'DELETE FROM ' . $table;
 	}
 
 	// --------------------------------------------------------------------
@@ -230,7 +225,7 @@ class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
 	 */
 	protected function _delete($table)
 	{
-		$this->qb_limit = FALSE;
+		$this->qb_limit = false;
 		return parent::_delete($table);
 	}
 
@@ -247,18 +242,15 @@ class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
 	protected function _limit($sql)
 	{
 		// Limit clause depends on if Interbase or Firebird
-		if (stripos($this->version(), 'firebird') !== FALSE)
-		{
-			$select = 'FIRST '.$this->qb_limit
-				.($this->qb_offset > 0 ? ' SKIP '.$this->qb_offset : '');
-		}
-		else
-		{
+		if (stripos($this->version(), 'firebird') !== false) {
+			$select = 'FIRST ' . $this->qb_limit
+				. ($this->qb_offset > 0 ? ' SKIP ' . $this->qb_offset : '');
+		} else {
 			$select = 'ROWS '
-				.($this->qb_offset > 0 ? $this->qb_offset.' TO '.($this->qb_limit + $this->qb_offset) : $this->qb_limit);
+				. ($this->qb_offset > 0 ? $this->qb_offset . ' TO ' . ($this->qb_limit + $this->qb_offset) : $this->qb_limit);
 		}
 
-		return preg_replace('`SELECT`i', 'SELECT '.$select, $sql);
+		return preg_replace('`SELECT`i', 'SELECT ' . $select, $sql);
 	}
 
 	// --------------------------------------------------------------------
@@ -275,6 +267,6 @@ class CI_DB_pdo_firebird_driver extends CI_DB_pdo_driver {
 	 */
 	protected function _insert_batch($table, $keys, $values)
 	{
-		return ($this->db_debug) ? $this->display_error('db_unsupported_feature') : FALSE;
+		return ($this->db_debug) ? $this->display_error('db_unsupported_feature') : false;
 	}
 }

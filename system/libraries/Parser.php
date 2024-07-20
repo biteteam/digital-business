@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -36,7 +37,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Parser Class
@@ -47,7 +48,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		EllisLab Dev Team
  * @link		https://codeigniter.com/userguide3/libraries/parser.html
  */
-class CI_Parser {
+class CI_Parser
+{
 
 	/**
 	 * Left delimiter character for pseudo vars
@@ -79,7 +81,7 @@ class CI_Parser {
 	 */
 	public function __construct()
 	{
-		$this->CI =& get_instance();
+		$this->CI = &get_instance();
 		log_message('info', 'Parser Class Initialized');
 	}
 
@@ -96,9 +98,9 @@ class CI_Parser {
 	 * @param	bool
 	 * @return	string
 	 */
-	public function parse($template, $data, $return = FALSE)
+	public function parse($template, $data, $return = false)
 	{
-		$template = $this->CI->load->view($template, $data, TRUE);
+		$template = $this->CI->load->view($template, $data, true);
 
 		return $this->_parse($template, $data, $return);
 	}
@@ -116,7 +118,7 @@ class CI_Parser {
 	 * @param	bool
 	 * @return	string
 	 */
-	public function parse_string($template, $data, $return = FALSE)
+	public function parse_string($template, $data, $return = false)
 	{
 		return $this->_parse($template, $data, $return);
 	}
@@ -134,16 +136,14 @@ class CI_Parser {
 	 * @param	bool
 	 * @return	string
 	 */
-	protected function _parse($template, $data, $return = FALSE)
+	protected function _parse($template, $data, $return = false)
 	{
-		if ($template === '')
-		{
-			return FALSE;
+		if ($template === '') {
+			return false;
 		}
 
 		$replace = array();
-		foreach ($data as $key => $val)
-		{
+		foreach ($data as $key => $val) {
 			$replace = array_merge(
 				$replace,
 				is_array($val)
@@ -155,8 +155,7 @@ class CI_Parser {
 		unset($data);
 		$template = strtr($template, $replace);
 
-		if ($return === FALSE)
-		{
+		if ($return === false) {
 			$this->CI->output->append_output($template);
 		}
 
@@ -190,7 +189,7 @@ class CI_Parser {
 	 */
 	protected function _parse_single($key, $val, $string)
 	{
-		return array($this->l_delim.$key.$this->r_delim => (string) $val);
+		return array($this->l_delim . $key . $this->r_delim => (string) $val);
 	}
 
 	// --------------------------------------------------------------------
@@ -209,32 +208,27 @@ class CI_Parser {
 	{
 		$replace = array();
 		preg_match_all(
-			'#'.preg_quote($this->l_delim.$variable.$this->r_delim).'(.+?)'.preg_quote($this->l_delim.'/'.$variable.$this->r_delim).'#s',
+			'#' . preg_quote($this->l_delim . $variable . $this->r_delim) . '(.+?)' . preg_quote($this->l_delim . '/' . $variable . $this->r_delim) . '#s',
 			$string,
 			$matches,
 			PREG_SET_ORDER
 		);
 
-		foreach ($matches as $match)
-		{
+		foreach ($matches as $match) {
 			$str = '';
-			foreach ($data as $row)
-			{
+			foreach ($data as $row) {
 				$temp = array();
-				foreach ($row as $key => $val)
-				{
-					if (is_array($val))
-					{
+				foreach ($row as $key => $val) {
+					if (is_array($val)) {
 						$pair = $this->_parse_pair($key, $val, $match[1]);
-						if ( ! empty($pair))
-						{
+						if (!empty($pair)) {
 							$temp = array_merge($temp, $pair);
 						}
 
 						continue;
 					}
 
-					$temp[$this->l_delim.$key.$this->r_delim] = $val;
+					$temp[$this->l_delim . $key . $this->r_delim] = $val;
 				}
 
 				$str .= strtr($match[1], $temp);
@@ -245,5 +239,4 @@ class CI_Parser {
 
 		return $replace;
 	}
-
 }

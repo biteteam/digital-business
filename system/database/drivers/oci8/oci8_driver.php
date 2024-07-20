@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -36,7 +37,7 @@
  * @since	Version 1.4.1
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * oci8 Database Adapter Class
@@ -60,7 +61,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * @author	  Kelly McArdle
  */
-class CI_DB_oci8_driver extends CI_DB {
+class CI_DB_oci8_driver extends CI_DB
+{
 
 	/**
 	 * Database driver
@@ -98,7 +100,7 @@ class CI_DB_oci8_driver extends CI_DB {
 	 *
 	 * @var	bool
 	 */
-	public $limit_used = FALSE;
+	public $limit_used = false;
 
 	// --------------------------------------------------------------------
 
@@ -108,7 +110,7 @@ class CI_DB_oci8_driver extends CI_DB {
 	 * Used by stored_procedure() to prevent _execute() from
 	 * re-setting the statement ID.
 	 */
-	protected $_reset_stmt_id = TRUE;
+	protected $_reset_stmt_id = true;
 
 	/**
 	 * List of reserved identifiers
@@ -160,12 +162,9 @@ class CI_DB_oci8_driver extends CI_DB {
 		 */
 		$this->dsn = str_replace(array("\n", "\r", "\t", ' '), '', $this->dsn);
 
-		if ($this->dsn !== '')
-		{
-			foreach ($valid_dsns as $regexp)
-			{
-				if (preg_match($regexp, $this->dsn))
-				{
+		if ($this->dsn !== '') {
+			foreach ($valid_dsns as $regexp) {
+				if (preg_match($regexp, $this->dsn)) {
 					return;
 				}
 			}
@@ -173,14 +172,13 @@ class CI_DB_oci8_driver extends CI_DB {
 
 		// Legacy support for TNS in the hostname configuration field
 		$this->hostname = str_replace(array("\n", "\r", "\t", ' '), '', $this->hostname);
-		if (preg_match($valid_dsns['tns'], $this->hostname))
-		{
+		if (preg_match($valid_dsns['tns'], $this->hostname)) {
 			$this->dsn = $this->hostname;
 			return;
-		}
-		elseif ($this->hostname !== '' && strpos($this->hostname, '/') === FALSE && strpos($this->hostname, ':') === FALSE
-			&& (( ! empty($this->port) && ctype_digit($this->port)) OR $this->database !== ''))
-		{
+		} elseif (
+			$this->hostname !== '' && strpos($this->hostname, '/') === false && strpos($this->hostname, ':') === false
+			&& ((!empty($this->port) && ctype_digit($this->port)) or $this->database !== '')
+		) {
 			/* If the hostname field isn't empty, doesn't contain
 			 * ':' and/or '/' and if port and/or database aren't
 			 * empty, then the hostname field is most likely indeed
@@ -189,11 +187,10 @@ class CI_DB_oci8_driver extends CI_DB {
 			 * that the database field is a service name.
 			 */
 			$this->dsn = $this->hostname
-				.(( ! empty($this->port) && ctype_digit($this->port)) ? ':'.$this->port : '')
-				.($this->database !== '' ? '/'.ltrim($this->database, '/') : '');
+				. ((!empty($this->port) && ctype_digit($this->port)) ? ':' . $this->port : '')
+				. ($this->database !== '' ? '/' . ltrim($this->database, '/') : '');
 
-			if (preg_match($valid_dsns['ec'], $this->dsn))
-			{
+			if (preg_match($valid_dsns['ec'], $this->dsn)) {
 				return;
 			}
 		}
@@ -201,17 +198,14 @@ class CI_DB_oci8_driver extends CI_DB {
 		/* At this point, we can only try and validate the hostname and
 		 * database fields separately as DSNs.
 		 */
-		if (preg_match($valid_dsns['ec'], $this->hostname) OR preg_match($valid_dsns['in'], $this->hostname))
-		{
+		if (preg_match($valid_dsns['ec'], $this->hostname) or preg_match($valid_dsns['in'], $this->hostname)) {
 			$this->dsn = $this->hostname;
 			return;
 		}
 
 		$this->database = str_replace(array("\n", "\r", "\t", ' '), '', $this->database);
-		foreach ($valid_dsns as $regexp)
-		{
-			if (preg_match($regexp, $this->database))
-			{
+		foreach ($valid_dsns as $regexp) {
+			if (preg_match($regexp, $this->database)) {
 				return;
 			}
 		}
@@ -231,9 +225,9 @@ class CI_DB_oci8_driver extends CI_DB {
 	 * @param	bool	$persistent
 	 * @return	resource
 	 */
-	public function db_connect($persistent = FALSE)
+	public function db_connect($persistent = false)
 	{
-		$func = ($persistent === TRUE) ? 'oci_pconnect' : 'oci_connect';
+		$func = ($persistent === true) ? 'oci_pconnect' : 'oci_connect';
 		return empty($this->char_set)
 			? $func($this->username, $this->password, $this->dsn)
 			: $func($this->username, $this->password, $this->dsn, $this->char_set);
@@ -248,21 +242,17 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	public function version()
 	{
-		if (isset($this->data_cache['version']))
-		{
+		if (isset($this->data_cache['version'])) {
 			return $this->data_cache['version'];
 		}
 
-		if ( ! $this->conn_id OR ($version_string = oci_server_version($this->conn_id)) === FALSE)
-		{
-			return FALSE;
-		}
-		elseif (preg_match('#Release\s(\d+(?:\.\d+)+)#', $version_string, $match))
-		{
+		if (!$this->conn_id or ($version_string = oci_server_version($this->conn_id)) === false) {
+			return false;
+		} elseif (preg_match('#Release\s(\d+(?:\.\d+)+)#', $version_string, $match)) {
 			return $this->data_cache['version'] = $match[1];
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	// --------------------------------------------------------------------
@@ -278,8 +268,7 @@ class CI_DB_oci8_driver extends CI_DB {
 		/* Oracle must parse the query before it is run. All of the actions with
 		 * the query are based on the statement id returned by oci_parse().
 		 */
-		if ($this->_reset_stmt_id === TRUE)
-		{
+		if ($this->_reset_stmt_id === true) {
 			$this->stmt_id = oci_parse($this->conn_id, $sql);
 		}
 
@@ -320,32 +309,29 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	public function stored_procedure($package, $procedure, array $params)
 	{
-		if ($package === '' OR $procedure === '')
-		{
-			log_message('error', 'Invalid query: '.$package.'.'.$procedure);
-			return ($this->db_debug) ? $this->display_error('db_invalid_query') : FALSE;
+		if ($package === '' or $procedure === '') {
+			log_message('error', 'Invalid query: ' . $package . '.' . $procedure);
+			return ($this->db_debug) ? $this->display_error('db_invalid_query') : false;
 		}
 
 		// Build the query string
-		$sql = 'BEGIN '.$package.'.'.$procedure.'(';
+		$sql = 'BEGIN ' . $package . '.' . $procedure . '(';
 
-		$have_cursor = FALSE;
-		foreach ($params as $param)
-		{
-			$sql .= $param['name'].',';
+		$have_cursor = false;
+		foreach ($params as $param) {
+			$sql .= $param['name'] . ',';
 
-			if (isset($param['type']) && $param['type'] === OCI_B_CURSOR)
-			{
-				$have_cursor = TRUE;
+			if (isset($param['type']) && $param['type'] === OCI_B_CURSOR) {
+				$have_cursor = true;
 			}
 		}
-		$sql = trim($sql, ',').'); END;';
+		$sql = trim($sql, ',') . '); END;';
 
-		$this->_reset_stmt_id = FALSE;
+		$this->_reset_stmt_id = false;
 		$this->stmt_id = oci_parse($this->conn_id, $sql);
 		$this->_bind_params($params);
-		$result = $this->query($sql, FALSE, $have_cursor);
-		$this->_reset_stmt_id = TRUE;
+		$result = $this->query($sql, false, $have_cursor);
+		$this->_reset_stmt_id = true;
 		return $result;
 	}
 
@@ -359,17 +345,13 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	protected function _bind_params($params)
 	{
-		if ( ! is_array($params) OR ! is_resource($this->stmt_id))
-		{
+		if (!is_array($params) or !is_resource($this->stmt_id)) {
 			return;
 		}
 
-		foreach ($params as $param)
-		{
-			foreach (array('name', 'value', 'type', 'length') as $val)
-			{
-				if ( ! isset($param[$val]))
-				{
+		foreach ($params as $param) {
+			foreach (array('name', 'value', 'type', 'length') as $val) {
+				if (!isset($param[$val])) {
 					$param[$val] = '';
 				}
 			}
@@ -388,7 +370,7 @@ class CI_DB_oci8_driver extends CI_DB {
 	protected function _trans_begin()
 	{
 		$this->commit_mode = OCI_NO_AUTO_COMMIT;
-		return TRUE;
+		return true;
 	}
 
 	// --------------------------------------------------------------------
@@ -453,14 +435,13 @@ class CI_DB_oci8_driver extends CI_DB {
 	 * @param	bool	$prefix_limit
 	 * @return	string
 	 */
-	protected function _list_tables($prefix_limit = FALSE)
+	protected function _list_tables($prefix_limit = false)
 	{
 		$sql = 'SELECT "TABLE_NAME" FROM "ALL_TABLES"';
 
-		if ($prefix_limit !== FALSE && $this->dbprefix !== '')
-		{
-			return $sql.' WHERE "TABLE_NAME" LIKE \''.$this->escape_like_str($this->dbprefix)."%' "
-				.sprintf($this->_like_escape_str, $this->_like_escape_chr);
+		if ($prefix_limit !== false && $this->dbprefix !== '') {
+			return $sql . ' WHERE "TABLE_NAME" LIKE \'' . $this->escape_like_str($this->dbprefix) . "%' "
+				. sprintf($this->_like_escape_str, $this->_like_escape_chr);
 		}
 
 		return $sql;
@@ -478,18 +459,15 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	protected function _list_columns($table = '')
 	{
-		if (strpos($table, '.') !== FALSE)
-		{
+		if (strpos($table, '.') !== false) {
 			sscanf($table, '%[^.].%s', $owner, $table);
-		}
-		else
-		{
+		} else {
 			$owner = $this->username;
 		}
 
 		return 'SELECT COLUMN_NAME FROM ALL_TAB_COLUMNS
-			WHERE UPPER(OWNER) = '.$this->escape(strtoupper($owner)).'
-				AND UPPER(TABLE_NAME) = '.$this->escape(strtoupper($table));
+			WHERE UPPER(OWNER) = ' . $this->escape(strtoupper($owner)) . '
+				AND UPPER(TABLE_NAME) = ' . $this->escape(strtoupper($table));
 	}
 
 	// --------------------------------------------------------------------
@@ -502,44 +480,37 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	public function field_data($table)
 	{
-		if (strpos($table, '.') !== FALSE)
-		{
+		if (strpos($table, '.') !== false) {
 			sscanf($table, '%[^.].%s', $owner, $table);
-		}
-		else
-		{
+		} else {
 			$owner = $this->username;
 		}
 
 		$sql = 'SELECT COLUMN_NAME, DATA_TYPE, CHAR_LENGTH, DATA_PRECISION, DATA_LENGTH, DATA_DEFAULT, NULLABLE
 			FROM ALL_TAB_COLUMNS
-			WHERE UPPER(OWNER) = '.$this->escape(strtoupper($owner)).'
-				AND UPPER(TABLE_NAME) = '.$this->escape(strtoupper($table));
+			WHERE UPPER(OWNER) = ' . $this->escape(strtoupper($owner)) . '
+				AND UPPER(TABLE_NAME) = ' . $this->escape(strtoupper($table));
 
-		if (($query = $this->query($sql)) === FALSE)
-		{
-			return FALSE;
+		if (($query = $this->query($sql)) === false) {
+			return false;
 		}
 		$query = $query->result_object();
 
 		$retval = array();
-		for ($i = 0, $c = count($query); $i < $c; $i++)
-		{
+		for ($i = 0, $c = count($query); $i < $c; $i++) {
 			$retval[$i]			= new stdClass();
 			$retval[$i]->name		= $query[$i]->COLUMN_NAME;
 			$retval[$i]->type		= $query[$i]->DATA_TYPE;
 
 			$length = ($query[$i]->CHAR_LENGTH > 0)
 				? $query[$i]->CHAR_LENGTH : $query[$i]->DATA_PRECISION;
-			if ($length === NULL)
-			{
+			if ($length === NULL) {
 				$length = $query[$i]->DATA_LENGTH;
 			}
 			$retval[$i]->max_length		= $length;
 
 			$default = $query[$i]->DATA_DEFAULT;
-			if ($default === NULL && $query[$i]->NULLABLE === 'N')
-			{
+			if ($default === NULL && $query[$i]->NULLABLE === 'N') {
 				$default = '';
 			}
 			$retval[$i]->default = $default;
@@ -563,20 +534,13 @@ class CI_DB_oci8_driver extends CI_DB {
 		// oci_error() returns an array that already contains
 		// 'code' and 'message' keys, but it can return false
 		// if there was no error ....
-		if (is_resource($this->curs_id))
-		{
+		if (is_resource($this->curs_id)) {
 			$error = oci_error($this->curs_id);
-		}
-		elseif (is_resource($this->stmt_id))
-		{
+		} elseif (is_resource($this->stmt_id)) {
 			$error = oci_error($this->stmt_id);
-		}
-		elseif (is_resource($this->conn_id))
-		{
+		} elseif (is_resource($this->conn_id)) {
 			$error = oci_error($this->conn_id);
-		}
-		else
-		{
+		} else {
 			$error = oci_error();
 		}
 
@@ -602,12 +566,11 @@ class CI_DB_oci8_driver extends CI_DB {
 		$keys = implode(', ', $keys);
 		$sql = "INSERT ALL\n";
 
-		for ($i = 0, $c = count($values); $i < $c; $i++)
-		{
-			$sql .= '	INTO '.$table.' ('.$keys.') VALUES '.$values[$i]."\n";
+		for ($i = 0, $c = count($values); $i < $c; $i++) {
+			$sql .= '	INTO ' . $table . ' (' . $keys . ') VALUES ' . $values[$i] . "\n";
 		}
 
-		return $sql.'SELECT * FROM dual';
+		return $sql . 'SELECT * FROM dual';
 	}
 
 	// --------------------------------------------------------------------
@@ -625,7 +588,7 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	protected function _truncate($table)
 	{
-		return 'TRUNCATE TABLE '.$table;
+		return 'TRUNCATE TABLE ' . $table;
 	}
 
 	// --------------------------------------------------------------------
@@ -640,10 +603,9 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	protected function _delete($table)
 	{
-		if ($this->qb_limit)
-		{
-			$this->where('rownum <= ',$this->qb_limit, FALSE);
-			$this->qb_limit = FALSE;
+		if ($this->qb_limit) {
+			$this->where('rownum <= ', $this->qb_limit, false);
+			$this->qb_limit = false;
 		}
 
 		return parent::_delete($table);
@@ -661,17 +623,16 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	protected function _limit($sql)
 	{
-		if (version_compare($this->version(), '12.1', '>='))
-		{
+		if (version_compare($this->version(), '12.1', '>=')) {
 			// OFFSET-FETCH can be used only with the ORDER BY clause
 			empty($this->qb_orderby) && $sql .= ' ORDER BY 1';
 
-			return $sql.' OFFSET '.(int) $this->qb_offset.' ROWS FETCH NEXT '.$this->qb_limit.' ROWS ONLY';
+			return $sql . ' OFFSET ' . (int) $this->qb_offset . ' ROWS FETCH NEXT ' . $this->qb_limit . ' ROWS ONLY';
 		}
 
-		$this->limit_used = TRUE;
-		return 'SELECT * FROM (SELECT inner_query.*, rownum rnum FROM ('.$sql.') inner_query WHERE rownum < '.($this->qb_offset + $this->qb_limit + 1).')'
-			.($this->qb_offset ? ' WHERE rnum >= '.($this->qb_offset + 1) : '');
+		$this->limit_used = true;
+		return 'SELECT * FROM (SELECT inner_query.*, rownum rnum FROM (' . $sql . ') inner_query WHERE rownum < ' . ($this->qb_offset + $this->qb_limit + 1) . ')'
+			. ($this->qb_offset ? ' WHERE rnum >= ' . ($this->qb_offset + 1) : '');
 	}
 
 	// --------------------------------------------------------------------
@@ -683,13 +644,11 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	protected function _close()
 	{
-		if (is_resource($this->curs_id))
-		{
+		if (is_resource($this->curs_id)) {
 			oci_free_statement($this->curs_id);
 		}
 
-		if (is_resource($this->stmt_id))
-		{
+		if (is_resource($this->stmt_id)) {
 			oci_free_statement($this->stmt_id);
 		}
 
@@ -706,7 +665,7 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	protected function _reset_select()
 	{
-		$this->limit_used = FALSE;
+		$this->limit_used = false;
 		parent::_reset_select();
 	}
 }

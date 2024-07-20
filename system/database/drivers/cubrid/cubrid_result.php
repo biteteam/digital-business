@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -36,7 +37,7 @@
  * @since	Version 2.1.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * CUBRID Result Class
@@ -47,7 +48,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		Esen Sagynov
  * @link		https://codeigniter.com/userguide3/database/
  */
-class CI_DB_cubrid_result extends CI_DB_result {
+class CI_DB_cubrid_result extends CI_DB_result
+{
 
 	/**
 	 * Number of rows in the result set
@@ -100,13 +102,12 @@ class CI_DB_cubrid_result extends CI_DB_result {
 	{
 		$retval = array();
 
-		for ($i = 0, $c = $this->num_fields(); $i < $c; $i++)
-		{
+		for ($i = 0, $c = $this->num_fields(); $i < $c; $i++) {
 			$retval[$i]			= new stdClass();
 			$retval[$i]->name		= cubrid_field_name($this->result_id, $i);
 			$retval[$i]->type		= cubrid_field_type($this->result_id, $i);
 			$retval[$i]->max_length		= cubrid_field_len($this->result_id, $i);
-			$retval[$i]->primary_key	= (int) (strpos(cubrid_field_flags($this->result_id, $i), 'primary_key') !== FALSE);
+			$retval[$i]->primary_key	= (int) (strpos(cubrid_field_flags($this->result_id, $i), 'primary_key') !== false);
 		}
 
 		return $retval;
@@ -121,11 +122,12 @@ class CI_DB_cubrid_result extends CI_DB_result {
 	 */
 	public function free_result()
 	{
-		if (is_resource($this->result_id) OR
-			(get_resource_type($this->result_id) === 'Unknown' && preg_match('/Resource id #/', strval($this->result_id))))
-		{
+		if (
+			is_resource($this->result_id) or
+			(get_resource_type($this->result_id) === 'Unknown' && preg_match('/Resource id #/', strval($this->result_id)))
+		) {
 			cubrid_close_request($this->result_id);
-			$this->result_id = FALSE;
+			$this->result_id = false;
 		}
 	}
 
@@ -174,5 +176,4 @@ class CI_DB_cubrid_result extends CI_DB_result {
 	{
 		return cubrid_fetch_object($this->result_id, $class_name);
 	}
-
 }

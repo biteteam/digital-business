@@ -112,7 +112,7 @@ class MOrder extends CI_Model
             $this->db->insert_batch(MOrder::$itemsTable, $orderItems);
         }
 
-        if ($this->db->trans_status() === FALSE) {
+        if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
             return "fail";
         }
@@ -166,7 +166,7 @@ class MOrder extends CI_Model
             'tanggalDiubah' => $orderTimeUpdated->format('Y-m-d H:i:s')
         ], ['idOrderDetail' => $detailOrder->idOrderDetail]);
 
-        if ($this->db->trans_status() === FALSE) {
+        if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
             return false;
         }

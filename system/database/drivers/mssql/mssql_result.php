@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -36,7 +37,7 @@
  * @since	Version 1.3.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * MSSQL Result Class
@@ -49,7 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		EllisLab Dev Team
  * @link		https://codeigniter.com/userguide3/database/
  */
-class CI_DB_mssql_result extends CI_DB_result {
+class CI_DB_mssql_result extends CI_DB_result
+{
 
 	/**
 	 * Number of rows in the result set
@@ -88,8 +90,7 @@ class CI_DB_mssql_result extends CI_DB_result {
 	{
 		$field_names = array();
 		mssql_field_seek($this->result_id, 0);
-		while ($field = mssql_fetch_field($this->result_id))
-		{
+		while ($field = mssql_fetch_field($this->result_id)) {
 			$field_names[] = $field->name;
 		}
 
@@ -108,8 +109,7 @@ class CI_DB_mssql_result extends CI_DB_result {
 	public function field_data()
 	{
 		$retval = array();
-		for ($i = 0, $c = $this->num_fields(); $i < $c; $i++)
-		{
+		for ($i = 0, $c = $this->num_fields(); $i < $c; $i++) {
 			$field = mssql_fetch_field($this->result_id, $i);
 
 			$retval[$i]		= new stdClass();
@@ -130,10 +130,9 @@ class CI_DB_mssql_result extends CI_DB_result {
 	 */
 	public function free_result()
 	{
-		if (is_resource($this->result_id))
-		{
+		if (is_resource($this->result_id)) {
 			mssql_free_result($this->result_id);
-			$this->result_id = FALSE;
+			$this->result_id = false;
 		}
 	}
 
@@ -182,18 +181,15 @@ class CI_DB_mssql_result extends CI_DB_result {
 	{
 		$row = mssql_fetch_object($this->result_id);
 
-		if ($class_name === 'stdClass' OR ! $row)
-		{
+		if ($class_name === 'stdClass' or !$row) {
 			return $row;
 		}
 
 		$class_name = new $class_name();
-		foreach ($row as $key => $value)
-		{
+		foreach ($row as $key => $value) {
 			$class_name->$key = $value;
 		}
 
 		return $class_name;
 	}
-
 }

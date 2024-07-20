@@ -128,7 +128,7 @@ class Midtrans
 		$info = curl_getinfo($ch);
 		// curl_close($ch);
 
-		if ($result === FALSE) {
+		if ($result === false) {
 			throw new Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
 		} else {
 			$result_array = json_decode($result);

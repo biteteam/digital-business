@@ -185,7 +185,7 @@ if (!function_exists('anchor_popup')) {
 	 * @param	mixed	any attributes
 	 * @return	string
 	 */
-	function anchor_popup($uri = '', $title = '', $attributes = FALSE)
+	function anchor_popup($uri = '', $title = '', $attributes = false)
 	{
 		$title = (string) $title;
 		$site_url = preg_match('#^(\w+:)?//#i', $uri) ? $uri : site_url($uri);
@@ -194,7 +194,7 @@ if (!function_exists('anchor_popup')) {
 			$title = $site_url;
 		}
 
-		if ($attributes === FALSE) {
+		if ($attributes === false) {
 			return '<a href="' . $site_url . '" onclick="window.open(\'' . $site_url . "', '_blank'); return false;\">" . $title . '</a>';
 		}
 
@@ -218,7 +218,7 @@ if (!function_exists('anchor_popup')) {
 		$attributes = _stringify_attributes($attributes);
 
 		return '<a href="' . $site_url
-			. '" onclick="window.open(\'' . $site_url . "', '" . $window_name . "', '" . _stringify_attributes($atts, TRUE) . "'); return false;\""
+			. '" onclick="window.open(\'' . $site_url . "', '" . $window_name . "', '" . _stringify_attributes($atts, true) . "'); return false;\""
 			. $attributes . '>' . $title . '</a>';
 	}
 }
@@ -358,7 +358,7 @@ if (!function_exists('auto_link')) {
 	 * @param	bool	whether to create pop-up links
 	 * @return	string
 	 */
-	function auto_link($str, $type = 'both', $popup = FALSE)
+	function auto_link($str, $type = 'both', $popup = false)
 	{
 		// Find and replace any URLs.
 		if ($type !== 'email' && preg_match_all('#(\w*://|www\.)[a-z0-9]+(-+[a-z0-9]+)*(\.[a-z0-9]+(-+[a-z0-9]+)*)+(/([^\s()<>;]+\w)?/?)?#i', $str, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
@@ -382,7 +382,7 @@ if (!function_exists('auto_link')) {
 		// Find and replace any emails.
 		if ($type !== 'url' && preg_match_all('#([\w\.\-\+]+@[a-z0-9\-]+\.[a-z0-9\-\.]+[^[:punct:]\s])#i', $str, $matches, PREG_OFFSET_CAPTURE)) {
 			foreach (array_reverse($matches[0]) as $match) {
-				if (filter_var($match[0], FILTER_VALIDATE_EMAIL) !== FALSE) {
+				if (filter_var($match[0], FILTER_VALIDATE_EMAIL) !== false) {
 					$str = substr_replace($str, safe_mailto($match[0]), $match[1], strlen($match[0]));
 				}
 			}
@@ -436,7 +436,7 @@ if (!function_exists('url_title')) {
 	 * @param	bool	$lowercase	Whether to transform the output string to lowercase
 	 * @return	string
 	 */
-	function url_title($str, $separator = '-', $lowercase = FALSE)
+	function url_title($str, $separator = '-', $lowercase = false)
 	{
 		if ($separator === 'dash') {
 			$separator = '-';
@@ -458,7 +458,7 @@ if (!function_exists('url_title')) {
 			$str = preg_replace('#' . $key . '#i' . (UTF8_ENABLED ? 'u' : ''), $val, $str);
 		}
 
-		if ($lowercase === TRUE) {
+		if ($lowercase === true) {
 			$str = strtolower($str);
 		}
 
@@ -489,7 +489,7 @@ if (!function_exists('redirect')) {
 		}
 
 		// IIS environment likely? Use 'refresh' for better compatibility
-		if ($method === 'auto' && isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== FALSE) {
+		if ($method === 'auto' && isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== false) {
 			$method = 'refresh';
 		} elseif ($method !== 'refresh' && (empty($code) or !is_numeric($code))) {
 			if (isset($_SERVER['SERVER_PROTOCOL'], $_SERVER['REQUEST_METHOD']) && $_SERVER['SERVER_PROTOCOL'] === 'HTTP/1.1') {
@@ -506,7 +506,7 @@ if (!function_exists('redirect')) {
 				header('Refresh:0;url=' . $uri);
 				break;
 			default:
-				header('Location: ' . $uri, TRUE, $code);
+				header('Location: ' . $uri, true, $code);
 				break;
 		}
 		exit;

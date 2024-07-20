@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -36,7 +37,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Javascript Class
@@ -48,7 +49,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link		https://codeigniter.com/userguide3/libraries/javascript.html
  * @deprecated	3.0.0	This was never a good idea in the first place.
  */
-class CI_Javascript {
+class CI_Javascript
+{
 
 	/**
 	 * JavaScript location
@@ -67,26 +69,24 @@ class CI_Javascript {
 	 */
 	public function __construct($params = array())
 	{
-		$defaults = array('js_library_driver' => 'jquery', 'autoload' => TRUE);
+		$defaults = array('js_library_driver' => 'jquery', 'autoload' => true);
 
-		foreach ($defaults as $key => $val)
-		{
-			if (isset($params[$key]) && $params[$key] !== '')
-			{
+		foreach ($defaults as $key => $val) {
+			if (isset($params[$key]) && $params[$key] !== '') {
 				$defaults[$key] = $params[$key];
 			}
 		}
 
 		extract($defaults);
 
-		$this->CI =& get_instance();
+		$this->CI = &get_instance();
 
 		// load the requested js library
-		$this->CI->load->library('Javascript/'.$js_library_driver, array('autoload' => $autoload));
+		$this->CI->load->library('Javascript/' . $js_library_driver, array('autoload' => $autoload));
 		// make js to refer to current library
-		$this->js =& $this->CI->$js_library_driver;
+		$this->js = &$this->CI->$js_library_driver;
 
-		log_message('info', 'Javascript Class Initialized and loaded. Driver used: '.$js_library_driver);
+		log_message('info', 'Javascript Class Initialized and loaded. Driver used: ' . $js_library_driver);
 	}
 
 	// --------------------------------------------------------------------
@@ -135,7 +135,7 @@ class CI_Javascript {
 	 * @param	bool	whether or not to return false
 	 * @return	string
 	 */
-	public function click($element = 'this', $js = '', $ret_false = TRUE)
+	public function click($element = 'this', $js = '', $ret_false = true)
 	{
 		return $this->js->_click($element, $js, $ret_false);
 	}
@@ -479,7 +479,6 @@ class CI_Javascript {
 	public function slideUp($element = 'this', $speed = '', $callback = '')
 	{
 		return $this->js->_slideUp($element, $speed, $callback);
-
 	}
 
 	// --------------------------------------------------------------------
@@ -530,7 +529,6 @@ class CI_Javascript {
 	public function slideToggle($element = 'this', $speed = '', $callback = '')
 	{
 		return $this->js->_slideToggle($element, $speed, $callback);
-
 	}
 
 	// --------------------------------------------------------------------
@@ -563,7 +561,6 @@ class CI_Javascript {
 	public function toggle($element = 'this')
 	{
 		return $this->js->_toggle($element);
-
 	}
 
 	// --------------------------------------------------------------------
@@ -610,7 +607,7 @@ class CI_Javascript {
 	 * @param	bool	$script_tags
 	 * @return	string
 	 */
-	public function compile($view_var = 'script_foot', $script_tags = TRUE)
+	public function compile($view_var = 'script_foot', $script_tags = true)
 	{
 		$this->js->_compile($view_var, $script_tags);
 	}
@@ -640,31 +637,23 @@ class CI_Javascript {
 	 * @param	bool	$relative
 	 * @return	string
 	 */
-	public function external($external_file = '', $relative = FALSE)
+	public function external($external_file = '', $relative = false)
 	{
-		if ($external_file !== '')
-		{
+		if ($external_file !== '') {
 			$this->_javascript_location = $external_file;
-		}
-		elseif ($this->CI->config->item('javascript_location') !== '')
-		{
+		} elseif ($this->CI->config->item('javascript_location') !== '') {
 			$this->_javascript_location = $this->CI->config->item('javascript_location');
 		}
 
-		if ($relative === TRUE OR strpos($external_file, 'http://') === 0 OR strpos($external_file, 'https://') === 0)
-		{
+		if ($relative === true or strpos($external_file, 'http://') === 0 or strpos($external_file, 'https://') === 0) {
 			$str = $this->_open_script($external_file);
-		}
-		elseif (strpos($this->_javascript_location, 'http://') !== FALSE)
-		{
-			$str = $this->_open_script($this->_javascript_location.$external_file);
-		}
-		else
-		{
-			$str = $this->_open_script($this->CI->config->slash_item('base_url').$this->_javascript_location.$external_file);
+		} elseif (strpos($this->_javascript_location, 'http://') !== false) {
+			$str = $this->_open_script($this->_javascript_location . $external_file);
+		} else {
+			$str = $this->_open_script($this->CI->config->slash_item('base_url') . $this->_javascript_location . $external_file);
 		}
 
-		return $str.$this->_close_script();
+		return $str . $this->_close_script();
 	}
 
 	// --------------------------------------------------------------------
@@ -678,10 +667,10 @@ class CI_Javascript {
 	 * @param	bool	If a CDATA section should be added
 	 * @return	string
 	 */
-	public function inline($script, $cdata = TRUE)
+	public function inline($script, $cdata = true)
 	{
 		return $this->_open_script()
-			. ($cdata ? "\n// <![CDATA[\n".$script."\n// ]]>\n" : "\n".$script."\n")
+			. ($cdata ? "\n// <![CDATA[\n" . $script . "\n// ]]>\n" : "\n" . $script . "\n")
 			. $this->_close_script();
 	}
 
@@ -697,8 +686,8 @@ class CI_Javascript {
 	 */
 	protected function _open_script($src = '')
 	{
-		return '<script type="text/javascript" charset="'.strtolower($this->CI->config->item('charset')).'"'
-			.($src === '' ? '>' : ' src="'.$src.'">');
+		return '<script type="text/javascript" charset="' . strtolower($this->CI->config->item('charset')) . '"'
+			. ($src === '' ? '>' : ' src="' . $src . '">');
 	}
 
 	// --------------------------------------------------------------------
@@ -713,7 +702,7 @@ class CI_Javascript {
 	 */
 	protected function _close_script($extra = "\n")
 	{
-		return '</script>'.$extra;
+		return '</script>' . $extra;
 	}
 
 	// --------------------------------------------------------------------
@@ -746,58 +735,42 @@ class CI_Javascript {
 	 * @param	bool	match array types (defaults to objects)
 	 * @return	string	a json formatted string
 	 */
-	public function generate_json($result = NULL, $match_array_type = FALSE)
+	public function generate_json($result = NULL, $match_array_type = false)
 	{
 		// JSON data can optionally be passed to this function
 		// either as a database result object or an array, or a user supplied array
-		if ($result !== NULL)
-		{
-			if (is_object($result))
-			{
+		if ($result !== NULL) {
+			if (is_object($result)) {
 				$json_result = is_callable(array($result, 'result_array')) ? $result->result_array() : (array) $result;
-			}
-			elseif (is_array($result))
-			{
+			} elseif (is_array($result)) {
 				$json_result = $result;
-			}
-			else
-			{
+			} else {
 				return $this->_prep_args($result);
 			}
-		}
-		else
-		{
+		} else {
 			return 'null';
 		}
 
 		$json = array();
-		$_is_assoc = TRUE;
+		$_is_assoc = true;
 
-		if ( ! is_array($json_result) && empty($json_result))
-		{
+		if (!is_array($json_result) && empty($json_result)) {
 			show_error('Generate JSON Failed - Illegal key, value pair.');
-		}
-		elseif ($match_array_type)
-		{
+		} elseif ($match_array_type) {
 			$_is_assoc = $this->_is_associative_array($json_result);
 		}
 
-		foreach ($json_result as $k => $v)
-		{
-			if ($_is_assoc)
-			{
-				$json[] = $this->_prep_args($k, TRUE).':'.$this->generate_json($v, $match_array_type);
-			}
-			else
-			{
+		foreach ($json_result as $k => $v) {
+			if ($_is_assoc) {
+				$json[] = $this->_prep_args($k, true) . ':' . $this->generate_json($v, $match_array_type);
+			} else {
 				$json[] = $this->generate_json($v, $match_array_type);
 			}
 		}
 
 		$json = implode(',', $json);
 
-		return $_is_assoc ? '{'.$json.'}' : '['.$json.']';
-
+		return $_is_assoc ? '{' . $json . '}' : '[' . $json . ']';
 	}
 
 	// --------------------------------------------------------------------
@@ -812,15 +785,13 @@ class CI_Javascript {
 	 */
 	protected function _is_associative_array($arr)
 	{
-		foreach (array_keys($arr) as $key => $val)
-		{
-			if ($key !== $val)
-			{
-				return TRUE;
+		foreach (array_keys($arr) as $key => $val) {
+			if ($key !== $val) {
+				return true;
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	// --------------------------------------------------------------------
@@ -831,27 +802,19 @@ class CI_Javascript {
 	 * Ensures a standard json value and escapes values
 	 *
 	 * @param	mixed	$result
-	 * @param	bool	$is_key = FALSE
+	 * @param	bool	$is_key = false
 	 * @return	string
 	 */
-	protected function _prep_args($result, $is_key = FALSE)
+	protected function _prep_args($result, $is_key = false)
 	{
-		if ($result === NULL)
-		{
+		if ($result === NULL) {
 			return 'null';
-		}
-		elseif (is_bool($result))
-		{
-			return ($result === TRUE) ? 'true' : 'false';
-		}
-		elseif (is_string($result) OR $is_key)
-		{
-			return '"'.str_replace(array('\\', "\t", "\n", "\r", '"', '/'), array('\\\\', '\\t', '\\n', "\\r", '\"', '\/'), $result).'"';
-		}
-		elseif (is_scalar($result))
-		{
+		} elseif (is_bool($result)) {
+			return ($result === true) ? 'true' : 'false';
+		} elseif (is_string($result) or $is_key) {
+			return '"' . str_replace(array('\\', "\t", "\n", "\r", '"', '/'), array('\\\\', '\\t', '\\n', "\\r", '\"', '\/'), $result) . '"';
+		} elseif (is_scalar($result)) {
 			return $result;
 		}
 	}
-
 }

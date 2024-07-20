@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -36,7 +37,7 @@
  * @since	Version 3.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * PDO CUBRID Database Adapter Class
@@ -51,7 +52,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		EllisLab Dev Team
  * @link		https://codeigniter.com/userguide3/database/
  */
-class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
+class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver
+{
 
 	/**
 	 * Sub-driver
@@ -88,13 +90,12 @@ class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
 	{
 		parent::__construct($params);
 
-		if (empty($this->dsn))
-		{
-			$this->dsn = 'cubrid:host='.(empty($this->hostname) ? '127.0.0.1' : $this->hostname);
+		if (empty($this->dsn)) {
+			$this->dsn = 'cubrid:host=' . (empty($this->hostname) ? '127.0.0.1' : $this->hostname);
 
-			empty($this->port) OR $this->dsn .= ';port='.$this->port;
-			empty($this->database) OR $this->dsn .= ';dbname='.$this->database;
-			empty($this->char_set) OR $this->dsn .= ';charset='.$this->char_set;
+			empty($this->port) or $this->dsn .= ';port=' . $this->port;
+			empty($this->database) or $this->dsn .= ';dbname=' . $this->database;
+			empty($this->char_set) or $this->dsn .= ';charset=' . $this->char_set;
 		}
 	}
 
@@ -108,13 +109,12 @@ class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
 	 * @param	bool	$prefix_limit
 	 * @return	string
 	 */
-	protected function _list_tables($prefix_limit = FALSE)
+	protected function _list_tables($prefix_limit = false)
 	{
 		$sql = 'SHOW TABLES';
 
-		if ($prefix_limit === TRUE && $this->dbprefix !== '')
-		{
-			return $sql." LIKE '".$this->escape_like_str($this->dbprefix)."%'";
+		if ($prefix_limit === true && $this->dbprefix !== '') {
+			return $sql . " LIKE '" . $this->escape_like_str($this->dbprefix) . "%'";
 		}
 
 		return $sql;
@@ -132,7 +132,7 @@ class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
 	 */
 	protected function _list_columns($table = '')
 	{
-		return 'SHOW COLUMNS FROM '.$this->protect_identifiers($table, TRUE, NULL, FALSE);
+		return 'SHOW COLUMNS FROM ' . $this->protect_identifiers($table, true, NULL, false);
 	}
 
 	// --------------------------------------------------------------------
@@ -145,19 +145,19 @@ class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
 	 */
 	public function field_data($table)
 	{
-		if (($query = $this->query('SHOW COLUMNS FROM '.$this->protect_identifiers($table, TRUE, NULL, FALSE))) === FALSE)
-		{
-			return FALSE;
+		if (($query = $this->query('SHOW COLUMNS FROM ' . $this->protect_identifiers($table, true, NULL, false))) === false) {
+			return false;
 		}
 		$query = $query->result_object();
 
 		$retval = array();
-		for ($i = 0, $c = count($query); $i < $c; $i++)
-		{
+		for ($i = 0, $c = count($query); $i < $c; $i++) {
 			$retval[$i]			= new stdClass();
 			$retval[$i]->name		= $query[$i]->Field;
 
-			sscanf($query[$i]->Type, '%[a-z](%d)',
+			sscanf(
+				$query[$i]->Type,
+				'%[a-z](%d)',
 				$retval[$i]->type,
 				$retval[$i]->max_length
 			);
@@ -184,7 +184,7 @@ class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
 	 */
 	protected function _truncate($table)
 	{
-		return 'TRUNCATE '.$table;
+		return 'TRUNCATE ' . $table;
 	}
 
 	// --------------------------------------------------------------------
@@ -199,12 +199,10 @@ class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
 	 */
 	protected function _from_tables()
 	{
-		if ( ! empty($this->qb_join) && count($this->qb_from) > 1)
-		{
-			return '('.implode(', ', $this->qb_from).')';
+		if (!empty($this->qb_join) && count($this->qb_from) > 1) {
+			return '(' . implode(', ', $this->qb_from) . ')';
 		}
 
 		return implode(', ', $this->qb_from);
 	}
-
 }

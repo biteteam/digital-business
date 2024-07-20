@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -36,7 +37,7 @@
  * @since	Version 3.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * PDO Informix Forge Class
@@ -45,7 +46,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		EllisLab Dev Team
  * @link		https://codeigniter.com/userguide3/database/
  */
-class CI_DB_pdo_informix_forge extends CI_DB_pdo_forge {
+class CI_DB_pdo_informix_forge extends CI_DB_pdo_forge
+{
 
 	/**
 	 * RENAME TABLE statement
@@ -86,8 +88,7 @@ class CI_DB_pdo_informix_forge extends CI_DB_pdo_forge {
 	 */
 	protected function _alter_table($alter_type, $table, $field)
 	{
-		if ($alter_type === 'CHANGE')
-		{
+		if ($alter_type === 'CHANGE') {
 			$alter_type = 'MODIFY';
 		}
 
@@ -106,27 +107,26 @@ class CI_DB_pdo_informix_forge extends CI_DB_pdo_forge {
 	 */
 	protected function _attr_type(&$attributes)
 	{
-		switch (strtoupper($attributes['TYPE']))
-		{
+		switch (strtoupper($attributes['TYPE'])) {
 			case 'TINYINT':
 				$attributes['TYPE'] = 'SMALLINT';
-				$attributes['UNSIGNED'] = FALSE;
+				$attributes['UNSIGNED'] = false;
 				return;
 			case 'MEDIUMINT':
 				$attributes['TYPE'] = 'INTEGER';
-				$attributes['UNSIGNED'] = FALSE;
+				$attributes['UNSIGNED'] = false;
 				return;
 			case 'BYTE':
 			case 'TEXT':
 			case 'BLOB':
 			case 'CLOB':
-				$attributes['UNIQUE'] = FALSE;
-				if (isset($attributes['DEFAULT']))
-				{
+				$attributes['UNIQUE'] = false;
+				if (isset($attributes['DEFAULT'])) {
 					unset($attributes['DEFAULT']);
 				}
 				return;
-			default: return;
+			default:
+				return;
 		}
 	}
 
@@ -141,9 +141,8 @@ class CI_DB_pdo_informix_forge extends CI_DB_pdo_forge {
 	 */
 	protected function _attr_unique(&$attributes, &$field)
 	{
-		if ( ! empty($attributes['UNIQUE']) && $attributes['UNIQUE'] === TRUE)
-		{
-			$field['unique'] = ' UNIQUE CONSTRAINT '.$this->db->escape_identifiers($field['name']);
+		if (!empty($attributes['UNIQUE']) && $attributes['UNIQUE'] === true) {
+			$field['unique'] = ' UNIQUE CONSTRAINT ' . $this->db->escape_identifiers($field['name']);
 		}
 	}
 
@@ -160,5 +159,4 @@ class CI_DB_pdo_informix_forge extends CI_DB_pdo_forge {
 	{
 		// Not supported
 	}
-
 }

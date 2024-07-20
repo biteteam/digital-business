@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -36,7 +37,7 @@
  * @since	Version 2.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * CodeIgniter APC Caching Class
@@ -47,7 +48,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		EllisLab Dev Team
  * @link
  */
-class CI_Cache_apc extends CI_Driver {
+class CI_Cache_apc extends CI_Driver
+{
 
 	/**
 	 * Class constructor
@@ -59,8 +61,7 @@ class CI_Cache_apc extends CI_Driver {
 	 */
 	public function __construct()
 	{
-		if ( ! $this->is_supported())
-		{
+		if (!$this->is_supported()) {
 			log_message('error', 'Cache: Failed to initialize APC; extension not loaded/enabled?');
 		}
 	}
@@ -71,17 +72,17 @@ class CI_Cache_apc extends CI_Driver {
 	 * Get
 	 *
 	 * Look for a value in the cache. If it exists, return the data
-	 * if not, return FALSE
+	 * if not, return false
 	 *
 	 * @param	string
-	 * @return	mixed	value that is stored/FALSE on failure
+	 * @return	mixed	value that is stored/false on failure
 	 */
 	public function get($id)
 	{
-		$success = FALSE;
+		$success = false;
 		$data = apc_fetch($id, $success);
 
-		return ($success === TRUE) ? $data : FALSE;
+		return ($success === true) ? $data : false;
 	}
 
 	// ------------------------------------------------------------------------
@@ -93,9 +94,9 @@ class CI_Cache_apc extends CI_Driver {
 	 * @param	mixed	$data	Data to store
 	 * @param	int	$ttl	Length of time (in seconds) to cache the data
 	 * @param	bool	$raw	Whether to store the raw value (unused)
-	 * @return	bool	TRUE on success, FALSE on failure
+	 * @return	bool	true on success, false on failure
 	 */
-	public function save($id, $data, $ttl = 60, $raw = FALSE)
+	public function save($id, $data, $ttl = 60, $raw = false)
 	{
 		return apc_store($id, $data, (int) $ttl);
 	}
@@ -120,7 +121,7 @@ class CI_Cache_apc extends CI_Driver {
 	 *
 	 * @param	string	$id	Cache ID
 	 * @param	int	$offset	Step/value to add
-	 * @return	mixed	New value on success or FALSE on failure
+	 * @return	mixed	New value on success or false on failure
 	 */
 	public function increment($id, $offset = 1)
 	{
@@ -134,7 +135,7 @@ class CI_Cache_apc extends CI_Driver {
 	 *
 	 * @param	string	$id	Cache ID
 	 * @param	int	$offset	Step/value to reduce by
-	 * @return	mixed	New value on success or FALSE on failure
+	 * @return	mixed	New value on success or false on failure
 	 */
 	public function decrement($id, $offset = 1)
 	{
@@ -176,30 +177,27 @@ class CI_Cache_apc extends CI_Driver {
 	 */
 	public function get_metadata($id)
 	{
-		$cache_info = apc_cache_info('user', FALSE);
-		if (empty($cache_info) OR empty($cache_info['cache_list']))
-		{
-			return FALSE;
+		$cache_info = apc_cache_info('user', false);
+		if (empty($cache_info) or empty($cache_info['cache_list'])) {
+			return false;
 		}
 
-		foreach ($cache_info['cache_list'] as &$entry)
-		{
-			if ($entry['info'] !== $id)
-			{
+		foreach ($cache_info['cache_list'] as &$entry) {
+			if ($entry['info'] !== $id) {
 				continue;
 			}
 
-			$success  = FALSE;
+			$success  = false;
 			$metadata = array(
 				'expire' => ($entry['ttl'] ? $entry['mtime'] + $entry['ttl'] : 0),
 				'mtime'  => $entry['ttl'],
 				'data'   => apc_fetch($id, $success)
 			);
 
-			return ($success === TRUE) ? $metadata : FALSE;
+			return ($success === true) ? $metadata : false;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	// ------------------------------------------------------------------------
