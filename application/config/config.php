@@ -23,11 +23,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = getenv('BASE_URL');
+$config['base_url'] = $_SERVER['BASE_URL'];
 
-$config['raja_ongkir_apikey'] = getenv('RAJA_ONGKIR_APIKEY');
-$config['midtrans_client_apikey'] = getenv('MIDTRANS_CLIENT_APIKEY');
-$config['midtrans_server_apikey'] = getenv('MIDTRANS_SERVER_APIKEY');
+$config['raja_ongkir_apikey'] = $_SERVER['RAJA_ONGKIR_APIKEY'];
+$config['midtrans_client_apikey'] = $_SERVER['MIDTRANS_CLIENT_APIKEY'];
+$config['midtrans_server_apikey'] = $_SERVER['MIDTRANS_SERVER_APIKEY'];
 
 /*
 |--------------------------------------------------------------------------
