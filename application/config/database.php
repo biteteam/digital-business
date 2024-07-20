@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -73,12 +73,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+
+
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'nsmle',
-	'password' => 'sleep',
-	'database' => 'tokokita_2551',
+	'hostname' => getenv('DATABASE_HOST'),
+	'username' => getenv('DATABASE_USER'),
+	'password' => getenv('DATABASE_PASS'),
+	'database' => getenv('DATABASE_NAME'),
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

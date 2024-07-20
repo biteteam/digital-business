@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://fiki.ai';
+$config['base_url'] = getenv('BASE_URL');
 
 $config['raja_ongkir_apikey'] = getenv('RAJA_ONGKIR_APIKEY');
 $config['midtrans_client_apikey'] = getenv('MIDTRANS_CLIENT_APIKEY');
@@ -143,7 +143,7 @@ $config['subclass_prefix'] = 'Base';
 | Note: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
-$config['composer_autoload'] = FALSE;
+$config['composer_autoload'] = true;
 
 /*
 |--------------------------------------------------------------------------
@@ -256,7 +256,7 @@ $config['log_path'] = 'application/logs/';
 | Note: Leaving it blank will default to 'php'.
 |
 */
-$config['log_file_extension'] = '';
+$config['log_file_extension'] = 'log';
 
 /*
 |--------------------------------------------------------------------------
