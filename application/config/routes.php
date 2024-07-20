@@ -60,7 +60,6 @@ $route['produk/(:num)'] = 'produk/index/$1';
 $route['produk/(:num)/edit/(:num)'] = 'produk/edit/$1/$2';
 
 $route['detail-produk/(:num)'] = 'main/detail-produk/$1';
-$route['produk-by-kategori/(:num)'] = 'main/produk-by-kategori/$1';
 
 $route['api/province/(:num)'] = 'main/province/$1';
 $route['api/province'] = 'main/province';

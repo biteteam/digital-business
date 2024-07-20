@@ -75,16 +75,18 @@
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
+                <?php if (current_url() !== base_url('shop')) : ?>
+                    <form action="">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="search" value="<?= $this->input->get('search') ?>" placeholder="Search for products">
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-transparent text-primary">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                <?php endif ?>
             </div>
             <div class="col-lg-3 col-6 text-right">
                 <?php if ($this->isAuthenticated && $this->header['shopOrderActionCount'] >= 1) : ?>
@@ -119,8 +121,8 @@
                         <?php if (empty($this->session->userdata('member'))) : ?>
                             <div class="navbar-nav mr-auto py-0">
                                 <a href="<?= site_url('/') ?>" class="nav-item nav-link active">Home</a>
-                                <a href="<?= site_url('/#product') ?>" class="nav-item nav-link">Shop</a>
-                                <a href="<?= site_url('/#product') ?>" class="nav-item nav-link">Shop Detail</a>
+                                <a href="<?= site_url('/shop') ?>" class="nav-item nav-link">Shop</a>
+                                <!-- <a href="<?= site_url('/#product') ?>" class="nav-item nav-link">Shop Detail</a>
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                                     <div class="dropdown-menu rounded-0 m-0">
@@ -128,7 +130,7 @@
                                         <a href="checkout.html" class="dropdown-item">Checkout</a>
                                     </div>
                                 </div>
-                                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                                <a href="contact.html" class="nav-item nav-link">Contact</a> -->
                             </div>
                             <div class="navbar-nav ml-auto py-0">
                                 <a href="<?= site_url('auth/login') ?>" class="nav-item nav-link">Login</a>

@@ -70,6 +70,24 @@ class MAdmin extends CI_Model
         return $q;
     }
 
+    public function get_produk_filter($filter = null)
+    {
+        if ($filter) {
+            foreach ($filter as $fieldKey => $fieldValue) {
+                if ($fieldKey == 'tbl_produk.namaProduk') {
+                    $this->db->like($fieldKey, $fieldValue);
+                } else if (is_array($fieldValue)) {
+                    $this->db->where_in($fieldKey, $fieldValue);
+                } else {
+                    $this->db->where($fieldKey, $fieldValue);
+                }
+            }
+        }
+
+        $q = $this->get_produk();
+        return $q;
+    }
+
     public function get_all_by($table, $whereKey, $whereVal)
     {
         $this->db->where($whereKey, $whereVal);

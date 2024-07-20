@@ -6,7 +6,7 @@
     <nav class="collapse <?= (empty($this->uri->segment('1'))) ? 'show' : '' ?> navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
         <div class="navbar-nav w-100 overflow-hidden">
             <?php foreach ($this->header['kategori'] as $kt) : ?>
-                <a href="<?= site_url('produk-by-kategori/' . $kt->idKat) ?>" class="nav-item nav-link"><?= $kt->namaKat ?></a>
+                <a href="<?= site_url('shop?category=' . $kt->idKat) ?>" class="nav-item nav-link"><?= $kt->namaKat ?></a>
             <?php endforeach ?>
         </div>
     </nav>
