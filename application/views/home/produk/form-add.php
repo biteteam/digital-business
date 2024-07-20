@@ -21,7 +21,7 @@
                     <span class="text-danger"><small><?= form_error('nama') ?></small></span>
                 </div>
                 <div class="control-group mb-3">
-                    <input type="file" accept=".png,.png,.jpeg,.jpg" class="form-control" id="foto" name="foto" value="<?= set_value('foto') ?>" />
+                    <input type="file" accept=".jpg,.jpeg,.png,.gif,.ico,.svg,.webp" class="form-control" id="foto" name="foto" value="<?= set_value('foto') ?>" />
                     <span class="text-danger"><small><?= form_error('foto') ?></small></span>
                 </div>
                 <div class="control-group mb-3">

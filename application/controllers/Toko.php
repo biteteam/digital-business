@@ -4,8 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Toko extends BaseController
 {
     private $uploadConfig = [
-        'upload_path'   => './assets/logo_toko/',
-        'allowed_types' => 'jpg|png|jpeg',
+        'upload_path'   => 'assets/logo_toko/',
+        'allowed_types' => 'jpg|jpeg|png|gif|ico|svg|webp',
         'overwrite'     => true
     ];
 
@@ -80,6 +80,9 @@ class Toko extends BaseController
             $this->adminModel->insert('tbl_toko', $data_insert);
             $this->session->set_flashdata('success', "Berhasil menambahkan toko");
             return redirect('toko');
+        } else {
+            $error = $this->upload->display_errors();
+            log_message('error', 'Upload logo toko error: ' . $error);
         }
 
         $this->session->set_flashdata('error', "Gagal menambahkan toko");

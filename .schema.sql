@@ -7,6 +7,19 @@ CREATE DATABASE IF NOT EXISTS tokokita_2551;
 USE tokokita_2551;
 
 -- Create tables
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS tbl_admin;
+DROP TABLE IF EXISTS tbl_member;
+DROP TABLE IF EXISTS tbl_kategori;
+DROP TABLE IF EXISTS tbl_toko;
+DROP TABLE IF EXISTS tbl_produk;
+DROP TABLE IF EXISTS tbl_cart;
+DROP TABLE IF EXISTS tbl_order;
+DROP TABLE IF EXISTS tbl_order_detail;
+DROP TABLE IF EXISTS tbl_order_items;
+DROP TABLE IF EXISTS tbl_rating;
+SET FOREIGN_KEY_CHECKS = 1;
+
 CREATE TABLE tbl_admin (
     idAdmin INT(2) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     userName VARCHAR(100),
@@ -39,6 +52,7 @@ CREATE TABLE tbl_toko (
     statusAktif ENUM('Y', 'N'),
     CONSTRAINT FK_Toko_Konsumen
         FOREIGN KEY (idKonsumen) REFERENCES tbl_member(idKonsumen)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE tbl_produk (
@@ -52,21 +66,24 @@ CREATE TABLE tbl_produk (
     berat INT(5),
     deskripsiProduk TEXT,
     CONSTRAINT FK_Produk_Kategori
-        FOREIGN KEY (idKat) REFERENCES tbl_kategori(idKat),
+        FOREIGN KEY (idKat) REFERENCES tbl_kategori(idKat)
+        ON DELETE CASCADE,
     CONSTRAINT FK_Produk_Toko
         FOREIGN KEY (idToko) REFERENCES tbl_toko(idToko)
+        ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS tbl_cart;
 CREATE TABLE tbl_cart (
     id INT(5) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idProduk INT(5) NOT NULL,
     idKonsumen INT(5) NOT NULL,
     qty INT NOT NULL,
     CONSTRAINT FK_Cart_User
-        FOREIGN KEY (idKonsumen) REFERENCES tbl_member(idKonsumen),
+        FOREIGN KEY (idKonsumen) REFERENCES tbl_member(idKonsumen)
+        ON DELETE CASCADE,
     CONSTRAINT FK_Cart_Produk
         FOREIGN KEY (idProduk) REFERENCES tbl_produk(idProduk)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE tbl_order (
@@ -78,7 +95,9 @@ CREATE TABLE tbl_order (
     tanggalDiubah DATETIME,
     CONSTRAINT FK_Order_Konsumen
         FOREIGN KEY (idKonsumen) REFERENCES tbl_member(idKonsumen)
+        ON DELETE CASCADE
 );
+
 
 CREATE TABLE tbl_order_detail (
     idOrderDetail INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -96,9 +115,11 @@ CREATE TABLE tbl_order_detail (
     tanggalDibuat DATETIME,
     tanggalDiubah DATETIME,
     CONSTRAINT FK_OrderDetail_Order
-        FOREIGN KEY (idOrder) REFERENCES tbl_order(idOrder),
+        FOREIGN KEY (idOrder) REFERENCES tbl_order(idOrder) 
+        ON DELETE CASCADE, 
     CONSTRAINT FK_OrderDetail_Toko
-        FOREIGN KEY (idToko) REFERENCES tbl_toko(idToko)
+        FOREIGN KEY (idToko) REFERENCES tbl_toko(idToko) 
+        ON DELETE CASCADE
 ); 
 
 CREATE TABLE tbl_order_items (
@@ -109,6 +130,7 @@ CREATE TABLE tbl_order_items (
     harga INT(10) NOT NULL,
     CONSTRAINT FK_OrderItem_OrderDetail
         FOREIGN KEY (idOrderDetail) REFERENCES tbl_order_detail(idOrderDetail)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE tbl_rating (
@@ -118,5 +140,6 @@ CREATE TABLE tbl_rating (
     review VARCHAR(255) NOT NULL,
     rateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT FK_OrderItem_Rating
-        FOREIGN KEY (idOrderItem) REFERENCES tbl_order_items(idOrderItem)
+        FOREIGN KEY (idOrderItem) REFERENCES tbl_order_items(idOrderItem) 
+        ON DELETE CASCADE
 );

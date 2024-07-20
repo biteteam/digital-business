@@ -15,7 +15,7 @@
                     <span class="text-danger"><small><?= form_error('namaToko') ?></small></span>
                 </div>
                 <div class="control-group mb-3">
-                    <input type="file" accept=".png,.png,.jpeg,.jpg" class="form-control" value="<?= set_value('logo', $toko->logo) ?>" id="logo" name="logo" placeholder="Logo" />
+                    <input type="file" accept=".jpg,.jpeg,.png,.gif,.ico,.svg,.webp" class="form-control" value="<?= set_value('logo', $toko->logo) ?>" id="logo" name="logo" placeholder="Logo" />
                     <span class="text-danger"><small><?= form_error('logo') ?></small></span>
                 </div>
                 <div class="control-group mb-3">

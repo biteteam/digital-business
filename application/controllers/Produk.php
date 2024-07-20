@@ -4,8 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Produk extends BaseController
 {
     private $uploadConfig = [
-        'upload_path'   => './assets/foto_produk/',
-        'allowed_types' => 'jpg|png|jpeg',
+        'upload_path'   => 'assets/foto_produk/',
+        'allowed_types' => 'jpg|jpeg|png|gif|ico|svg|webp',
         'overwrite'     => true
     ];
 
@@ -61,8 +61,9 @@ class Produk extends BaseController
         }
 
         $data['idToko'] = $idToko;
+        $data['kategori'] = $this->adminModel->get_all_data('tbl_kategori')->result();
         $this->load->view('home/layout/header');
-        $this->load->view('home/produk/form-add');
+        $this->load->view('home/produk/form-add', $data);
         $this->load->view('home/layout/footer');
     }
 
