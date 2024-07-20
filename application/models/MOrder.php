@@ -15,6 +15,7 @@ class MOrder extends CI_Model
         $itemsT = MOrder::$itemsTable;
         $tokoT = "tbl_toko";
         $produkT = "tbl_produk";
+        $ratingT = "tbl_rating";
 
         $this->db->select("$orderT.idOrder AS idOrder");
         $this->db->select("$orderT.statusTransaksi AS statusTransaksi");
@@ -46,14 +47,19 @@ class MOrder extends CI_Model
         $this->db->select("$tokoT.deskripsi AS deskripsiToko");
         $this->db->select("$tokoT.logo AS logoToko");
         // 
+        $this->db->select("$itemsT.idOrderItem AS idOrderItem");
         $this->db->select("$itemsT.harga AS hargaOrder");
         $this->db->select("$itemsT.jumlah AS qtyOrder");
+        // 
+        $this->db->select("$ratingT.rating AS rating");
+        $this->db->select("$ratingT.review AS review");
 
         $this->db->from($orderT);
         $this->db->join($detailT, "$detailT.idOrder = $orderT.idOrder", "right");
         $this->db->join($itemsT, "$itemsT.idOrderDetail = $detailT.idOrderDetail", "right");
         $this->db->join($tokoT, "$tokoT.idToko = $detailT.idToko", "right");
         $this->db->join($produkT, "$produkT.idProduk = $itemsT.idProduk", "right");
+        $this->db->join($ratingT, "$ratingT.idOrderItem = $itemsT.idOrderItem", "left");
 
         $this->db->where("$orderT.idKonsumen", $userId);
         $this->db->order_by("$orderT.tanggalDibuat", "DESC");
@@ -135,6 +141,14 @@ class MOrder extends CI_Model
         return $this->db->affected_rows();
     }
 
+    public function changeOrderDetailState($state, $orderDetailId)
+    {
+        $this->db->update(MOrder::$detailTable, [
+            "statusOrder" => $state
+        ], ['idOrderDetail' => $orderDetailId]);
+        return $this->db->affected_rows();
+    }
+
     public function change_resi($orderDetailId, $resi)
     {
         $orderTimeUpdated = new DateTime('now', new DateTimeZone('+0700'));
@@ -183,7 +197,7 @@ class MOrder extends CI_Model
     }
 
 
-    public function shopOrder($sellerId)
+    public function shopOrder($sellerId, $tokoId = null)
     {
         $detailT = MOrder::$detailTable;
         $itemT = MOrder::$itemsTable;
@@ -202,6 +216,7 @@ class MOrder extends CI_Model
         $this->db->join("$tokoT AS toko", "toko.idToko = order_detail.idToko", "right");
 
         $this->db->where("toko.idKonsumen", $sellerId);
+        if (!empty($tokoId)) $this->db->where("toko.idToko", $tokoId);
         $this->db->order_by("order_detail.tanggalDiubah", "DESC");
 
         $query = $this->db->get(MOrder::$table);

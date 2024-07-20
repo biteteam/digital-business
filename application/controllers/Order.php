@@ -34,7 +34,21 @@ class Order extends BaseController
 
     public function rating()
     {
-        // TODO: rating product by order success
+        $this->load->model('MRating', 'ratingModel');
+        $referer = $this->input->server('HTTP_REFERER');
+
+        $orderItemId = $this->input->post('order-item-id');
+        $rating = $this->input->post('rating');
+        $review = $this->input->post('review');
+
+        $isRated = $this->ratingModel->rating($rating, $review, $orderItemId);
+        if (!$isRated) {
+            $this->session->set_flashdata("error", "Gagal memberi rating!");
+            return redirect("order");
+        }
+
+        $this->session->set_flashdata("success", "Berhasil memberi rating!");
+        return redirect($referer ?? 'order');
     }
 
     public function pay()
@@ -168,6 +182,39 @@ class Order extends BaseController
             ->set_output(json_encode($result));
     }
 
+    public function update_state()
+    {
+        if ($this->input->method(true) !== "POST") {
+            $this->session->set_flashdata("error", "Anda tidak di izinkan untuk melakukan hal ini!");
+            return redirect('order');
+        }
+
+        $status = [
+            'cxcl' => 'Dibatalkan',
+            'unpy' => 'Belum Dibayar',
+            'ispy' => 'Dikemas',
+            'shpn' => 'Dikirim',
+            'accp' => 'Diterima',
+            'rtng' => 'Dinilai'
+        ];
+
+
+        try {
+            $orderDetailId = $this->input->post('order-detail-id');
+            $orderStatus = in_array($this->input->post('order-state'), array_keys($status)) ? $status[$this->input->post('order-state')] : null;
+            if (is_null($orderStatus)) throw new Error("Ada yang salah");
+
+            $isUpdated = $this->orderModel->changeOrderDetailState($orderStatus, $orderDetailId);
+            if (!$isUpdated) throw new Error("Gagal memperbarui pesanan!");
+
+            $this->session->set_flashdata("success", "Pesanan berhasil sampai dan diterima!");
+        } catch (\Throwable $e) {
+            $this->session->set_flashdata("error", $e->getMessage());
+        }
+
+        return redirect('order');
+    }
+
     public function payment_state()
     {
         $paymentRawResult = $this->input->post('payment-result');
@@ -185,10 +232,6 @@ class Order extends BaseController
 
 
 
-    public function tracking()
-    {
-        // TODO: tracking an order
-    }
 
 
     private function mapOrders($rawOrders)
@@ -201,17 +244,18 @@ class Order extends BaseController
             if (empty($orders[$raw['idOrder']]['detail'][$raw['idToko']])) $orders[$raw['idOrder']]['detail'][$raw['idToko']] = [];
             if (empty($orders[$raw['idOrder']]['detail'][$raw['idToko']]['items'])) $orders[$raw['idOrder']]['detail'][$raw['idToko']]['items'] = [];
 
+            $orders[$raw['idOrder']]['idOrder'] = $raw['idOrder'];
             $orders[$raw['idOrder']]['totalOngkir'] = 0;
             $orders[$raw['idOrder']]['totalBerat'] = 0;
             $orders[$raw['idOrder']]['subTotal'] = 0;
             $orders[$raw['idOrder']]['total'] = 0;
 
-            $itemProp = ['idProduk' => 'id', 'idKategori' => 'idKategori', 'namaProduk' => 'nama', 'fotoProduk' => 'foto', 'hargaOrder' => 'harga', 'beratProduk' => 'berat', 'qtyOrder' => 'qty'];
+            $itemProp = ['idProduk' => 'id', 'idKategori' => 'idKategori', 'idOrderItem' => 'idOrderItem', 'rating' => 'rating', 'review' => 'review', 'namaProduk' => 'nama', 'fotoProduk' => 'foto', 'hargaOrder' => 'harga', 'beratProduk' => 'berat', 'qtyOrder' => 'qty'];
             foreach ($itemProp as $dbProp => $editedKeyProp) {
                 $orders[$raw['idOrder']]['detail'][$raw['idToko']]['items'][$raw['idProduk']][$editedKeyProp] = $raw[$dbProp];
             }
 
-            $storeProp = ['idToko' => 'idToko', 'namaToko' => 'namaToko', 'logoToko' => 'logoToko', 'deskripsiToko' => 'deskripsiToko', 'tanggalOrder' => 'tanggalOrder', 'tanggalDiubah' => 'tanggalDiubah', 'statusOrder' => 'status', 'resi' => 'resi', 'ongkir' => 'ongkir', 'kurir' => 'kurir', 'etd' => 'etd', 'fromIdKota' => 'fromIdKota', 'toIdKota' => 'toIdKota', 'fromAddress' => 'fromAddress', 'toAddress' => 'toAddress'];
+            $storeProp = ['idToko' => 'idToko', 'idOrderDetail' => 'orderDetailId', 'namaToko' => 'namaToko', 'logoToko' => 'logoToko', 'deskripsiToko' => 'deskripsiToko', 'tanggalOrder' => 'tanggalOrder', 'tanggalDiubah' => 'tanggalDiubah', 'statusOrder' => 'status', 'resi' => 'resi', 'ongkir' => 'ongkir', 'kurir' => 'kurir', 'etd' => 'etd', 'fromIdKota' => 'fromIdKota', 'toIdKota' => 'toIdKota', 'fromAddress' => 'fromAddress', 'toAddress' => 'toAddress'];
             foreach ($storeProp as $dbProp => $editedKeyProp) {
                 $orders[$raw['idOrder']]['detail'][$raw['idToko']][$editedKeyProp] = $raw[$dbProp];
             }

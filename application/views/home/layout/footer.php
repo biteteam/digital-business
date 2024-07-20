@@ -81,7 +81,8 @@
 <script src="<?= base_url('assets/home/mail/contact.js') ?>"></script>
 
 <!-- Template Javascript -->
-<script src="<?= base_url('assets/admin/js/main.js') ?>"></script>
+<script src="<?= base_url('assets/home/js/main.js') ?>"></script>
+<!-- <script src="<?= base_url('assets/admin/js/main.js') ?>"></script> -->
 
 <!-- Alert -->
 <script>

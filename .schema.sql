@@ -95,7 +95,7 @@ CREATE TABLE tbl_order_detail (
     idOrderDetail INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idOrder INT(5) NOT NULL,
     idToko INT(5) NOT NULL,
-    statusOrder ENUM('Belum Dibayar', 'Dikemas', 'Dikirim', 'Diterima', 'Dibatalkan'),
+    statusOrder ENUM('Dibatalkan', 'Belum Dibayar', 'Dikemas', 'Dikirim', 'Diterima') DEFAULT 'Belum Dibayar',
     resi VARCHAR(64),
     kurir VARCHAR(50) NOT NULL,
     ongkir INT(10) NOT NULL,
@@ -122,6 +122,15 @@ CREATE TABLE tbl_order_items (
         FOREIGN KEY (idOrderDetail) REFERENCES tbl_order_detail(idOrderDetail)
 );
 
+CREATE TABLE tbl_rating (
+    idRating INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    idOrderItem INT(5) NOT NULL,
+    rating ENUM('buruk', 'cukup-buruk', 'cukup-bagus', 'bagus', 'sangat-bagus') NOT NULL,
+    review VARCHAR(255) NOT NULL,
+    rateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_OrderItem_Rating
+        FOREIGN KEY (idOrderItem) REFERENCES tbl_order_items(idOrderItem)
+);
 
 -- INSERTION DATA
 

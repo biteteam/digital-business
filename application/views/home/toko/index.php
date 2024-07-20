@@ -38,8 +38,9 @@
                             <td><?= $tk->deskripsi; ?></td>
                             <td>
                                 <?php if ($tk->idKonsumen == $this->session->userdata("idKonsumen")) : ?>
-                                    <a href="<?= site_url('toko/get-by-id/' . $tk->idToko) ?>" class="btn rounded btn-secondary" style="margin: 3px 0 3px 0;">Edit</a>
-                                    <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn rounded btn-secondary" style="margin: 3px 0 3px 0;">Kelola</a>
+                                    <a href="<?= site_url('toko/get-by-id/' . $tk->idToko) ?>" class="btn rounded btn-secondary text-white" style="margin: 3px 0 3px 0; background-color:teal;">Edit</a>
+                                    <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn rounded btn-secondary text-white" style="margin: 3px 0 3px 0; background-color:cornflowerblue;">Kelola</a>
+                                    <a href="<?= site_url('toko/order/' . $tk->idToko) ?>" class="btn rounded btn-secondary text-white" style="margin: 3px 0 3px 0; background-color:blueviolet;">Orderan</a>
                                     <a href="<?= site_url('toko/delete/' . $tk->idToko) ?>" onclick="return confirm('Yakin akan hapus data ini?')" class="btn rounded btn-danger" style="margin: 3px 0 3px 0;">Hapus</a>
                                 <?php else : ?>
                                     <a href="<?= site_url('produk/' . $tk->idToko) ?>" class="btn rounded btn-secondary">Detail</a>

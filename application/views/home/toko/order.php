@@ -1,6 +1,17 @@
  <div class="container-fluid pt-2 mb-5 pb-3">
-     <div class="text-center mb-4">
-         <h2 class="section-title px-5"><span class="px-2">Orderan Toko</span></h2>
+     <div class="d-flex flex-column justify-content-center align-items-center mb-4">
+         <div class="text-center">
+             <h2 class="section-title px-5">
+                 <?php if (!empty($toko)) : ?>
+                     <span class="px-2">Orderan Toko <?= $toko->namaToko ?></span>
+                 <?php else : ?>
+                     <span class="px-2">Orderan Toko</span>
+                 <?php endif ?>
+             </h2>
+         </div>
+         <?php if (!empty($toko)) : ?>
+             <img class="img-fluid" style="width: 10%;" src="<?= base_url("/assets/logo_toko/{$toko->logo}") ?>" alt="<?= $toko->namaToko ?>">
+         <?php endif ?>
      </div>
      <?php foreach ($orders as $order) : ?>
          <div class="row mx-xl-5 px-xl-2 py-4 mb-4 shadow-sm" style="background-color: aliceblue; border-radius: 8px;">
@@ -27,14 +38,18 @@
                              <?php endforeach ?>
                          </div>
                          <div class="w-100 d-flex flex-row justify-content-between">
-                             <div class="w-50 d-flex flex-column mx-2 shadow-sm py-1 px-3 rounded-lg" style="background-color: aliceblue;">
-                                 <div class="w-100 py-1">
-                                     <a class="d-flex flex-row align-items-center w-auto" href="<?= base_url("/produk/{$order->toko->id}") ?>">
-                                         <img class="img-fluid rounded-circle" src="<?= site_url("assets/logo_toko/{$order->toko->logo}") ?>" alt="" style="height: 40px; width: auto;">
-                                         <h6 class="font-weight-medium ml-2 p-0 m-0"><?= $order->toko->nama ?></h6>
-                                     </a>
+                             <?php if (!empty($toko)) : ?>
+                                 <div class="w-50 d-flex flex-column mx-2 py-1 px-3 rounded-lg"></div>
+                             <?php else : ?>
+                                 <div class="w-50 d-flex flex-column mx-2 shadow-sm py-1 px-3 rounded-lg" style="background-color: aliceblue;">
+                                     <div class="w-100 py-1">
+                                         <a class="d-flex flex-row align-items-center w-auto" href="<?= base_url("/produk/{$order->toko->id}") ?>">
+                                             <img class="img-fluid rounded-circle" src="<?= site_url("assets/logo_toko/{$order->toko->logo}") ?>" alt="" style="height: 40px; width: auto;">
+                                             <h6 class="font-weight-medium ml-2 p-0 m-0"><?= $order->toko->nama ?></h6>
+                                         </a>
+                                     </div>
                                  </div>
-                             </div>
+                             <?php endif ?>
                              <div class="d-flex flex-column mr-2 align-items-end justify-content-end">
                                  <div>
                                      <span class="font-weight-medium mr-1">Total</span>

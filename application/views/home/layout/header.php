@@ -28,6 +28,11 @@
     <!-- Sweatalert -->
     <link href="<?= site_url('assets/admin/plugins/sweetalert2/sweetalert2.min.css') ?>" rel="stylesheet">
     <script src="<?= base_url('assets/admin/plugins/sweetalert2/sweetalert2.min.js') ?>"></script>
+    <style>
+        .rate-star * {
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>

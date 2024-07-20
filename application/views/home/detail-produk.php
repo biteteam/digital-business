@@ -36,7 +36,7 @@
 
          <div class="col-lg-7 pb-5">
              <h3 class="font-weight-semi-bold"><?= $produk->namaProduk ?></h3>
-             <div class="d-flex mb-3">
+             <!-- <div class="d-flex mb-3">
                  <div class="text-primary mr-2">
                      <small class="fas fa-star"></small>
                      <small class="fas fa-star"></small>
@@ -45,7 +45,7 @@
                      <small class="far fa-star"></small>
                  </div>
                  <small class="pt-1">(50 Reviews)</small>
-             </div>
+             </div> -->
              <h3 class="font-weight-semi-bold mb-4"><span class="text-muted">Rp. </span><?= rp($produk->harga, true) ?></h3>
              <p class="mb-4"><?= $produk->deskripsiProduk ?></p>
              <div class="d-flex mb-3">
@@ -144,16 +144,16 @@
      <div class="row px-xl-5">
          <div class="col">
              <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                 <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                 <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
-                 <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
+                 <a class="nav-item nav-link" data-toggle="tab" href="#description">Description</a>
+                 <a class="nav-item nav-link" data-toggle="tab" href="#information">Information</a>
+                 <a class="nav-item nav-link" data-toggle="tab" href="#ratings">Reviews (<?= count($ratings) ?>)</a>
              </div>
              <div class="tab-content">
-                 <div class="tab-pane fade show active" id="tab-pane-1">
+                 <div class="tab-pane fade" id="description">
                      <h4 class="mb-3">Product Description</h4>
                      <p><?= $produk->deskripsiProduk ?></p>
                  </div>
-                 <div class="tab-pane fade" id="tab-pane-2">
+                 <div class="tab-pane fade" id="information">
                      <h4 class="mb-3">Additional Information</h4>
                      <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
                      <div class="row">
@@ -191,56 +191,99 @@
                          </div>
                      </div>
                  </div>
-                 <div class="tab-pane fade" id="tab-pane-3">
+                 <div class="tab-pane fade" id="ratings">
                      <div class="row">
                          <div class="col-md-6">
-                             <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
-                             <div class="media mb-4">
-                                 <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                 <div class="media-body">
-                                     <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                     <div class="text-primary mb-2">
-                                         <i class="fas fa-star"></i>
-                                         <i class="fas fa-star"></i>
-                                         <i class="fas fa-star"></i>
-                                         <i class="fas fa-star-half-alt"></i>
+                             <h4 class="mb-4">1 review untuk "<?= $produk->namaProduk ?>"</h4>
+                             <?php foreach ($ratings as $rating) : ?>
+                                 <div class="media mb-4">
+                                     <img src="<?= site_url('assets/home/img/user.jpg') ?>" alt="Image" class="img-fluid mr-3 mt-1 rounded-circle" style="width: 45px;">
+                                     <div class="media-body">
+                                         <h6><?= $rating->namaKonsumen ?><small> - <i><?= date_humanize($rating->rateAt) ?></i></small></h6>
+                                         <?php
+                                            $ratingsText = ['buruk', 'cukup-buruk', 'cukup-bagus', 'bagus', 'sangat-bagus'];
+                                            $ratingValue = array_search($rating->rating, $ratingsText);
+                                            ?>
+                                         <div class="text-primary mb-2">
+                                             <?php foreach ($ratingsText as $index => $rateStar) : ?>
+                                                 <i class="<?= $index <= $ratingValue ? "fas" : "far" ?> fa-star"></i>
+                                             <?php endforeach ?>
+                                         </div>
+                                         <p><?= $rating->review ?>.</p>
+                                     </div>
+                                 </div>
+                             <?php endforeach ?>
+                         </div>
+                         <?php if (!empty($orderItemId)) : ?>
+                             <div class="col-md-6">
+                                 <div class="mb-4">
+                                     <h4 class="">Rating Penilaian Produk</h4>
+                                     <small>Beri rating produk yang sudah kamu beli</small>
+                                 </div>
+                                 <div class="d-flex my-3">
+                                     <p class="mb-0 mr-2">Rating </p>
+                                     <div class="text-primary rate-star" id="rate-star">
+                                         <i class="fa fa-star"></i>
+                                         <i class="far fa-star"></i>
+                                         <i class="far fa-star"></i>
+                                         <i class="far fa-star"></i>
                                          <i class="far fa-star"></i>
                                      </div>
-                                     <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                     <span id="rate-preview" class="ml-2" style="font-size: small;"></span>
                                  </div>
+                                 <form action="<?= base_url("order/rating") ?>" method="post">
+                                     <div class="form-group">
+                                         <label for="review">Review</label>
+                                         <input type="hidden" name="order-item-id" value="<?= $orderItemId ?>">
+                                         <input type="hidden" name="rating" value="buruk">
+                                         <textarea id="review" name="review" cols="30" rows="5" class="form-control rounded"></textarea>
+                                     </div>
+                                     <div class="form-group mb-0">
+                                         <button type="submit" class="btn btn-primary px-3">
+                                             Beri Rating
+                                         </button>
+                                     </div>
+                                 </form>
                              </div>
-                         </div>
-                         <div class="col-md-6">
-                             <h4 class="mb-4">Leave a review</h4>
-                             <small>Your email address will not be published. Required fields are marked *</small>
-                             <div class="d-flex my-3">
-                                 <p class="mb-0 mr-2">Your Rating * :</p>
-                                 <div class="text-primary">
-                                     <i class="far fa-star"></i>
-                                     <i class="far fa-star"></i>
-                                     <i class="far fa-star"></i>
-                                     <i class="far fa-star"></i>
-                                     <i class="far fa-star"></i>
-                                 </div>
-                             </div>
-                             <form>
-                                 <div class="form-group">
-                                     <label for="message">Your Review *</label>
-                                     <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                 </div>
-                                 <div class="form-group">
-                                     <label for="name">Your Name *</label>
-                                     <input type="text" class="form-control" id="name">
-                                 </div>
-                                 <div class="form-group">
-                                     <label for="email">Your Email *</label>
-                                     <input type="email" class="form-control" id="email">
-                                 </div>
-                                 <div class="form-group mb-0">
-                                     <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                 </div>
-                             </form>
-                         </div>
+
+
+                             <script>
+                                 const maxRating = 5;
+                                 const ratings = ['buruk', 'cukup-buruk', 'cukup-bagus', 'bagus', 'sangat-bagus'];
+                                 const ratingPreviewEl = document.querySelector('#rate-preview');
+                                 const ratingEl = document.querySelector('input[name="rating"]');
+                                 let rateStarEl = document.querySelector('#rate-star');
+                                 let ratingValue = ratingEl.value;
+                                 let ratingStar = ratings.indexOf(ratingValue);
+                                 const toTitleCase = (str) => {
+                                     return str.split(' ').map(word => {
+                                         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                                     }).join(' ');
+                                 }
+
+                                 const changeRating = () => {
+                                     let ratingInner = "";
+                                     for (let i = 0; i < maxRating; i++) {
+                                         const rateClass = i <= ratingStar ? 'fa' : 'far';
+                                         ratingInner += `<i class="${rateClass} fa-star" star="${ratings[i]}"></i>`;
+                                     }
+
+                                     rateStarEl.innerHTML = ratingInner;
+                                     ratingPreviewEl.innerHTML = toTitleCase(ratingValue.replace(/-/g, ' '));
+                                     ratingEl.value = ratingValue;
+
+                                     rateStarEl.querySelectorAll("i").forEach((starEl, index) => {
+                                         starEl.addEventListener('click', () => {
+                                             ratingStar = index;
+                                             ratingValue = ratings[index];
+                                             changeRating();
+                                         });
+                                     });
+                                 }
+
+                                 changeRating();
+                             </script>
+                         <?php endif ?>
                      </div>
                  </div>
              </div>
@@ -248,3 +291,23 @@
      </div>
  </div>
  <!-- Shop Detail End -->
+ <script>
+     const navTabsEl = document.querySelector('.nav-tabs')
+     const tabsEl = document.querySelector('.tab-content')
+     const tabActive = window.location.hash || "#description"
+
+     for (const navTab of navTabsEl.children) {
+         if (navTab.getAttribute("href") == tabActive) navTab.classList.add("active");
+     }
+
+     for (const tab of tabsEl.children) {
+         if (`#${tab.getAttribute("id")}` == tabActive) {
+             tab.classList.add("show");
+             tab.classList.add("active");
+
+             if (window.location.hash) tab.scrollIntoView({
+                 behavior: "smooth"
+             })
+         }
+     }
+ </script>

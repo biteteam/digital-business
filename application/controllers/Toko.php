@@ -141,7 +141,7 @@ class Toko extends BaseController
         return redirect('toko');
     }
 
-    public function order()
+    public function order($tokoId = null)
     {
         $userNow = $this->getUserAuth();
         $this->load->model('MOrder', 'orderModel');
@@ -150,9 +150,9 @@ class Toko extends BaseController
             $this->update_resi($this->input->post('orderDetailId'), $this->input->post('resi'), true);
         }
 
-        $orders = $this->orderModel->shopOrder($userNow->idKonsumen);
+        if (!empty($tokoId)) $data['toko'] = $this->adminModel->get_by_id('tbl_toko', ['idToko' => $tokoId])->row_object();
+        $orders = (empty($tokoId)) ? $this->orderModel->shopOrder($userNow->idKonsumen) :  $this->orderModel->shopOrder($userNow->idKonsumen, $tokoId);
         $data['orders'] = $this->mapOrderToko($orders);
-        // dd($data['orders']);
 
         $this->load->view('home/layout/header');
         $this->load->view('home/toko/order', $data);

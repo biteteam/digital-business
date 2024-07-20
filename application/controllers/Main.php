@@ -7,6 +7,8 @@ class Main extends BaseController
     {
         parent::__construct();
         $this->load->model('MAdmin', 'adminModel');
+        $this->load->model('MOrder', 'orderModel');
+        $this->load->model('MRating', 'ratingModel');
     }
 
     public function index()
@@ -22,11 +24,12 @@ class Main extends BaseController
     public function detail_produk(int | null $idProduk = null)
     {
         if (empty($idProduk)) return redirect("/");
+        if (!empty($this->input->post('order-item-id'))) $data['orderItemId'] = $this->input->post('order-item-id');
+        $data['produk'] = $this->adminModel->get_by_id('tbl_produk', ['idProduk' => $idProduk])->row_object();
+        $data['ratings'] = $this->ratingModel->get_rating_by_product($idProduk);
 
-        $kategori = $this->adminModel->get_all_data('tbl_kategori')->result();
-        $produk = $this->adminModel->get_by_id('tbl_produk', ['idProduk' => $idProduk])->row_object();
-        $this->load->view('home/layout/header', ['kategori' => $kategori]);
-        $this->load->view('home/detail-produk', ['produk' => $produk]);
+        $this->load->view('home/layout/header');
+        $this->load->view('home/detail-produk', $data);
         $this->load->view('home/layout/footer');
     }
 

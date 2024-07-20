@@ -17,6 +17,24 @@
                                                  <h5 class="m-0 p-0 text-truncate"><?= $item['nama'] ?></h5>
                                                  <h6 class="m-0 p-0 mt-1 text-truncate font-weight-bold" style="opacity: 0.8;"><?= rp($item['harga']) ?></h6>
                                                  <p class="position-absolute mr-2 mt-2 font-weight-medium" style="font-size: small; top: 0; right: 0; margin: 0; padding: 5px; opacity: 0.8;"><span class="font-weight-semi-bold"><?= $item['qty'] ?></span> Qty</p>
+                                                 <?php if ($detail['status'] == "Diterima") : ?>
+                                                     <?php if ($item['rating'] == null) : ?>
+                                                         <form action="<?= base_url("detail-produk/" . $item['id'] . '#ratings') ?>" method="post" class="position-absolute pr-2 mb-2" style="font-size: small; bottom: 0; right: 0; margin: 0; padding: 0;">
+                                                             <input type="hidden" name="order-item-id" value="<?= $item['idOrderItem'] ?>">
+                                                             <button type="submit" class="w-100 btn btn-secondary rounded text-sm text-light" style="background-color: cadetblue; padding: 2px 15px 2px 15px;">Beri Rating</button>
+                                                         </form>
+                                                     <?php else :
+                                                            $ratingsText = ['buruk', 'cukup-buruk', 'cukup-bagus', 'bagus', 'sangat-bagus'];
+                                                            $ratingValue = array_search($item['rating'], $ratingsText);
+
+                                                        ?>
+                                                         <div class="position-absolute text-primary pr-2 mb-2" style="bottom: 0; right: 0; margin: 0; padding: 0; opacity: .7;">
+                                                             <?php foreach ($ratingsText as $index => $rateStar) : ?>
+                                                                 <i class="<?= $index <= $ratingValue ? "fas" : "far" ?> fa-star"></i>
+                                                             <?php endforeach ?>
+                                                         </div>
+                                                     <?php endif ?>
+                                                 <?php endif ?>
                                              </div>
                                          </a>
                                          <div class="w-25">
@@ -56,8 +74,14 @@
                                  <div class="flex-grow-1 d-flex flex-column pt-3 pb-2 rounded-lg shadow-sm" style="background-color: aliceblue;">
                                      <div class="d-flex flex-row justify-content-between px-3">
                                          <h6 class="font-weight-medium">Status</h6>
-                                         <?php $statusColor = ['Belum Dibayar' => 'gray', 'Dikemas' => 'chocolate', 'Dikirim' => 'cadetblue', 'Diterima' => 'cornflowerblue', 'Dibatalkan' => 'crimson']; ?>
-                                         <h6 class="font-weight-medium px-3 rounded text-light" style="padding: 4px; background-color: <?= $statusColor[$detail['status']] ?>;"><?= $detail['status'] ?></h6>
+                                         <?php
+                                            $detailStatus = $detail['status'];
+                                            $ratingCount = count(array_filter($detail['items'], fn ($item) => $item['rating'] !== null));
+                                            $detailStatus = (($detail['status'] == "Diterima") && count($detail['items']) == $ratingCount) ? "Selesai" : $detail['status']
+                                            ?>
+
+                                         <?php $statusColor = ['Belum Dibayar' => 'gray', 'Dikemas' => 'chocolate', 'Dikirim' => 'cadetblue', 'Diterima' => 'cornflowerblue', 'Selesai' => 'rgba(108, 117, 125, 0.5)', 'Dibatalkan' => 'crimson']; ?>
+                                         <h6 class="font-weight-medium px-3 rounded text-light" style="padding: 4px; background-color: <?= $statusColor[$detailStatus] ?>;"><?= $detailStatus ?></h6>
                                      </div>
                                      <div class="d-flex flex-row justify-content-between px-3">
                                          <h6 class="font-weight-medium">Kurir</h6>
@@ -75,6 +99,14 @@
                                          <h6 class="font-weight-medium">Total</h6>
                                          <h5 class="font-weight-semi-bold"><?= rp($detail['total']) ?></h5>
                                      </div>
+                                     <?php if ($detail['status'] == "Dikirim") : ?>
+                                         <form class="w-100 pb-2 px-3 mt-1" action="<?= base_url("order/update-state") ?>" method="post">
+                                             <input type="hidden" name="order-state" value="<?= $detail['status'] == "Dikirim" ? "accp" : "unknown" ?>">
+                                             <input type="hidden" name="order-detail-id" value="<?= $detail['orderDetailId'] ?>">
+                                             <button type="submit" onclick="return confirm('Pesanan telah sampai dan diterima?')" class="w-100 btn btn-secondary px-4 rounded font-weight-medium text-lg text-light" style="background-color:steelblue;">Pesanan Sampai</button>
+                                         </form>
+                                     <?php endif ?>
+
                                  </div>
                              </div>
                          </div>

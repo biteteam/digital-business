@@ -33,3 +33,10 @@ if (!function_exists('to_object')) {
         return json_decode(json_encode($array), false);
     }
 }
+if (!function_exists('date_humanize')) {
+    function date_humanize($datetime)
+    {
+        $date = new DateTime($datetime);
+        return "{$date->format('d F Y')} Pukul {$date->format('H:i')}";
+    }
+}
