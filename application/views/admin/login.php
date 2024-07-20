@@ -27,7 +27,7 @@
         <p class="login-box-msg">Sign in to start your session</p>
 
         <!-- START FORM -->
-        <?= form_open('adminpanel/login'); ?>
+        <?= form_open('admin/login'); ?>
         <div class="mb-3">
           <div class="input-group">
             <input type="text" name="username" class="form-control" value="<?= set_value('username'); ?>" placeholder="Username">

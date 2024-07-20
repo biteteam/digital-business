@@ -18,7 +18,7 @@ class Kategori extends BaseController
     public function __construct()
     {
         parent::__construct();
-        if (empty($this->session->userdata('userName'))) return redirect('adminpanel');
+        if (empty($this->session->userdata('userName'))) return redirect('admin');
         $this->load->model('MAdmin');
         $this->load->helper(['form', 'url']);
     }

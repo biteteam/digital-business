@@ -13,7 +13,7 @@ class AdminPanel extends BaseController
 	public function index()
 	{
 		if (empty($this->session->userdata('userName'))) {
-			return redirect('adminpanel/login');
+			return redirect('admin/login');
 		}
 		$this->load->view('admin/layout/header');
 		$this->load->view('admin/layout/menu');
@@ -47,7 +47,7 @@ class AdminPanel extends BaseController
 				$session = $adminAuthData;
 				$this->session->set_userdata($session);
 				$this->session->set_flashdata('success', "Selamat datang kembali $uname!");
-				return redirect('adminpanel');
+				return redirect('admin');
 			}
 
 			$this->session->set_flashdata('error', "Username atau Password Salah!");
@@ -58,7 +58,7 @@ class AdminPanel extends BaseController
 
 	public function ganti_password()
 	{
-		if (empty($this->session->userdata('userName'))) return redirect('adminpanel/login');
+		if (empty($this->session->userdata('userName'))) return redirect('admin/login');
 
 		if ($this->input->method() == "post") {
 			$this->load->library('form_validation');
@@ -83,7 +83,7 @@ class AdminPanel extends BaseController
 
 				if ($updatedPassword) {
 					$this->session->set_flashdata('success', "Berhasil mengganti password");
-					return redirect('adminpanel');
+					return redirect('admin');
 				}
 
 				$this->session->set_flashdata('error', "Gagal mengganti password!");
@@ -98,6 +98,6 @@ class AdminPanel extends BaseController
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		return redirect('adminpanel');
+		return redirect('admin');
 	}
 }

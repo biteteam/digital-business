@@ -7,7 +7,7 @@ class Member extends BaseController
     {
         parent::__construct();
         $this->load->model('MAdmin');
-        if (empty($this->session->userdata('userName'))) return redirect('adminpanel');
+        if (empty($this->session->userdata('userName'))) return redirect('admin');
     }
 
     public function index()

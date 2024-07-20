@@ -27,7 +27,7 @@
                 <p class="login-box-msg">Ganti password</p>
 
                 <!-- START FORM -->
-                <?= form_open('adminpanel/ganti-password'); ?>
+                <?= form_open('admin/ganti-password'); ?>
                 <div class="mb-4">
                     <div class="input-group">
                         <input type="password" name="password" class="form-control" value="<?= set_value('password'); ?>" placeholder="Password Saat Ini">

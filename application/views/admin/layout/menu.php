@@ -36,7 +36,7 @@
 				<!-- Add icons to the links using the .nav-icon class
             with font-awesome or any other icon font library -->
 				<li class="nav-item menu-open">
-					<a href="<?= site_url('adminpanel') ?>" class="nav-link active">
+					<a href="<?= site_url('admin') ?>" class="nav-link active">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>
 							Dashboard
@@ -65,13 +65,13 @@
 
 				<li class="nav-header mt-3">Settings</li>
 				<li class="nav-item">
-					<a href="<?= site_url('adminpanel/ganti-password') ?>" class="nav-link">
+					<a href="<?= site_url('admin/ganti-password') ?>" class="nav-link">
 						<i class="nav-icon far fa-circle text-danger"></i>
 						<p class="text">Ganti Password</p>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="<?= site_url('adminpanel/logout') ?>" class="nav-link">
+					<a href="<?= site_url('admin/logout') ?>" class="nav-link">
 						<i class="nav-icon fas fa-circle"></i>
 						<p>
 							Logout
